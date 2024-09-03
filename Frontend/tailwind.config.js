@@ -17,7 +17,26 @@ module.exports = {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ['var(--font-body)'],
+        mono: ['var(--font-heading)'],
+      },
       colors: {
+        light:{
+          primary: "#FFFFFF",
+          secondary: "#A855F7",
+          tertiary: "#F3E8FF",
+          accent: "#3B0764",
+          text: "#3F3F46",
+          heading:"#4B5563"
+        },
+        dark:{
+          primary: "#1F2937",
+          secondary: "#A855F7",
+          tertiary: "#6B21A8",
+          accent: "#FFFFFF",
+          text: "#F3F4F6",
+        },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

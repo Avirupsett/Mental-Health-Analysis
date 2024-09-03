@@ -8,7 +8,7 @@ export default function Navbar() {
                     <a className="flex-none text-xl font-semibold focus:outline-none focus:opacity-80" href="#" aria-label="Brand">
                         <span className="inline-flex items-center gap-x-2 text-3xl font-semibold text-white">
                             {/* <Image className="w-10 h-auto" src="../assets/img/logo/logo-short.png" alt="Logo"> */}
-                            Brand
+                            <div className='text-4xl tracking-wide font-mono text-center  text-light-secondary font-bold '>Men<span className='text-light-heading font-normal'>trix</span></div>
                         </span>
                     </a>
                     <div className="sm:hidden">
