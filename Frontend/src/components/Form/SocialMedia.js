@@ -21,9 +21,9 @@ export default function SocialMedia(props) {
 
     return (
         <form onSubmit={(e) => handleSubmit(e)}>
-            <div className='container flex min-h-screen flex-col items-center justify-center'>
+            <div className='container flex mt-12 sm:min-h-screen sm:mt-0 flex-col items-center justify-center'>
 
-                <div className=''><VscRobot className='text-8xl text-light-secondary' /></div>
+                <div className='mb-1'><VscRobot className='text-8xl text-light-secondary' /></div>
                 <div className='sm:text-[44px] text-[28px] font-mono text-light-heading font-semibold'>Social Media Profiles</div>
                 <div className='sm:text-xl text-md text-center text-light-text font-sans mt-1 opacity-80 tracking-wide mb-4'>Your presence on social networking platforms</div>
                 <div className="grid w-full max-w-xl items-center gap-1.5 mt-2">

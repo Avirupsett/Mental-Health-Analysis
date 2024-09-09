@@ -2,7 +2,7 @@
 import { Label } from '@radix-ui/react-label';
 import React, { useContext } from 'react'
 
-import { FaMapLocationDot } from "react-icons/fa6";
+import { PiCityBold } from "react-icons/pi";
 import { Button } from '@/components/ui/button';
 import { IoChevronBackSharp, IoChevronForwardSharp } from 'react-icons/io5';
 import { RegisterContext } from './RegisterContext';
@@ -18,9 +18,9 @@ export default function Location(props) {
 
     return (
         <form onSubmit={(e) => handleSubmit(e)}>
-            <div className='container flex min-h-screen flex-col items-center justify-center'>
+            <div className='container flex mt-12 sm:min-h-screen sm:mt-0 flex-col items-center justify-center'>
 
-                <div className=''><FaMapLocationDot className='text-8xl text-light-secondary' /></div>
+                <div className='mb-1'><PiCityBold className='text-8xl text-light-secondary' /></div>
                 <div className='sm:text-[44px] text-[28px] font-mono text-light-heading font-semibold'>Location Description</div>
                 <div className='sm:text-xl text-md text-light-text font-sans mt-1 opacity-80 tracking-wide mb-4'>Enter your location description</div>
                 <div className="grid w-full max-w-xl items-center gap-1.5 mt-2">
