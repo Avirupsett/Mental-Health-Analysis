@@ -16,6 +16,8 @@
     "@radix-ui/react-select": "^2.1.1",
     "@radix-ui/react-slot": "^1.1.0",
     "@tailwindcss/forms": "^0.5.7",
+    "@workos-inc/authkit-nextjs": "^0.10.0",
+    "@workos-inc/node": "^7.27.1",
     "bcryptjs": "^2.4.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
@@ -33,6 +35,7 @@
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
+    "@types/react": "18.3.5",
     "eslint": "^8",
     "eslint-config-next": "14.2.6",
     "postcss": "^8",

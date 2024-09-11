@@ -1,5 +1,7 @@
 import { Roboto_Slab, Mulish } from "next/font/google";
 import "./globals.css";
+import Link from "next/link";
+// import Navbar from "../components/Home/Navbar"
 
 
 const roboto_Slab = Roboto_Slab({
@@ -22,6 +24,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${mulish.variable} ${roboto_Slab.variable}`}>
       <body >
+        {/* <Navbar/> */}
         {children}
       </body>
     </html>
