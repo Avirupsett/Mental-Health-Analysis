@@ -7,7 +7,7 @@ import {
 	signOut,
 } from "@workos-inc/authkit-nextjs";
 
-export default await async function Navbar() {
+export default async function Navbar() {
 	// Retrieves the user from the session or returns `null` if no user is signed in
 	const { user } = await getUser();
 	const signInUrl = await getSignInUrl();
@@ -30,10 +30,10 @@ export default await async function Navbar() {
 							action={async () => {
 								"use server";
 								await signOut();
-							}}
+							} }
 						>
 							<button type="submit" className="bg-gray-300 px-2 py-2 rounded-md ">
-								Logout
+								Logout 
 							</button>
 						</form>
 					)}

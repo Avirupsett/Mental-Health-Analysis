@@ -1,4 +1,4 @@
-import Navbar from "../app/components/Home/Navbar"
+import Navbar from "../components/Home/Navbar"
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -38,7 +38,7 @@ export default async function Home() {
 					<div className="flex justify-center">
 						{/* <Link href={"/auth/login"} className="inline-flex text-white bg-light-secondary border-0 py-2 px-6 focus:outline-none hover:bg-purple-600 rounded text-lg" >Get Started</Link> */}
 						<Link
-							href={"/auth/login"}
+							href={signInUrl}
 							className="text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:ring-purple-300 dark:focus:ring-purple-800 font-medium rounded-lg px-7 py-3 text-center mr-2 mb-2 text-xl"
 						>
 							Get Started

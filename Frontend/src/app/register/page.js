@@ -1,9 +1,9 @@
 'use client'
-import Location from '@/components/Form/Location'
-import Personal from '@/components/Form/Personal'
-import { RegisterContext } from '@/components/Form/RegisterContext'
-import SocialMedia from '@/components/Form/SocialMedia'
-import Stepper from '@/components/Form/Stepper'
+import Location from '../../components/Form/Location'
+import Personal from '../../components/Form/Personal'
+import { RegisterContext } from '../../components/Form/RegisterContext'
+import SocialMedia from '../../components/Form/SocialMedia'
+import Stepper from '../../components/Form/Stepper'
 import React, { useState } from 'react'
 
 

@@ -11,8 +11,8 @@ import {
     SelectLabel,
     SelectTrigger,
     SelectValue,
-} from "@/components/ui/select"
-import { Button } from '@/components/ui/button';
+} from "../../components/ui/select"
+import { Button } from '../../components/ui/button';
 import { IoChevronForwardSharp } from 'react-icons/io5';
 import { RegisterContext } from './RegisterContext';
 

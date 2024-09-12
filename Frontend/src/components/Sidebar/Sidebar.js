@@ -1,15 +1,15 @@
 'use client'
 
 import { useState } from 'react'
-import { Button } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
+import { Button } from "../../components/ui/button"
+import { cn } from "../../lib/utils"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "../../components/ui/dropdown-menu"
 import { MenuIcon, XIcon, HomeIcon, InboxIcon, UsersIcon, SettingsIcon, ChevronLeftIcon, ChevronRightIcon, UserIcon, LogOutIcon, BotIcon } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 

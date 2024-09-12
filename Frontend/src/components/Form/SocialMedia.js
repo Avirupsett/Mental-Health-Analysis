@@ -3,7 +3,7 @@ import { Label } from '@radix-ui/react-label';
 import React, { useContext } from 'react'
 
 import { TiSocialFacebookCircular, TiSocialInstagram, TiSocialLinkedinCircular } from "react-icons/ti";
-import { Button } from '@/components/ui/button';
+import { Button } from '../../components/ui/button';
 import { IoCheckmarkSharp, IoChevronBackSharp } from 'react-icons/io5';
 import { VscRobot } from "react-icons/vsc";
 import { RegisterContext } from './RegisterContext';

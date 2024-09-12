@@ -3,7 +3,7 @@ import { Label } from '@radix-ui/react-label';
 import React, { useContext } from 'react'
 
 import { PiCityBold } from "react-icons/pi";
-import { Button } from '@/components/ui/button';
+import { Button } from '../../components/ui/button';
 import { IoChevronBackSharp, IoChevronForwardSharp } from 'react-icons/io5';
 import { RegisterContext } from './RegisterContext';
 
