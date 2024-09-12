@@ -37,9 +37,9 @@ export default async function Navbar() {
 							</button>
 						</form>
 					)}
-					<Link href={"/post"} className="bg-red-500 text-white px-2 py-2 rounded-md ">
+					{/* <Link href={"/post"} className="bg-red-500 text-white px-2 py-2 rounded-md ">
 						Help ?
-					</Link>
+					</Link> */}
 				</nav>
 			</div>
 		</header>
