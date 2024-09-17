@@ -17,9 +17,7 @@ import { IoChevronForwardSharp } from 'react-icons/io5';
 import { RegisterContext } from './RegisterContext';
 
 
-
-export default async function Personal(props) {
-    const { user } = await getUser();
+export default function Personal(props) {
     const formContext = useContext(RegisterContext)
 
     function handleSubmit(e) {
@@ -41,18 +39,18 @@ export default async function Personal(props) {
                 <div className='sm:text-xl text-md text-light-text font-sans mt-1 opacity-80 tracking-wide mb-4'>Enter your personal information</div>
                 <div className="grid w-full max-w-xl items-center gap-1.5 mt-2">
                     <Label htmlFor="name" className='text-light-heading font-sans font-bold text-sm sm:text-[16px] tracking-wide'>Full Name</Label>
-                    <input type="text" id="name" placeholder="Name" value={formContext.user.fullname?formContext.user.fullname:"" } onChange={(e)=>formContext.setUser({...formContext.user,"fullname":e.target.value})} className="w-[98%] rounded-md border-gray-200 shadow-sm text-sm focus:border-gray-300 focus:outline-0 focus:ring-gray-300 md:text-lg" />
+                    <input type="text" id="name" placeholder="Name" value={formContext.user.fullname?formContext.user.fullname:"" } onChange={(e)=>formContext.setUser({...formContext.user,"fullname":e.target.value})} className="w-[98%] rounded-md border-gray-200 shadow-sm text-sm focus:border-gray-300 focus:outline-0 focus:ring-gray-300 md:text-lg" required/>
                 </div>
 
                 <div className="grid w-full max-w-xl items-center gap-1.5 mt-5">
                     <Label htmlFor="email" className='text-light-heading font-sans font-bold text-sm sm:text-[16px] tracking-wide'>Email</Label>
-                    <input type="email" id="email" placeholder="Email" value={user.email} readOnly className="w-[98%] rounded-md border-gray-200 shadow-sm text-sm focus:border-gray-300 focus:outline-0 focus:ring-gray-300 md:text-lg" />
+                    <input type="email" id="email" placeholder="Email"  className="w-[98%] rounded-md border-gray-200 shadow-sm text-sm focus:border-gray-300 focus:outline-0 focus:ring-gray-300 md:text-lg" required/>
                 </div>
                 <div className="grid grid-cols-2 w-full max-w-xl items-center gap-2.5 mt-5">
                     <div>
                         <Label htmlFor="dob" className='text-light-heading font-sans font-bold text-sm sm:text-[16px] tracking-wide '>Date of Birth</Label>
                         <div className='mt-[0.375rem]'>
-                            <input type="date" id="dob" placeholder="DD/MM/YYYY" value={formContext.user.dateofbirth?formContext.user.dateofbirth:""} onChange={(e)=>formContext.setUser({...formContext.user,"dateofbirth":e.target.value})} className="w-[98%] rounded-md border-gray-200 shadow-sm text-sm focus:border-gray-300 focus:outline-0 focus:ring-gray-300 md:text-lg" />
+                            <input type="date" id="dob" placeholder="DD/MM/YYYY" value={formContext.user.dateofbirth?formContext.user.dateofbirth:""} onChange={(e)=>formContext.setUser({...formContext.user,"dateofbirth":e.target.value})} className="w-[98%] rounded-md border-gray-200 shadow-sm text-sm focus:border-gray-300 focus:outline-0 focus:ring-gray-300 md:text-lg" required/>
 
                         </div>
                     </div>
@@ -60,12 +58,12 @@ export default async function Personal(props) {
                     <div className=''>
                         <Label htmlFor="gender" className='text-light-heading font-sans font-bold text-sm sm:text-[16px] tracking-wide'>Gender</Label>
                         <div className='mt-[0.375rem]'>
-                            <Select name='gender' defaultValue={formContext.user.gender?formContext.user.gender.toLowerCase():""} onValueChange={(e)=>formContext.setUser({...formContext.user,"gender":e})} className='text-[0.875rem] md:text-lg' >
+                            <Select name='gender' defaultValue={formContext.user.gender?formContext.user.gender.toLowerCase():""} onValueChange={(e)=>formContext.setUser({...formContext.user,"gender":e})} className='text-[0.875rem] md:text-lg' required>
                                 <SelectTrigger className="text-[0.875rem] md:text-lg font-sans">
                                     <SelectValue placeholder="Select" />
                                 </SelectTrigger>
-                                <SelectContent >
-                                    <SelectGroup >
+                                <SelectContent>
+                                    <SelectGroup>
                                         <SelectLabel className='text-sm md:text-lg font-sans'>Select</SelectLabel>
                                         <SelectItem value="male">Male</SelectItem>
                                         <SelectItem value="female">Female</SelectItem>

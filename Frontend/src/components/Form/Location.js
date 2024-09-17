@@ -25,21 +25,21 @@ export default function Location(props) {
                 <div className='sm:text-xl text-md text-light-text font-sans mt-1 opacity-80 tracking-wide mb-4'>Enter your location description</div>
                 <div className="grid w-full max-w-xl items-center gap-1.5 mt-2">
                     <Label htmlFor="country" className='text-light-heading font-sans font-bold text-sm sm:text-[16px] tracking-wide'>Country</Label>
-                    <input type="text" id="country" placeholder="Country" value={formContext.user.country?formContext.user.country:""} onChange={(e) => { formContext.setUser({ ...formContext.user, country: e.target.value }) }} className="w-[98%] rounded-md border-gray-200 shadow-sm text-sm focus:border-gray-300 focus:outline-0 focus:ring-gray-300 md:text-lg" />
+                    <input type="text" id="country" placeholder="Country" value={formContext.user.country?formContext.user.country:""} onChange={(e) => { formContext.setUser({ ...formContext.user, country: e.target.value }) }} className="w-[98%] rounded-md border-gray-200 shadow-sm text-sm focus:border-gray-300 focus:outline-0 focus:ring-gray-300 md:text-lg" required/>
                 </div>
                 <div className="grid w-full max-w-xl items-center gap-1.5 mt-5">
                     <Label htmlFor="state" className='text-light-heading font-sans font-bold text-sm sm:text-[16px] tracking-wide'>State</Label>
-                    <input type="text" id="state" placeholder="State" value={formContext.user.state?formContext.user.state:""} onChange={(e) => { formContext.setUser({ ...formContext.user, state: e.target.value }) }} className="w-[98%] rounded-md border-gray-200 shadow-sm text-sm focus:border-gray-300 focus:outline-0 focus:ring-gray-300 md:text-lg" />
+                    <input type="text" id="state" placeholder="State" value={formContext.user.state?formContext.user.state:""} onChange={(e) => { formContext.setUser({ ...formContext.user, state: e.target.value }) }} className="w-[98%] rounded-md border-gray-200 shadow-sm text-sm focus:border-gray-300 focus:outline-0 focus:ring-gray-300 md:text-lg" required/>
                 </div>
                 <div className="grid grid-cols-2 w-full max-w-xl items-center gap-2.5 mt-5">
                     <div>
                         <Label htmlFor="city" className='text-light-heading font-sans font-bold text-sm sm:text-[16px] tracking-wide'>City</Label>
-                        <input type="text" id="city" placeholder="city" value={formContext.user.city?formContext.user.city:""} onChange={(e) => { formContext.setUser({ ...formContext.user, city: e.target.value }) }} className="w-[98%] rounded-md border-gray-200 shadow-sm text-sm focus:border-gray-300 focus:outline-0 focus:ring-gray-300 md:text-lg" />
+                        <input type="text" id="city" placeholder="city" value={formContext.user.city?formContext.user.city:""} onChange={(e) => { formContext.setUser({ ...formContext.user, city: e.target.value }) }} className="w-[98%] rounded-md border-gray-200 shadow-sm text-sm focus:border-gray-300 focus:outline-0 focus:ring-gray-300 md:text-lg" required/>
                     </div>
 
                     <div className=''>
                         <Label htmlFor="pincode" className='text-light-heading font-sans font-bold text-sm sm:text-[16px] tracking-wide'>Pincode</Label>
-                        <input type="number" id="pincode" placeholder="Pincode" value={formContext.user.pincode?formContext.user.pincode:""} onChange={(e) => { formContext.setUser({ ...formContext.user, pincode: e.target.value }) }} className="w-[98%] rounded-md border-gray-200 shadow-sm text-sm focus:border-gray-300 focus:outline-0 focus:ring-gray-300 md:text-lg" />
+                        <input type="number" id="pincode" placeholder="Pincode" value={formContext.user.pincode?formContext.user.pincode:""} onChange={(e) => { formContext.setUser({ ...formContext.user, pincode: e.target.value }) }} className="w-[98%] rounded-md border-gray-200 shadow-sm text-sm focus:border-gray-300 focus:outline-0 focus:ring-gray-300 md:text-lg" required/>
                     </div>
                 </div>
                 <div className='grid w-full max-w-xl'>
