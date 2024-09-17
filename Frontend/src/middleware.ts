@@ -1,7 +1,14 @@
 import { authkitMiddleware } from '@workos-inc/authkit-nextjs';
 
-export default authkitMiddleware();
+export default authkitMiddleware(
+    {
+        middlewareAuth:{
+            enabled: true,
+             // Allow logged out users to view these paths
+            unauthenticatedPaths: ['/'],
+        }
+    }
+);
 
-// Match against pages that require authentication
-// Leave this out if you want authentication on every page in your application
-export const config = { matcher: ['/'] };
+// Don't match on API routes, static files and the favicon
+export const config = { matcher: ['/((?!_next/static|_next/image|favicon.ico).*)'] };

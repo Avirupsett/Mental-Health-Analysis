@@ -27,7 +27,7 @@
     ".next/types/**/*.ts",
     "**/*.ts",
     "**/*.tsx"
-, "src/components/Home/Navbar.js"  ],
+, "src/components/Home/Navbar.js", "src/app/api/auth/callback/route.js"  ],
   "exclude": [
     "node_modules"
   ]

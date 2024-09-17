@@ -1,4 +1,3 @@
-
 import { Label } from '@radix-ui/react-label';
 import React, { useContext } from 'react'
 
@@ -13,10 +12,21 @@ export default function SocialMedia(props) {
     const formContext = useContext(RegisterContext)
     const router = useRouter()
 
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault()
-        console.log(formContext.user)
+        const res=await fetch('/api/register/addUser', {
+            method: 'POST',
+            body: JSON.stringify(formContext.user),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        if (res.status == 201) {
         router.push('/portal/assignment')
+        }
+        else{
+            alert("User already registered")
+        }
     }
 
     return (

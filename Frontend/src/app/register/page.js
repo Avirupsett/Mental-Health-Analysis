@@ -9,7 +9,18 @@ import React, { useState } from 'react'
 
 export default function Register() {
     const [step, setStep] = useState(1)
-    const [user, setUser] = useState({})
+    const [user, setUser] = useState({
+        "fullname": "",
+        "dateofbirth": "",
+        "gender": "",
+        "country": "",
+        "state": "",
+        "city": "",
+        "pincode": "",
+        "facebook": "",
+        "instagram": "",
+        "linkedin": ""
+    })
 
     return (
         <div className='flex min-h-screen'>

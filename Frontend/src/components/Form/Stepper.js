@@ -1,13 +1,14 @@
 
 import { IoLocationSharp, IoPersonSharp, IoShareSocialSharp } from "react-icons/io5";
 import React from 'react'
+import Link from "next/link";
 
 
 export default function Stepper(props) {
   
   return (
     <div>
-      <div className='text-4xl tracking-wide font-mono text-center mb-32 text-light-secondary font-bold mt-[-5rem]'>Men<span className='text-light-heading font-normal'>trix</span></div>
+      <Link href={'/'}><div className='text-4xl tracking-wide font-mono text-center mb-32 text-light-secondary font-bold mt-[-5rem]'>Men<span className='text-light-heading font-normal'>trix</span></div></Link>
 
       <ol className="relative text-gray-500 border-s-2 border-dashed border-light-accent dark:border-gray-700 dark:text-gray-400">
         <li className="mb-10 ms-10">
