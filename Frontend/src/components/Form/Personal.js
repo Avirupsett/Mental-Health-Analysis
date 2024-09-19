@@ -32,7 +32,7 @@ export default function Personal(props) {
 
     return (
         <form onSubmit={(e)=>handleSubmit(e)}>
-            <div className='container flex mt-20 sm:min-h-screen sm:mt-0 flex-col items-center justify-center'>
+            <div className='container flex mt-16 sm:min-h-screen sm:mt-[-55px] lg:mt-0 flex-col items-center justify-center'>
 
                 <div className='mb-1'><BsIncognito className='text-8xl text-light-secondary' /></div>
                 <div className='sm:text-[44px] text-[28px] font-mono text-light-heading font-semibold'>Personal Information</div>
@@ -44,7 +44,7 @@ export default function Personal(props) {
 
                 <div className="grid w-full max-w-xl items-center gap-1.5 mt-5">
                     <Label htmlFor="email" className='text-light-heading font-sans font-bold text-sm sm:text-[16px] tracking-wide'>Email</Label>
-                    <input type="email" id="email" placeholder="Email"  className="w-[98%] rounded-md border-gray-200 shadow-sm text-sm focus:border-gray-300 focus:outline-0 focus:ring-gray-300 md:text-lg" required/>
+                    <input type="email" id="email" placeholder="Email" value={props.email} readOnly className="w-[98%] rounded-md border-gray-200 shadow-sm text-sm focus:border-gray-300 focus:outline-0 focus:ring-gray-300 md:text-lg" required/>
                 </div>
                 <div className="grid grid-cols-2 w-full max-w-xl items-center gap-2.5 mt-5">
                     <div>

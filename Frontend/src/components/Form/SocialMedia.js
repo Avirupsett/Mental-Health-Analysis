@@ -1,5 +1,6 @@
+'use client'
 import { Label } from '@radix-ui/react-label';
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 
 import { TiSocialFacebookCircular, TiSocialInstagram, TiSocialLinkedinCircular } from "react-icons/ti";
 import { Button } from '../../components/ui/button';
@@ -7,14 +8,18 @@ import { IoCheckmarkSharp, IoChevronBackSharp } from 'react-icons/io5';
 import { VscRobot } from "react-icons/vsc";
 import { RegisterContext } from './RegisterContext';
 import { useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
 
 export default function SocialMedia(props) {
     const formContext = useContext(RegisterContext)
+    const [disabled, setDisabled] = useState(false)
     const router = useRouter()
 
     async function handleSubmit(e) {
+        setDisabled(true)
         e.preventDefault()
-        const res=await fetch('/api/register/addUser', {
+        router.prefetch('/portal/assignment')
+        const res = await fetch('/api/register/addUser', {
             method: 'POST',
             body: JSON.stringify(formContext.user),
             headers: {
@@ -22,16 +27,21 @@ export default function SocialMedia(props) {
             }
         })
         if (res.status == 201) {
-        router.push('/portal/assignment')
+            res.json().then(data => { toast.success(data.message) })
+            router.replace('/portal/assignment')
         }
-        else{
-            alert("User already registered")
+        else if (res.status == 409) {
+            res.json().then(data => { toast.info(data.message) })
+            router.replace('/portal/assignment')
+        }
+        else {
+            res.json().then(data => { toast.error(data.message); setDisabled(false) })
         }
     }
 
     return (
         <form onSubmit={(e) => handleSubmit(e)}>
-            <div className='container flex mt-20 sm:min-h-screen sm:mt-0 flex-col items-center justify-center'>
+            <div className='container flex mt-16 sm:min-h-screen sm:mt-[-55px] lg:mt-0 flex-col items-center justify-center'>
 
                 <div className='mb-1'><VscRobot className='text-8xl text-light-secondary' /></div>
                 <div className='sm:text-[44px] text-[28px] font-mono text-light-heading font-semibold'>Social Media Profiles</div>
@@ -53,8 +63,8 @@ export default function SocialMedia(props) {
 
                 <div className='grid w-full max-w-xl'>
                     <div className='flex justify-between  items-center mt-16'>
-                        <Button onClick={() => props.setStep(2)} variant="outline" size="lg" className='font-sans text-sm sm:text-[16px]'> <IoChevronBackSharp className='mr-2 text-lg' /> Prev</Button>
-                        <Button type="submit" size="lg" className='font-sans text-sm sm:text-[16px]'>Submit <IoCheckmarkSharp className='ml-2 text-lg' /></Button>
+                        <Button disabled={disabled} onClick={() => props.setStep(2)} variant="outline" size="lg" className='font-sans text-sm sm:text-[16px]'> <IoChevronBackSharp className='mr-2 text-lg' /> Prev</Button>
+                        <Button type="submit" size="lg" disabled={disabled} className='font-sans text-sm sm:text-[16px] disabled:bg-slate-500'>Submit <IoCheckmarkSharp className='ml-2 text-lg' /></Button>
                     </div>
                 </div>
 

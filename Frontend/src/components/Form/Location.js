@@ -18,7 +18,7 @@ export default function Location(props) {
 
     return (
         <form onSubmit={(e) => handleSubmit(e)}>
-            <div className='container flex mt-20 sm:min-h-screen sm:mt-0 flex-col items-center justify-center'>
+            <div className='container flex mt-16 sm:min-h-screen sm:mt-[-55px] lg:mt-0 flex-col items-center justify-center'>
 
                 <div className='mb-1'><PiCityBold className='text-8xl text-light-secondary' /></div>
                 <div className='sm:text-[44px] text-[28px] font-mono text-light-heading font-semibold'>Location Description</div>

@@ -6,6 +6,8 @@ import {
 	getUser,
 	signOut,
 } from "@workos-inc/authkit-nextjs";
+import logo from "../../../public/logo.png"
+import Image from "next/image";
 
 export default async function Navbar() {
 	// Retrieves the user from the session or returns `null` if no user is signed in
@@ -16,7 +18,10 @@ export default async function Navbar() {
 		<header>
 			{/* {JSON.stringify(user)} */}
 			<div className="container flex items-center justify-between px-3 py-4 pt-4 mx-auto ">
-			<div className='text-3xl sm:text-4xl tracking-wide font-mono text-center text-light-secondary font-bold ml-2'>Men<span className='text-light-heading font-normal'>trix</span></div>
+				<div className="flex justify-center items-center">
+				<Image src={logo} alt="logo" width={35} height={35} className="cursor-pointer mr-0.5 ml-0.5 sm:w-[45px] sm:h-[45px] sm:mr-2" />
+			<div className='text-2xl sm:text-4xl tracking-wide font-mono text-center text-light-secondary font-bold ml-2'>Men<span className='text-light-heading font-normal'>trix</span></div>
+			</div>
 
 				<nav className="flex">
 					{!user && (
