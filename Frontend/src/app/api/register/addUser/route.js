@@ -28,7 +28,7 @@ export async function POST(req) {
 
         });
 
-        return NextResponse.json({message:"User Registered 👍"},{status:201});
+        return NextResponse.json({message:"User Registered  👍"},{status:201});
         }catch(err){               
             return NextResponse.json({message:"Please fill all the required fields"},{status:400});
         }

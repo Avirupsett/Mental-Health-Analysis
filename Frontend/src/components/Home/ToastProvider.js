@@ -9,6 +9,7 @@ export default function ToastProvider({children}) {
             {children}
             <ToastContainer position="top-center"
                 autoClose={3000}
+                closeButton={false}
             />
         </>
     )

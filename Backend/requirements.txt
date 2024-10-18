@@ -1,0 +1,4 @@
+Flask
+Gunicorn
+ydf
+pandas==2.2

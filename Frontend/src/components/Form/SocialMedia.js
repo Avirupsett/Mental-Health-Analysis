@@ -48,16 +48,16 @@ export default function SocialMedia(props) {
                 <div className='sm:text-xl text-md text-center text-light-text font-sans mt-1 opacity-80 tracking-wide mb-4'>Your presence on social networking platforms</div>
                 <div className="grid w-full max-w-xl items-center gap-1.5 mt-2">
 
-                    <Label htmlFor="facebook" className='text-light-heading font-sans font-bold text-sm sm:text-[16px] flex items-center tracking-wide'><span><TiSocialFacebookCircular className='text-lg mr-1' /></span> Facebook Link</Label>
+                    <Label htmlFor="facebook" className='text-light-heading font-sans font-bold text-sm sm:text-[16px] flex items-center tracking-wide'><span><TiSocialFacebookCircular className='text-lg mr-1' /></span> Facebook Link<span className='text-sm text-gray-500 ml-1'>(Optional)</span></Label>
 
                     <input type="text" id="facebook" placeholder="" pattern='https://.*' value={formContext.user.facebook ? formContext.user.facebook : ""} onChange={(e) => formContext.setUser({ ...formContext.user, facebook: e.target.value })} className="w-[98%] rounded-md border-gray-200 shadow-sm text-sm focus:border-gray-300 focus:outline-0 focus:ring-gray-300 md:text-lg" />
                 </div>
                 <div className="grid w-full max-w-xl items-center gap-1.5 mt-5">
-                    <Label htmlFor="instagram" className='text-light-heading font-sans font-bold text-sm sm:text-[16px] flex items-center tracking-wide'><span><TiSocialInstagram className='text-lg mr-1' /></span> Instagram Link</Label>
+                    <Label htmlFor="instagram" className='text-light-heading font-sans font-bold text-sm sm:text-[16px] flex items-center tracking-wide'><span><TiSocialInstagram className='text-lg mr-1' /></span> Instagram Link<span className='text-sm text-gray-500 ml-1'>(Optional)</span></Label>
                     <input type="text" id="instagram" placeholder="" pattern='https://.*' value={formContext.user.instagram ? formContext.user.instagram : ""} onChange={(e) => formContext.setUser({ ...formContext.user, instagram: e.target.value })} className="w-[98%] rounded-md border-gray-200 shadow-sm text-sm focus:border-gray-300 focus:outline-0 focus:ring-gray-300 md:text-lg" />
                 </div>
                 <div className="grid w-full max-w-xl items-center gap-1.5 mt-5">
-                    <Label htmlFor="Linkedln" className='text-light-heading font-sans font-bold text-sm sm:text-[16px] flex items-center tracking-wide'><span><TiSocialLinkedinCircular className='text-lg mr-1' /></span> Linkedln Link</Label>
+                    <Label htmlFor="Linkedln" className='text-light-heading font-sans font-bold text-sm sm:text-[16px] flex items-center tracking-wide'><span><TiSocialLinkedinCircular className='text-lg mr-1' /></span> Linkedln Link<span className='text-sm text-gray-500 ml-1'>(Optional)</span></Label>
                     <input type="text" id="Linkedln" placeholder="" pattern='https://.*' value={formContext.user.linkedin ? formContext.user.linkedin : ""} onChange={(e) => formContext.setUser({ ...formContext.user, linkedin: e.target.value })} className="w-[98%] rounded-md border-gray-200 shadow-sm text-sm focus:border-gray-300 focus:outline-0 focus:ring-gray-300 md:text-lg" />
                 </div>
 

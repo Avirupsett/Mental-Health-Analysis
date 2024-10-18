@@ -1,20 +1,17 @@
 import mongoose, { Schema, models, model } from "mongoose";
 
 const UserResponsesSchema = new Schema({
-	assignment_id: {
-        type:  mongoose.Schema.Types.ObjectId,
-        ref: "QaAssignment",
+    user_id: {
+        type: String,
+        required: true
     },
-	
-    question_response:[{
-        question_id:String,
-        response:String
-    }],
 
-    analysis_result:{
-        type:String
-    },
-   
+    analysis_result:
+    {
+        type: Object,
+    }
+    ,
+
     created_at: {
         type: Date,
         default: Date.now
@@ -22,4 +19,4 @@ const UserResponsesSchema = new Schema({
 });
 
 export default
-	models.QaAssignment ?? model("QaAssignment", UserResponsesSchema);
+    models.QaAssignment ?? model("QaAssignment", UserResponsesSchema);

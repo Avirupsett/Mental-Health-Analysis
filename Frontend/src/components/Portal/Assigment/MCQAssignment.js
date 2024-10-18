@@ -4,87 +4,137 @@ import { RadioGroup, RadioGroupItem } from "../../../components/ui/radio-group"
 import { Label } from "../../../components/ui/label"
 import { Button } from "../../../components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "../../../components/ui/card"
+import { toast } from 'react-toastify';
+import StressLevelChartModal from './StressLevelChartModal';
 
 export default function MCQAssignment() {
   const [answers, setAnswers] = useState({})
+  const [showModal, setShowModal] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [stressLevel, setStressLevel] = useState(0)
 
   const questions = [
     {
       question: "What is your current Occupation?",
-      options: ["Corporate", "Business", "Student", "Housewife","Others"],
-      correctAnswer: ""
-    },
-    {
-      question: "Are you self employed?",
-      options: ["Yes","No"],
-      correctAnswer: "Mars"
+      options: ["Corporate", "Business", "Student", "Housewife", "Others"],
+      correctAnswer: "",
+      tag: "Occupation"
     },
     {
       question: "Do you have a family history of mental illness?",
-      options: ["Yes","No"],
-      correctAnswer: ""
+      options: ["Yes", "No"],
+      correctAnswer: "",
+      tag: "family_history"
     },
     {
       question: "Have you sought treatment for a mental health condition?",
-      options: ["Yes","No"],
-      correctAnswer: ""
+      options: ["Yes", "No"],
+      correctAnswer: "",
+      tag: "treatment"
     },
     {
       question: "How much time do you spend on Indoor?",
-      options: ["1-14 Days","15-30 Days","30-61 Days","More than 2 months","Go out Every Day"],
-      correctAnswer: ""
+      options: ["1-14 days", "15-30 days", "30-61 days", "More than 2 months", "Go out Every day"],
+      correctAnswer: "",
+      tag: "Days_Indoors"
     },
     {
       question: "Have you experienced any significant changes in your daily habits recently?",
-      options: ["Yes","No","Maybe"],
-      correctAnswer: ""
+      options: ["Yes", "No", "Maybe"],
+      correctAnswer: "",
+      tag: "Changes_Habits"
     },
     {
       question: "Do you have a personal history of mental health issues?",
-      options: ["Yes","No","Maybe"],
-      correctAnswer: ""
+      options: ["Yes", "No", "Maybe"],
+      correctAnswer: "",
+      tag: "Mental_Health_History"
     },
     {
       question: "Have you experienced frequent mood swings recently?",
-      options: ["Low","Medium","High"],
-      correctAnswer: ""
+      options: ["Low", "Medium", "High"],
+      correctAnswer: "",
+      tag: "Mood_Swings"
     },
     {
       question: "Are you currently struggling to cope with stress or difficult situations?",
-      options: ["Yes","No"],
-      correctAnswer: ""
+      options: ["Yes", "No"],
+      correctAnswer: "",
+      tag: "Coping_Struggles"
     },
     {
       question: "Have you lost interest in your work or daily activities?",
-      options: ["Yes","No","Maybe"],
-      correctAnswer: ""
+      options: ["Yes", "No", "Maybe"],
+      correctAnswer: "",
+      tag: "Work_Interest"
     },
     {
       question: "Have you noticed difficulties in social interactions or relationships?",
-      options: ["Yes","No","Maybe"],
-      correctAnswer: ""
+      options: ["Yes", "No", "Maybe"],
+      correctAnswer: "",
+      tag: "Social_Weakness"
     },
     {
       question: "Would you bring up a mental health issue with a potential employer in an interview?",
-      options: ["Yes","No","Maybe"],
-      correctAnswer: ""
+      options: ["Yes", "No", "Maybe"],
+      correctAnswer: "",
+      tag: "mental_health_interview"
     },
     {
       question: "Are you aware of the care options available for mental health treatment?",
-      options: ["Yes","No","Not Sure"],
-      correctAnswer: ""
+      options: ["Yes", "No", "Not sure"],
+      correctAnswer: "",
+      tag: "care_options"
     },
   ]
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    let score = 0
+    let data = {}
+    let allAnswered = true
+    setIsLoading(true);
+    
     questions.forEach((q, index) => {
-      if (answers[index] === q.correctAnswer) {
-        score++
+      if (answers[index] === undefined) {
+        allAnswered = false
+      } else {
+        data[q.tag] = answers[index]
       }
     })
-    alert(`Your Stress level is __%`)
+
+    if (!allAnswered) {
+      toast.error(`Please answer all the questions`)
+      setIsLoading(false)
+      return
+    }
+    const loadingToast = toast.loading('Fetching results...');
+    try {
+      const response = await fetch('/api/predict/qamodel', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+      toast.dismiss(loadingToast);
+      if (response.status === 200) {
+        // toast.success('Results fetched successfully')
+        const result = await response.json()
+        setStressLevel(result['Stress Level'])
+        setShowModal(true)
+        // alert(`Your Stress level is ${JSON.stringify(result)}`)
+      }
+      if (response.status === 500) {
+        toast.error('An error occurred. Please try again later.');
+        setIsLoading(false)
+        return;
+      }
+    } catch (error) {
+      toast.dismiss(loadingToast);
+      toast.error('An error occurred. Please try again later.');
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -106,7 +156,7 @@ export default function MCQAssignment() {
                 <div key={index} className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm hover:shadow-md transition-shadow">
                   <h3 className="text-lg sm:text-xl font-semibold mb-3">{index + 1}. {q.question}</h3>
                   <RadioGroup
-                    onValueChange={(value) => setAnswers({...answers, [index]: value})}
+                    onValueChange={(value) => setAnswers({ ...answers, [index]: value })}
                     className="grid gap-1"
                   >
                     {q.options.map((option, optionIndex) => (
@@ -119,7 +169,8 @@ export default function MCQAssignment() {
                 </div>
               ))}
               <div className="flex justify-center">
-                <Button type="submit" size="lg" className="mt-4 px-8 py-2 text-lg">Submit Answers</Button>
+                <Button disabled={isLoading} type="submit" size="lg" className="mt-4 px-8 py-2 text-lg">Submit Answers</Button>
+                <StressLevelChartModal showModal={showModal} setShowModal={setShowModal} stressLevel={stressLevel}/>
               </div>
             </form>
           </CardContent>
