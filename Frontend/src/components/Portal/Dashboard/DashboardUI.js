@@ -8,6 +8,7 @@ export const dynamic = 'force-dynamic'
 export default async function DashboardUI() {
 
   async function fetchDashboardData() {
+    const searchParams = new URL(window.location.search);
     const cookieStore = cookies();
     try{
 
