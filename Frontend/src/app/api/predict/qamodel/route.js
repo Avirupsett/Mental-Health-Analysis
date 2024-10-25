@@ -12,7 +12,7 @@ export async function POST(req) {
     const { user } = await getUser();
 
     let data = await req.json()
-    const userInfo = await UserInfo.findOne({user_id: user.id});
+    const userInfo = await UserInfo.findOne({ user_id: user.id });
     data['Gender'] = userInfo ? userInfo.gender.charAt(0).toUpperCase() + userInfo.gender.slice(1) : 'Unknown';
     try {
         const response = await fetch(`${BACKEND_URL}/qamodel`, {
@@ -28,18 +28,20 @@ export async function POST(req) {
         }
 
         const result = await response.json();
-        const userResponse = new UserResponses({
-            user_id: user.id,
-            analysis_result: 
-            {"Stress Level":parseFloat(result['Stress Level'])},
-        });
-        await userResponse.save();
-        
+        if (result) {
+            const userResponse = new UserResponses({
+                user_id: user.id,
+                analysis_result:
+                    { "Stress Level": parseFloat(result['Stress Level']) },
+            });
+            await userResponse.save();
+        }
+
         return NextResponse.json(result, { status: 200 });
     } catch (error) {
         console.error('Error:', error);
         return NextResponse.json({ error: 'An error occurred while processing your request' }, { status: 500 });
     }
 
-    
+
 }

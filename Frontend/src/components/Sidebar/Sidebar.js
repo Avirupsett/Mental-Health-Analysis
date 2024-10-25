@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Button } from "../../components/ui/button"
 import { cn } from "../../lib/utils"
 import {
@@ -13,16 +13,33 @@ import {
 import { MenuIcon, XIcon, HomeIcon, InboxIcon, UsersIcon, SettingsIcon, ChevronLeftIcon, ChevronRightIcon, UserIcon, LogOutIcon, BotIcon } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 import Image from 'next/image'
-import { toast } from 'react-toastify';
-
+import { toast } from 'sonner';
+import logo from '../../../public/logo.png'
+import { useTransitionRouter,Link } from 'next-view-transitions'
 
 export default function Sidebar(props) {
+  const router = useTransitionRouter()
   const pathname = usePathname()
   const [isMobileOpen, setIsMobileOpen] = useState(false)
   const [isDesktopExpanded, setIsDesktopExpanded] = useState(true)
 
   const toggleMobileSidebar = () => setIsMobileOpen(!isMobileOpen)
   const toggleDesktopSidebar = () => setIsDesktopExpanded(!isDesktopExpanded)
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsDesktopExpanded(window.innerWidth >= 850 ? true : false)
+    }
+
+    // Set initial state
+    handleResize()
+
+    // Add event listener
+    window.addEventListener('resize', handleResize)
+
+    // Clean up
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   const navItems = [
     { icon: <HomeIcon className="h-5 w-5 sm:w-7 sm:h-9" />, label: 'Dashboard', href: '/portal/dashboard' },
@@ -38,8 +55,12 @@ export default function Sidebar(props) {
     toast.success('Logged out successfully')
   }
 
+  if(props.user===null){
+     router.refresh()
+  }
+
   return (
-    <div className="flex h-screen ">
+    <div className="h-screen">
       <div
         className={cn(
           "fixed inset-y-0 left-0 z-50 w-56 bg-white shadow-lg transform transition-all duration-300 ease-in-out",
@@ -49,7 +70,13 @@ export default function Sidebar(props) {
         )}
       >
         <div className="flex items-center justify-between p-4">
-          <h2 className={cn("text-2xl font-semibold", !isDesktopExpanded && "md:hidden")}>Menu</h2>
+          <h2 className={cn("text-2xl font-semibold", !isDesktopExpanded && "md:hidden")}>
+            
+            <div className="flex justify-center items-center">
+              <Image src={logo} alt="logo" width={35} height={35} className="cursor-pointer mr-0.5  md:w-[38px] md:h-[38px] sm:mr-2" />
+              <div className='text-2xl tracking-wide font-mono text-center text-light-secondary font-bold ml-2'>Men<span className='text-light-heading font-normal'>trix</span></div>
+            </div>
+          </h2>
           <Button
             variant="ghost"
             size="icon"
@@ -64,7 +91,7 @@ export default function Sidebar(props) {
           <ul className="space-y-2">
             {navItems.map((item, index) => (
               <li key={index}>
-                <a
+                <Link
                   href={item.href}
                   className={cn(
                     "flex items-center px-4 py-2 ml-1 text-gray-700 hover:bg-gray-100", pathname.includes(item.href) && "bg-slate-100 rounded  border-l-[5px] border-gray-700 shadow-sm",
@@ -73,7 +100,7 @@ export default function Sidebar(props) {
                 >
                   {item.icon}
                   <span className={cn("ml-3 sm:ml-4 sm:text-xl tracking-wide", !isDesktopExpanded && "md:hidden")}>{item.label}</span>
-                </a>
+                </Link>
               </li>
             ))}
           </ul>

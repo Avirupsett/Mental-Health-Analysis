@@ -4,8 +4,10 @@ import { RadioGroup, RadioGroupItem } from "../../../components/ui/radio-group"
 import { Label } from "../../../components/ui/label"
 import { Button } from "../../../components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "../../../components/ui/card"
-import { toast } from 'react-toastify';
 import StressLevelChartModal from './StressLevelChartModal';
+import { toast } from 'sonner'
+import { NotebookText, ScrollText, SendHorizontal } from 'lucide-react'
+import { motion } from 'framer-motion'
 
 export default function MCQAssignment() {
   const [answers, setAnswers] = useState({})
@@ -108,6 +110,19 @@ export default function MCQAssignment() {
       return
     }
     const loadingToast = toast.loading('Fetching results...');
+
+    // Create an AbortController
+  const controller = new AbortController();
+  const signal = controller.signal;
+
+   // Set up a timeout
+   const timeoutId = setTimeout(() => {
+    controller.abort(); // Abort the fetch request
+    toast.dismiss(loadingToast);
+    toast.error('Request is taking too long. Please try again.');
+      setIsLoading(false);
+    }, 10000); // 10 seconds
+
     try {
       const response = await fetch('/api/predict/qamodel', {
         method: 'POST',
@@ -115,7 +130,9 @@ export default function MCQAssignment() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(data),
+        signal: signal
       });
+      clearTimeout(timeoutId);
       toast.dismiss(loadingToast);
       if (response.status === 200) {
         // toast.success('Results fetched successfully')
@@ -131,14 +148,23 @@ export default function MCQAssignment() {
       }
     } catch (error) {
       toast.dismiss(loadingToast);
-      toast.error('An error occurred. Please try again later.');
+      if (error.name === 'AbortError') {
+        // Request was aborted
+      } else {
+        toast.error('An error occurred. Please try again later.');
+      }
     } finally {
       setIsLoading(false);
     }
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-gray-900">
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+
+    className="min-h-screen bg-slate-50 dark:bg-gray-900">
       {/* <header className="bg-gray-800 text-white p-4 md:p-6">
         <div className="container mx-auto">
           <h1 className="text-2xl md:text-4xl font-mono">project planner</h1>
@@ -146,36 +172,45 @@ export default function MCQAssignment() {
         </div>
       </header> */}
       <main className="container mx-auto px-2 sm:px-4 flex justify-center ">
-        <Card className="w-full max-w-3xl !mt-4 sm:!mt-8 !mb-8 shadow-xl">
+        <Card className="w-full bg-white bg-opacity-80 text-gray-800 max-w-3xl !mt-4 sm:!mt-8 !mb-8 shadow-xl">
           <CardHeader>
-            <CardTitle className="text-3xl font-medium text-center font-mono">Assignment Questions</CardTitle>
+            <CardTitle className="text-3xl font-medium text-center font-mono"><div className="flex items-center justify-center"><span className='mr-4 text-purple-600'><NotebookText size={38}/></span> Assignment Questions</div></CardTitle>
+
           </CardHeader>
           <CardContent className="p-4 sm:p-6 pt-0 sm:pt-0">
             <form onSubmit={handleSubmit} className="space-y-7 !mb-8">
               {questions.map((q, index) => (
-                <div key={index} className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  // animate={{ opacity: 1, y: 0 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5 }}
+                  viewport={{ once: true, amount: 0.9 }}
+                  key={index} className="p-4  dark:border-gray-700 rounded-lg shadow-md  hover:shadow-lg transition-shadow">
                   <h3 className="text-lg sm:text-xl font-semibold mb-3">{index + 1}. {q.question}</h3>
                   <RadioGroup
                     onValueChange={(value) => setAnswers({ ...answers, [index]: value })}
                     className="grid gap-1"
+                    name={`question-${index}`}
+                    id={`question-${index}`}
                   >
                     {q.options.map((option, optionIndex) => (
-                      <div key={optionIndex} className="flex items-center space-x-3 p-2 rounded hover:bg-slate-100 dark:hover:bg-gray-800">
+                      <div key={optionIndex} className="flex items-center space-x-3 p-2 rounded-lg hover:bg-slate-100 hover:bg-opacity-80 dark:hover:bg-gray-800">
                         <RadioGroupItem value={option} id={`q${index}-option${optionIndex}`} />
                         <Label htmlFor={`q${index}-option${optionIndex}`} className="flex-grow cursor-pointer text-[16px] sm:text-lg">{option}</Label>
                       </div>
                     ))}
                   </RadioGroup>
-                </div>
+                </motion.div>
               ))}
               <div className="flex justify-center">
-                <Button disabled={isLoading} type="submit" size="lg" className="mt-4 px-8 py-2 text-lg">Submit Answers</Button>
+                <Button disabled={isLoading} type="submit" size="lg" className="mt-4 px-8 !h-14 text-lg flex items-center justify-center"><span>Submit Answers</span><SendHorizontal className='ml-4 text-md'/></Button>
                 <StressLevelChartModal showModal={showModal} setShowModal={setShowModal} stressLevel={stressLevel}/>
               </div>
             </form>
           </CardContent>
         </Card>
       </main>
-    </div>
+    </motion.div>
   )
 }

@@ -9,7 +9,7 @@ import { useState } from 'react'
 
 import logo from "../../../public/logo.png"
 import Image from 'next/image'
-import Link from 'next/link'
+import Link from 'next-view-transitions'
 
 export default function RegisterContextProvider(props) {
     const [step, setStep] = useState(1)

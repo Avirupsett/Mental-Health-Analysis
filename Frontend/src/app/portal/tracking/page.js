@@ -1,7 +1,7 @@
 import React from 'react'
-
-export default function Tracking() {
+import Tracking from '../../../components/Portal/Tracking/Tracking'
+export default function TrackingPage() {
   return (
-    <div></div>
+    <Tracking />
   )
 }

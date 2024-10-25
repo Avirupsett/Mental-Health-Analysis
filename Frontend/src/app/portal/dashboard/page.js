@@ -1,7 +1,7 @@
 import React from 'react'
-
-export default function Dashboard() {
+import DashboardUI from '../../../components/Portal/Dashboard/DashboardUI'
+export default function DashboardPage() {
   return (
-    <div></div>
+      <DashboardUI />
   )
 }

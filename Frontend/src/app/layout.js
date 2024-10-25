@@ -1,6 +1,7 @@
 import { Roboto_Slab, Mulish } from "next/font/google";
 import "./globals.css";
-import  ToastProvider from "../components/Home/ToastProvider";
+import { Toaster } from 'sonner'
+import { ViewTransitions } from 'next-view-transitions'
 
 const roboto_Slab = Roboto_Slab({
   subsets: ["latin"],
@@ -20,12 +21,15 @@ export const metadata = {
 
 export default async function RootLayout({ children }) {
   return (
+    <ViewTransitions>
     <html lang="en" className={`${mulish.variable} ${roboto_Slab.variable}`}>
       <body >
-        <ToastProvider>
+        
+          <Toaster position="top-center" richColors duration={3000} className="font-mono" toastOptions={{className: "text-base"}}/>
         {children}
-        </ToastProvider>
+        
       </body>
     </html>
+    </ViewTransitions>
   );
 }

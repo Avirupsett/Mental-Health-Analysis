@@ -7,13 +7,13 @@ import { Button } from '../../components/ui/button';
 import { IoCheckmarkSharp, IoChevronBackSharp } from 'react-icons/io5';
 import { VscRobot } from "react-icons/vsc";
 import { RegisterContext } from './RegisterContext';
-import { useRouter } from 'next/navigation';
-import { toast } from 'react-toastify';
+import { useTransitionRouter } from 'next-view-transitions'
+import { toast } from 'sonner';
 
 export default function SocialMedia(props) {
     const formContext = useContext(RegisterContext)
     const [disabled, setDisabled] = useState(false)
-    const router = useRouter()
+    const router = useTransitionRouter()
 
     async function handleSubmit(e) {
         setDisabled(true)
