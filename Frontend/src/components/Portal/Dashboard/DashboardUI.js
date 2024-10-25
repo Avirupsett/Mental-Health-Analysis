@@ -9,6 +9,7 @@ export default async function DashboardUI() {
 
   async function fetchDashboardData() {
     const cookieStore = cookies();
+    try{
 
     const apiUrl = `${process.env.VERCEL_URL}/api/dashboard`;
 
@@ -23,6 +24,9 @@ export default async function DashboardUI() {
     const dashboardData = await response.json()
     return dashboardData
 
+  } catch (error) {
+    console.error('Error fetching dashboard data:', error);
+  }
   }
 
   const dashboardData = await fetchDashboardData()
