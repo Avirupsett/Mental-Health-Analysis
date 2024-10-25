@@ -2,26 +2,26 @@ import Charts from "./Charts"
 import { ChartBar, ChartNetwork, ChartPie } from 'lucide-react'
 import MetricsCards from "./MetricsCards"
 import { cookies } from "next/headers";
+import { isDynamicServerError } from "next/dist/client/components/hooks-server-context";
 
 export default async function DashboardUI() {
-  
-  async function fetchDashboardData() {
-    try {
-      const apiUrl = `${process.env.VERCEL_URL}/api/dashboard`;
 
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Cookie': `wos-session=${cookies().get('wos-session')?.value}`
-        },
-      });
-      
-      const dashboardData = await response.json()
-      return dashboardData
-    } catch (error) {
-      console.error('Error fetching dashboard data:', error)
-    }
+  async function fetchDashboardData() {
+    const cookieStore = cookies();
+
+    const apiUrl = `${process.env.VERCEL_URL}/api/dashboard`;
+
+    const response = await fetch(apiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Cookie': `wos-session=${cookieStore.get('wos-session')?.value}`
+      },
+    });
+
+    const dashboardData = await response.json()
+    return dashboardData
+
   }
 
   const dashboardData = await fetchDashboardData()
@@ -31,7 +31,7 @@ export default async function DashboardUI() {
   return (
     <div className="container mx-auto p-4 bg-slate-50">
       {/* Dashboard cards */}
-      <MetricsCards totalAssignments={dashboardData.totalAssignments} totalStressLevels={dashboardData.totalStressLevel} assignmentsThisWeek={dashboardData.assignmentsThisWeek}/>
+      <MetricsCards totalAssignments={dashboardData.totalAssignments} totalStressLevels={dashboardData.totalStressLevel} assignmentsThisWeek={dashboardData.assignmentsThisWeek} />
 
       {/* Separator */}
       <div className="mb-2">
@@ -45,7 +45,7 @@ export default async function DashboardUI() {
       </div>
 
       {/* Charts */}
-      <Charts formattedStressLevelByDate={dashboardData.formattedStressLevelByDate} lowStressCount={dashboardData.lowStressCount} moderateStressCount={dashboardData.moderateStressCount} highStressCount={dashboardData.highStressCount} veryHighStressCount={dashboardData.veryHighStressCount}/>
+      <Charts formattedStressLevelByDate={dashboardData.formattedStressLevelByDate} lowStressCount={dashboardData.lowStressCount} moderateStressCount={dashboardData.moderateStressCount} highStressCount={dashboardData.highStressCount} veryHighStressCount={dashboardData.veryHighStressCount} />
 
     </div>
   )

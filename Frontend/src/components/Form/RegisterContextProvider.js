@@ -36,7 +36,7 @@ export default function RegisterContextProvider(props) {
 
             <div className='flex-none lg:w-2/3 w-full bg-light-primary'>
                 <div className='block lg:hidden'>
-                    <Link href={'/'}>
+                    <Link href='/'>
                         <div className="flex justify-start items-center pt-4 pl-3">
                             <Image src={logo} alt="logo" width={35} height={35} className="cursor-pointer mr-0.5 ml-0.5 sm:w-[45px] sm:h-[45px] sm:mr-2" />
                             <div className='text-2xl sm:text-4xl tracking-wide font-mono text-center text-light-secondary font-bold ml-2'>Men<span className='text-light-heading font-normal'>trix</span></div>
