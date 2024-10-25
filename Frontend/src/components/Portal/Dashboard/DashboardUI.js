@@ -1,8 +1,9 @@
 import Charts from "./Charts"
-import { ChartBar, ChartNetwork, ChartPie } from 'lucide-react'
+import { ChartPie } from 'lucide-react'
 import MetricsCards from "./MetricsCards"
 import { cookies } from "next/headers";
-import { isDynamicServerError } from "next/dist/client/components/hooks-server-context";
+export const dynamic = 'force-dynamic'
+
 
 export default async function DashboardUI() {
 
