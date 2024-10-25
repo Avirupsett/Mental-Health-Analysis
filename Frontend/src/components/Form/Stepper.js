@@ -1,7 +1,7 @@
 
 import { IoLocationSharp, IoPersonSharp, IoShareSocialSharp } from "react-icons/io5";
 import React from 'react'
-import Link from "next-view-transitions";
+import {Link} from "next-view-transitions";
 import logo from "../../../public/logo.png"
 import Image from "next/image";
 
