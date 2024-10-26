@@ -46,11 +46,11 @@ export const metadata = {
     type: 'website',
     locale: 'en_US',
     url: 'https://mentrix-app.vercel.app',
-    title: 'Mentrix - Personalized Mental Health Monitoring & Support',
+    title: 'Mentrix - Personalized Mental Health Monitoring System',
     description: 'Track and improve your mental wellbeing with personalized assessments and feedback.',
     images: [
       {
-        url: `${process.env.URL}/demo1.png`,
+        url: `${process.env.URL}/homepage.png`,
         width: 1918,
         height: 967,
         alt: 'Mentrix',
