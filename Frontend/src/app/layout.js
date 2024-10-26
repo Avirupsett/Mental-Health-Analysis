@@ -17,7 +17,7 @@ const mulish = Mulish({
 export const metadata = {
   title: {
     template: '%s | Mentrix - Mental Health Monitoring System',
-    default: 'Mentrix - Personalized Mental Health Monitoring & Support'
+    default: 'Mentrix'
   },
   description: 'Professional mental health monitoring system offering personalized assessments, real-time feedback, and progress tracking for better mental wellbeing.',
   metadataBase: new URL('https://mentrix-app.vercel.app'),
@@ -50,7 +50,7 @@ export const metadata = {
     description: 'Track and improve your mental wellbeing with personalized assessments and feedback.',
     images: [
       {
-        url: `${process.env.URL}/Demo1.png`,
+        url: `${process.env.URL}/demo1.png`,
         width: 1918,
         height: 967,
         alt: 'Mentrix',

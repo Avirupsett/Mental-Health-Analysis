@@ -5,7 +5,7 @@ export default authkitMiddleware(
         middlewareAuth:{
             enabled: true,
              // Allow logged out users to view these paths
-            unauthenticatedPaths: ['/', '/demo1.png', '/icons/:path*'],
+            unauthenticatedPaths: ['/', '/demo1.png', '/icons/:path*','/logo.png','/stable_diffusion_bot.png'],
         }
     }
 );
