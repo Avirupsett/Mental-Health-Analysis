@@ -9,7 +9,7 @@ export default async function Feedback() {
   async function getStressReport(){
     const cookieStore = cookies();
     const token = cookieStore.get('wos-session')?.value;
-    const response = await fetch(`${process.env.VERCEL_URL}/api/feedback`, {
+    const response = await fetch(`${process.env.URL}/api/feedback`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

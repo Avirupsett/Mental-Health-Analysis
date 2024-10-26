@@ -14,7 +14,7 @@ export default async function DashboardUI() {
     const cookieStore = cookies();
     try{
 
-    const apiUrl = `${process.env.VERCEL_URL}/api/dashboard`;
+    const apiUrl = `${process.env.URL}/api/dashboard`;
 
     const response = await fetch(apiUrl, {
       method: 'POST',
