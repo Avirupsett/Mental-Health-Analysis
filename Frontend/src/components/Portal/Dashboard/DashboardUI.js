@@ -2,14 +2,11 @@ import Charts from "./Charts"
 import { ChartPie } from 'lucide-react'
 import MetricsCards from "./MetricsCards"
 import { cookies } from "next/headers";
-export const dynamic = 'force-dynamic'
-import { getUser } from "@workos-inc/authkit-nextjs";
 
 
 export default async function DashboardUI() {
 
   async function fetchDashboardData() {
-    const user=await getUser();
     
     const cookieStore = cookies();
     try{
@@ -22,9 +19,6 @@ export default async function DashboardUI() {
         'Content-Type': 'application/json',
         'Cookie': `wos-session=${cookieStore.get('wos-session')?.value}`
       },
-      body: JSON.stringify({
-        user_id:user.id
-      })
     });
 
     const dashboardData = await response.json()
