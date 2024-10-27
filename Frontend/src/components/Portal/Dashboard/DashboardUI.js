@@ -41,7 +41,7 @@ export default async function DashboardUI() {
       {/* Separator */}
       <div className="mb-2">
         <div className="flex items-center rounded-lg p-4">
-          <ChartPie strokeWidth={2.5} className="h-8 w-8 text-purple-600 mr-4" />
+          <ChartPie strokeWidth={2.5} className="h-7 w-7 sm:h-8 sm:w-8 text-purple-600 mr-4" />
           <h2 className="text-xl sm:text-2xl font-medium text-gray-700 font-mono tracking-wide">Detailed Analytics</h2>
           <div className="flex-grow ml-5">
             <div className="h-0.5 bg-gradient-to-r from-indigo-300 via-purple-300 to-pink-300"></div>

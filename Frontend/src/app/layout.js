@@ -33,7 +33,9 @@ export const metadata = {
     'mental health progress',
     'daily mental health',
     'mental health feedback',
-    'psychological assessment tool'
+    'psychological assessment tool',
+    'mentrix',
+    'mentrix-app'
   ],
   authors: [ { name: 'Avirup Sett', url: 'https://avirupsett.netlify.app' }],
   creator: 'Avirup Sett',
@@ -80,7 +82,7 @@ export default async function RootLayout({ children }) {
     <html lang="en" className={`${mulish.variable} ${roboto_Slab.variable}`}>
       <body >
         
-          <Toaster position="top-center" richColors duration={3000} className="font-mono" toastOptions={{className: "text-base"}}/>
+          <Toaster position="top-center" richColors duration={3000} className="font-mono" toastOptions={{className: "text-sm sm:text-base"}}/>
         {children}
         
       </body>

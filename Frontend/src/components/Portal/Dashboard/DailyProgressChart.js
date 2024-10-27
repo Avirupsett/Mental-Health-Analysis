@@ -58,7 +58,7 @@ export default function DailyProgressChart(prop) {
                                     position="insideLeft"
                                     angle={-90}
                                     fill="#8b5cf6"
-                                    style={{ textAnchor: 'middle',letterSpacing: '0.125em' }}
+                                    style={{ textAnchor: 'middle',letterSpacing: '0.025em',fontStyle:'italic' }}
                                 /></YAxis>
                             <Tooltip
                                 contentStyle={{ backgroundColor: '#f3e8ff', borderColor: '#8b5cf6' }}

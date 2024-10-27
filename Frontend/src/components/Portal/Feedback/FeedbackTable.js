@@ -145,11 +145,11 @@ export default function FeedbackTable({ stressReport }) {
                                     transition={{ duration: 0.3, delay: index * 0.1 }}
                                     className="hover:bg-gray-50 transition-colors duration-150 border-2  ease-in-out"
                                 >
-                                    <TableCell className="font-medium text-gray-900 text-base whitespace-nowrap">{item['sl no.']}</TableCell>
-                                    <TableCell className="text-center text-gray-600 text-base whitespace-nowrap">
+                                    <TableCell className="font-medium text-gray-900 text-sm sm:text-base whitespace-nowrap">{item['sl no.']}</TableCell>
+                                    <TableCell className="text-center text-gray-600 text-sm sm:text-base whitespace-nowrap">
                                         {item.Date} {item.Time}
                                     </TableCell>
-                                    <TableCell className="text-center"><div style={{ color: item['color'].text_color, borderColor: item['color'].border_color, backgroundColor: item['color'].bg_color }} className={`inline-block text-center font-semibold text-base border-2 w-[110px] rounded-full p-2 px-4`}>{item['stress type']}</div></TableCell>
+                                    <TableCell className="text-center"><div style={{ color: item['color'].text_color, borderColor: item['color'].border_color, backgroundColor: item['color'].bg_color }} className={`inline-block text-center font-semibold text-sm sm:text-base border-2 w-[110px] rounded-full p-2 px-4`}>{item['stress type']}</div></TableCell>
                                     <TableCell className="text-center whitespace-nowrap">
 
                                         <DonutChart value={item['stress level']} color={item['color'].border_color} />

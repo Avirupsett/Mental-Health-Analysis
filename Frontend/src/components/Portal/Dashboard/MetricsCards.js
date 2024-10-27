@@ -10,7 +10,7 @@ export default function MetricsCards(props) {
             <CheckCircle className="h-6 w-6 xl:h-8 xl:w-8 ml-2 text-green-600 flex-shrink-0" />
           </CardHeader>
           <CardContent className="pt-2">
-            <div className="text-3xl font-bold text-green-800 tracking-wide">{props.totalAssignments}</div>
+            <div className="text-2xl sm:text-3xl font-bold text-green-800 tracking-wide">{props.totalAssignments}</div>
             <p className="text-sm text-green-700 mt-1">+{props.assignmentsThisWeek} this week</p>
           </CardContent>
         </Card>
@@ -20,7 +20,7 @@ export default function MetricsCards(props) {
             <Clock className="h-6 w-6 xl:h-8 xl:w-8 ml-2 text-yellow-600 flex-shrink-0" />
           </CardHeader>
           <CardContent className="pt-2">
-            <div className="text-3xl font-bold text-yellow-800 tracking-wide">5</div>
+            <div className="text-2xl sm:text-3xl font-bold text-yellow-800 tracking-wide">5</div>
             <p className="text-sm text-yellow-700 mt-1">Due this week</p>
           </CardContent>
         </Card>
@@ -30,7 +30,7 @@ export default function MetricsCards(props) {
             <Activity className="h-6 w-6 xl:h-8 xl:w-8 ml-2 text-blue-600 flex-shrink-0" />
           </CardHeader>
           <CardContent className="pt-2">
-            <div className="text-3xl font-bold text-blue-800 tracking-wide">{props.totalStressLevels}</div>
+            <div className="text-2xl sm:text-3xl font-bold text-blue-800 tracking-wide">{props.totalStressLevels}</div>
             <p className="text-sm text-blue-700 mt-1">Based on recent activity</p>
           </CardContent>
         </Card>
