@@ -18,6 +18,7 @@ export default function SocialMedia(props) {
     async function handleSubmit(e) {
         setDisabled(true)
         e.preventDefault()
+        toast.loading('Please wait...')
         router.prefetch('/portal/assignment')
         const res = await fetch('/api/register/addUser', {
             method: 'POST',
@@ -27,14 +28,17 @@ export default function SocialMedia(props) {
             }
         })
         if (res.status == 201) {
+            toast.dismiss()
             res.json().then(data => { toast.success(data.message) })
             router.replace('/portal/assignment')
         }
         else if (res.status == 409) {
+            toast.dismiss()
             res.json().then(data => { toast.info(data.message) })
             router.replace('/portal/assignment')
         }
         else {
+            toast.dismiss()
             res.json().then(data => { toast.error(data.message); setDisabled(false) })
         }
     }

@@ -32,7 +32,10 @@ export async function POST(req) {
             totalStressLevel = "0";
         }
         else {
-            if (totalStressLevel <30) {
+            if (totalStressLevel == 0) {
+                totalStressLevel = "0"
+            }
+            else if (totalStressLevel <30) {
                 totalStressLevel = "Low"
             }
             else if (totalStressLevel <70) {

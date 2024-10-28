@@ -135,15 +135,15 @@ export default function Sidebar(props) {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button className="bg-purple-100 h-11 w-11 rounded-full hover:bg-purple-200 mr-2 border-purple-600 border-2 cursor-pointer" size="icon">
-                  <span className="text-lg font-bold text-purple-600">{props.user.firstName.charAt(0).toUpperCase() + props.user.lastName.charAt(0).toUpperCase()}</span>
+                  <span className="text-lg font-bold text-purple-600">{(props.user.firstName!==null?props.user.firstName.charAt(0).toUpperCase():'') + (props.user.lastName!==null?props.user.lastName.charAt(0).toUpperCase():'')}</span>
                   <span className="sr-only">Open user menu</span>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem className="flex items-center justify-between hover:!bg-transparent">
-                  <Image src={props.user.profilePictureUrl} alt="user" width={35} height={35} className="rounded-full mr-3" />
+                {props.user.profilePictureUrl && <Image src={props.user.profilePictureUrl} alt="user" width={35} height={35} className="rounded-full mr-3" />}
                   <div className="flex flex-col items-start">
-                    <span className="font-semibold">{props.user.firstName} {props.user.lastName}</span>
+                    <span className="font-semibold">{props.user.firstName!==null?props.user.firstName:''} {props.user.lastName!==null?props.user.lastName:''}</span>
                     <span className="text-sm text-gray-500">{props.user.email}</span>
                   </div>
                 </DropdownMenuItem>
