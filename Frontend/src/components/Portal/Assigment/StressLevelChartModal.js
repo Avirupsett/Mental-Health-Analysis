@@ -84,11 +84,11 @@ export default function StressLevelChartModal({showModal, setShowModal, stressLe
               className="p-6"
             >
               <DialogHeader className="mb-4">
-                <DialogTitle className="text-3xl font-bold flex items-center gap-2">
-                  <Activity className="w-8 h-8 text-primary" />
+                <DialogTitle className="text-2xl md:text-3xl font-bold flex items-center gap-2">
+                  <Activity className="w-8 h-8 text-primary text-purple-600 mr-2" />
                   Stress Level Insights
                 </DialogTitle>
-                <DialogDescription className="text-lg">
+                <DialogDescription className="text-sm md:text-lg">
                   Visualizing your current stress distribution
                 </DialogDescription>
               </DialogHeader>
@@ -108,10 +108,11 @@ export default function StressLevelChartModal({showModal, setShowModal, stressLe
                         cy="50%"
                         innerRadius={90}
                         outerRadius={120}
-                        paddingAngle={5}
+                        paddingAngle={2}
                         dataKey="value"
                         startAngle={startAngle}
                         endAngle={endAngle}
+                        // strokeWidth={0}
                       >
                         {stressData.map((entry, index) => (
                           <Cell key={`cell-${index}`} fill={entry.color} />
@@ -126,7 +127,7 @@ export default function StressLevelChartModal({showModal, setShowModal, stressLe
                                   y={cy}
                                   textAnchor="middle"
                                   dominantBaseline="central"
-                                  className="fill-primary text-5xl font-bold"
+                                  className="fill-primary text-4xl md:text-5xl font-bold"
                                 >
                                   {animatedPercentage}%
                                 </text>
@@ -135,7 +136,7 @@ export default function StressLevelChartModal({showModal, setShowModal, stressLe
                                   y={cy + 30}
                                   textAnchor="middle"
                                   dominantBaseline="central"
-                                  className="fill-muted-foreground text-lg"
+                                  className="fill-muted-foreground text-base md:text-lg"
                                 >
                                   Stress Level
                                 </text>

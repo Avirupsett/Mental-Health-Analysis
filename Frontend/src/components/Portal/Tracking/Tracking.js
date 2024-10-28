@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { motion } from "framer-motion"
 
 export default function Tracking() {
   const [timeLeft, setTimeLeft] = useState({
@@ -36,7 +37,12 @@ export default function Tracking() {
 
 
   return (
-    <div className="min-h-[calc(100vh-100px)] flex flex-col items-center justify-center bg-slate-50 p-4 sm:p-6 md:p-8">
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="min-h-[calc(100vh-100px)] flex flex-col items-center justify-center bg-slate-50 p-4 sm:p-6 md:p-8"
+    >
       <div className="max-w-4xl w-full text-center">
         <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 sm:mb-6 md:mb-8">Coming Soon</h1>
         <p className="text-lg sm:text-xl md:text-2xl mb-8 sm:mb-10 md:mb-12">We're working hard to bring you something amazing. Stay tuned!</p>
@@ -52,6 +58,6 @@ export default function Tracking() {
         
         
       </div>
-    </div>
+    </motion.div>
   )
 }

@@ -19,8 +19,15 @@ export async function POST(req) {
         // Count total assignments
         const totalAssignments = userResponses.length;
 
-        // Calculate total stress level
-        let totalStressLevel = userResponses.reduce((sum, response) => sum + response.analysis_result['Stress Level'], 0)/totalAssignments;
+        // Calculate total stress level based on past 5 days
+        const oneWeekAgo = new Date();
+        oneWeekAgo.setDate(oneWeekAgo.getDate() - 5);
+        const pastWeekResponses = userResponses.filter(response => new Date(response.created_at) >= oneWeekAgo);
+        let totalStressLevel = pastWeekResponses.length > 0 
+            ? pastWeekResponses.reduce((sum, response) => sum + response.analysis_result['Stress Level'], 0) / pastWeekResponses.length
+            : userResponses.length > 0
+                ? userResponses.reduce((sum, response) => sum + response.analysis_result['Stress Level'], 0) / userResponses.length
+                : 0;
         if (isNaN(totalStressLevel)) {
             totalStressLevel = "0";
         }
