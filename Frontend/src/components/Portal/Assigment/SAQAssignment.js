@@ -1,7 +1,5 @@
 'use client'
 import { useState } from 'react'
-import { RadioGroup, RadioGroupItem } from "../../ui/radio-group"
-import { Label } from "../../ui/label"
 import { Button } from "../../ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "../../ui/card"
 import StressLevelChartModal from './StressLevelChartModal';
@@ -141,7 +139,7 @@ export default function MCQAssignment(props) {
                   transition={{ duration: 0.5 }}
                   viewport={{ once: true, amount: 0.95 }}
                   key={questionNumber} className="p-4  dark:border-gray-700 rounded-lg shadow-md  hover:shadow-lg transition-shadow">
-                  <h3 className="text-lg sm:text-xl font-semibold mb-3">{questionNumber}. {questionText}</h3>
+                  <h3 className="text-lg sm:text-xl !leading-8 font-semibold mb-3">{questionNumber}. {questionText}</h3>
                   <div className="my-5 sm:mx-2">
                     <Textarea
                       value={answers[questionNumber] || ''}

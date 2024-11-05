@@ -17,37 +17,53 @@ export const generateMetadata = async ({ params }) => {
     }
   }
 }
+
 async function Check_Next_Assignment_Date(params) {
+  try {
     const { user } = await getUser();
     const latestProgress = await Progress.findOne({ user_id: user.id });
-    if (latestProgress && new Date(latestProgress.next_assignment_date)>=new Date()) {
-        return latestProgress.next_assignment_date;
+    if (latestProgress && new Date(latestProgress.next_assignment_date) >= new Date()) {
+      return latestProgress.next_assignment_date;
     }
     return "false";
+  } catch (error) {
+    console.error('Error checking next assignment date:', error);
+    return "false";
+  }
 }
-const nextAssignmentDate = await Check_Next_Assignment_Date();
 
 async function CheckQAAssignmentExist(params) {
-  const { user } = await getUser();
-  const qaAssignments = await QAAssignment.exists({ user_id: user.id });
-  return qaAssignments;
+  try {
+    const { user } = await getUser();
+    const qaAssignments = await QAAssignment.exists({ user_id: user.id });
+    return qaAssignments;
+  } catch (error) {
+    console.error('Error checking QA assignment exist:', error);
+    return null;
+  }
 }
-const qaAssignmentsCount = await CheckQAAssignmentExist();
 
 async function GetLatestQAAssignment(params) {
-  const { user } = await getUser();
-  const latestQAAssignment = await QAAssignment.findOne().where({ user_id: user.id,answer:{$size:0} }).sort({ created_at: -1 });
-  return latestQAAssignment;
+  try {
+    const { user } = await getUser();
+    const latestQAAssignment = await QAAssignment.findOne().where({ user_id: user.id, answer: { $size: 0 } }).sort({ created_at: -1 });
+    return latestQAAssignment;
+  } catch (error) {
+    console.error('Error getting latest QA assignment:', error);
+    return null;
+  }
 }
 
-let latestQAAssignment;
-if(qaAssignmentsCount){
-  latestQAAssignment = await GetLatestQAAssignment();
-}
+export default async function Assignment() {
+  const nextAssignmentDate = await Check_Next_Assignment_Date();
+  const qaAssignmentsCount = await CheckQAAssignmentExist();
 
-export default function Assignment() {
+  let latestQAAssignment;
+  if (qaAssignmentsCount) {
+    latestQAAssignment = await GetLatestQAAssignment();
+  }
   return (
-    // nextAssignmentDate!=="false" ? <WaitingTime nextAssignmentDate={nextAssignmentDate}/> : qaAssignmentsCount==null ? <MCQAssignment/> : <SAQAssignment questions={latestQAAssignment.question[0]}/>
-    <WaitingTime nextAssignmentDate={nextAssignmentDate}/>
+    nextAssignmentDate !== "false" ? <WaitingTime nextAssignmentDate={nextAssignmentDate} /> : qaAssignmentsCount == null ? <MCQAssignment /> : <SAQAssignment questions={latestQAAssignment.question[0]} />
+
   )
 }
