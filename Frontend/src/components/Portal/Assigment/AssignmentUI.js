@@ -8,7 +8,6 @@ import SAQAssignment from '../../../components/Portal/Assigment/SAQAssignment'
 export default function Assignment() {
   const [nextAssignmentDate,setNextAssignmentDate] = useState(null);
   const [latestQAAssignment,setLatestQAAssignment] = useState(null);
-  const [qaAssignmentsCount,setQaAssignmentsCount] = useState(null);
 
   async function GetAssignment(){
   
@@ -21,7 +20,6 @@ export default function Assignment() {
    const data = await response.json();
    setNextAssignmentDate(data.next_assignment_date);
    setLatestQAAssignment(data.latestQAAssignment);
-   setQaAssignmentsCount(data.qaAssignmentsCount);
   }
 
   useEffect(() => {
@@ -31,7 +29,7 @@ export default function Assignment() {
   
 
   return (
-    nextAssignmentDate !== "false" ? <WaitingTime nextAssignmentDate={nextAssignmentDate} /> : qaAssignmentsCount == null ? <MCQAssignment /> : <SAQAssignment questions={latestQAAssignment.question[0]} />
+    nextAssignmentDate !== "false" ? <WaitingTime nextAssignmentDate={nextAssignmentDate} /> : latestQAAssignment == null ? <MCQAssignment /> : <SAQAssignment questions={latestQAAssignment.question[0]} />
 
   )
 }
