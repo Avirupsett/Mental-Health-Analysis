@@ -2,6 +2,6 @@ Flask
 Gunicorn
 ydf
 pandas==2.2
-tensorflow==2.17.0
+tensorflow
 textblob
-keras_preprocessing==1.1.2
+keras_preprocessing
