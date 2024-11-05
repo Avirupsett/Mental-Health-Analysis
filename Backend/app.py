@@ -74,11 +74,11 @@ def get_severity():
     avg=0
     severity_scores = []
 
-    for item in request_data:
-        for key, text in item.items():
-            severity = predict_severity(text)
-            avg+=severity
-            severity_scores.append(severity)
+    # for item in request_data:
+    for key, text in request_data.items():
+        severity = predict_severity(text)
+        avg+=severity
+        severity_scores.append(severity)
 
     # Calculate the median of the severity scores
     # severity = statistics.median(severity_scores)

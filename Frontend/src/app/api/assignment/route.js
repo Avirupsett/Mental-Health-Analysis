@@ -14,7 +14,7 @@ export async function POST(req) {
 
         let next_assignment_date;
         let latestQAAssignment;
-        
+
 
         // Check next assignment date from Progress
         const latestProgress = await Progress.findOne({ user_id: user.id });
@@ -25,11 +25,11 @@ export async function POST(req) {
             next_assignment_date = "false"
         }
 
-       
-            latestQAAssignment = await QAAssignment.findOne()
+        // Check latest incomplete QA Assignment
+        latestQAAssignment = await QAAssignment.findOne()
             .where({ user_id: user.id, answer: { $size: 0 } })
             .sort({ created_at: -1 });
-        
+
 
         return NextResponse.json({
             next_assignment_date,

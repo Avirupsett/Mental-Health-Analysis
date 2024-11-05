@@ -155,9 +155,12 @@ export default function StressLevelChartModal({ showModal, setShowModal, stressL
                 </ChartContainer>
 
                 <div className="w-full flex justify-center items-center mt-7">
-                  <Button size="lg" onClick={() => {setShowModal(false);window.scrollTo(0,0); window.location.reload();}} className="flex items-center text-base sm:text-lg cursor-pointer  transition-colors !h-12 !py-7 !px-10 bg-purple-600 text-white rounded-full hover:bg-purple-700">
-                    <ArrowRight className="w-5 h-5 mr-2" />
-                    Next Assignment
+                  <Button size="lg" variant="outline" onClick={() => {setShowModal(false);window.scrollTo(0,0); window.location.reload();}} className="flex items-center text-base sm:text-lg cursor-pointer border-purple-600 text-purple-600 relative overflow-hidden group !h-12 !py-7 !px-10">
+                    <span className="relative z-10 group-hover:text-white transition-colors duration-300">
+                      <ArrowRight className="w-5 h-5 mr-2 inline-block" />
+                      Next Assignment
+                    </span>
+                    <div className="absolute inset-0 bg-purple-600 transform translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-300 ease-in-out"></div>
                   </Button>
 
                 </div>

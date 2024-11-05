@@ -47,7 +47,7 @@ export default function MCQAssignment(props) {
       toast.dismiss(loadingToast);
       toast.error('Request is taking too long. Please try again.');
       setIsLoading(false);
-    }, 10000); // 10 seconds
+    }, 20000); // 20 seconds
 
     try {
       const response = await fetch('/api/predict/sentimentalmodel', {
