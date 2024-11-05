@@ -95,7 +95,7 @@ export default function MCQAssignment() {
     let data = {}
     let allAnswered = true
     setIsLoading(true);
-    
+
     questions.forEach((q, index) => {
       if (answers[index] === undefined) {
         allAnswered = false
@@ -112,14 +112,14 @@ export default function MCQAssignment() {
     const loadingToast = toast.loading('Fetching results...');
 
     // Create an AbortController
-  const controller = new AbortController();
-  const signal = controller.signal;
+    const controller = new AbortController();
+    const signal = controller.signal;
 
-   // Set up a timeout
-   const timeoutId = setTimeout(() => {
-    controller.abort(); // Abort the fetch request
-    toast.dismiss(loadingToast);
-    toast.error('Request is taking too long. Please try again.');
+    // Set up a timeout
+    const timeoutId = setTimeout(() => {
+      controller.abort(); // Abort the fetch request
+      toast.dismiss(loadingToast);
+      toast.error('Request is taking too long. Please try again.');
       setIsLoading(false);
     }, 10000); // 10 seconds
 
@@ -139,6 +139,29 @@ export default function MCQAssignment() {
         const result = await response.json()
         setStressLevel(result['Stress Level'])
         setShowModal(true)
+
+        // Generate summary for the new QA
+        const summaryResponse = await fetch(`/api/predict/generatesummary`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        });
+
+        if (!summaryResponse.ok) {
+          console.error('Error generating summary:', await summaryResponse.text());
+        }
+
+        const generateQuestionResponse = await fetch(`/api/predict/generatequestion`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        });
+
+        if (!generateQuestionResponse.ok) {
+          console.error('Error generating question:', await generateQuestionResponse.text());
+        }
         // alert(`Your Stress level is ${JSON.stringify(result)}`)
       }
       if (response.status === 500) {
@@ -159,12 +182,12 @@ export default function MCQAssignment() {
   }
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
 
-    className="min-h-screen bg-slate-50 dark:bg-gray-900">
+      className="min-h-screen bg-slate-50 dark:bg-gray-900">
       {/* <header className="bg-gray-800 text-white p-4 md:p-6">
         <div className="container mx-auto">
           <h1 className="text-2xl md:text-4xl font-mono">project planner</h1>
@@ -174,18 +197,18 @@ export default function MCQAssignment() {
       <main className="container mx-auto px-2 sm:px-4 flex justify-center ">
         <Card className="w-full bg-white bg-opacity-80 text-gray-800 max-w-3xl !mt-4 sm:!mt-8 !mb-8 shadow-xl">
           <CardHeader>
-            <CardTitle className="text-xl sm:text-2xl md:text-3xl font-medium text-center font-mono"><div className="flex items-center justify-center"><NotebookText className='mr-3 sm:mr-4 text-purple-600 h-6 w-6 sm:h-8 sm:w-8 md:h-9 md:w-9'/>Assignment Questions</div></CardTitle>
+            <CardTitle className="text-xl sm:text-2xl md:text-3xl font-medium text-center font-mono"><div className="flex items-center justify-center"><NotebookText className='mr-3 sm:mr-4 text-purple-600 h-6 w-6 sm:h-8 sm:w-8 md:h-9 md:w-9' />Assignment Questions</div></CardTitle>
 
           </CardHeader>
           <CardContent className="p-4 sm:p-6 pt-0 sm:pt-0">
             <form onSubmit={handleSubmit} className="space-y-7 !mb-8">
               {questions.map((q, index) => (
-                <motion.div 
+                <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   // animate={{ opacity: 1, y: 0 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5 }}
-                  viewport={{ once: true, amount: 0.9 }}
+                  viewport={{ once: true, amount: 0.95 }}
                   key={index} className="p-4  dark:border-gray-700 rounded-lg shadow-md  hover:shadow-lg transition-shadow">
                   <h3 className="text-lg sm:text-xl font-semibold mb-3">{index + 1}. {q.question}</h3>
                   <RadioGroup
@@ -204,8 +227,8 @@ export default function MCQAssignment() {
                 </motion.div>
               ))}
               <div className="flex justify-center">
-                <Button disabled={isLoading} type="submit" size="lg" className="mt-4 px-8 !h-14 text-lg flex items-center justify-center"><span>Submit Answers</span><SendHorizontal className='ml-4 text-md'/></Button>
-                <StressLevelChartModal showModal={showModal} setShowModal={setShowModal} stressLevel={stressLevel}/>
+                <Button disabled={isLoading} type="submit" size="lg" className="mt-4 px-8 !h-14 text-lg flex items-center justify-center"><span>Submit Answers</span><SendHorizontal className='ml-4 text-md' /></Button>
+                <StressLevelChartModal showModal={showModal} setShowModal={setShowModal} stressLevel={stressLevel} />
               </div>
             </form>
           </CardContent>

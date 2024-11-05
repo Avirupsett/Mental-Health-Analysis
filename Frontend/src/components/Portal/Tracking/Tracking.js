@@ -44,7 +44,7 @@ export default function Tracking() {
       className="min-h-[calc(100vh-100px)] flex flex-col items-center justify-center bg-slate-50 p-4 sm:p-6 md:p-8"
     >
       <div className="max-w-4xl w-full text-center">
-        <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 sm:mb-6 md:mb-8">Coming Soon</h1>
+        <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 sm:mb-6 md:mb-8">🕒 Coming Soon!</h1>
         <p className="text-lg sm:text-xl md:text-2xl mb-8 sm:mb-10 md:mb-12">We're working hard to bring you something amazing. Stay tuned!</p>
         
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8 sm:mb-10 md:mb-12">

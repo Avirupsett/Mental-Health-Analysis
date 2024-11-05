@@ -111,7 +111,7 @@ export default function FeedbackTable({ stressReport }) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
 
-            className="container min-h-[calc(100vh-70px)] mx-auto p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg shadow-lg">
+            className="container min-h-[calc(100vh-70px)] mx-auto p-4 bg-gradient-to-br from-slate-50 to-slate-100 rounded-lg ">
             <h1 className="mb-6 text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 text-center">Stress Level Report ({stressReport.length})</h1>
             <div className="mb-6">
 
@@ -119,6 +119,7 @@ export default function FeedbackTable({ stressReport }) {
                     type="text"
                     placeholder="Search..."
                     value={searchTerm}
+                    id="search"
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="max-w-sm mx-auto"
                 />

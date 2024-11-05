@@ -13,13 +13,15 @@ import {
 } from "../../../components/ui/dialog"
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "../../../components/ui/chart"
 import { motion, AnimatePresence } from "framer-motion"
-import { Activity } from "lucide-react"
+import { Activity,ArrowRight } from "lucide-react"
+import { useRouter } from "next/navigation"
 
 
-export default function StressLevelChartModal({showModal, setShowModal, stressLevel}) {
+export default function StressLevelChartModal({ showModal, setShowModal, stressLevel }) {
+  const router = useRouter()
   let stressData = [
-    { name: "High", value: parseFloat(stressLevel), color: "#C026D3" },
-    { name: "Low", value: 100 - parseFloat(stressLevel), color: "#FAE8FF" },
+    { name: "High", value: parseFloat(stressLevel), color: "#9333EA" },
+    { name: "Low", value: 100 - parseFloat(stressLevel), color: "#F3E8FF" },
   ]
   // const [open, setOpen] = useState(true)
   const [animatedPercentage, setAnimatedPercentage] = useState(0)
@@ -40,7 +42,7 @@ export default function StressLevelChartModal({showModal, setShowModal, stressLe
       setAnimatedPercentage(0)
       setStartAngle(90)
       setEndAngle(90)
-      
+
       const percentageTimer = setInterval(() => {
         setAnimatedPercentage((prev) => {
           if (prev < weightedStressLevel) {
@@ -75,7 +77,9 @@ export default function StressLevelChartModal({showModal, setShowModal, stressLe
       </DialogTrigger> */}
       <AnimatePresence>
         {showModal && (
-          <DialogContent className="sm:max-w-[525px] p-0 overflow-hidden bg-gradient-to-br from-background to-secondary">
+          <DialogContent  onInteractOutside={(e) => {
+              e.preventDefault();
+            }} className="sm:max-w-[525px] p-0 overflow-hidden bg-gradient-to-br from-background to-secondary">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -92,7 +96,7 @@ export default function StressLevelChartModal({showModal, setShowModal, stressLe
                   Visualizing your current stress distribution
                 </DialogDescription>
               </DialogHeader>
-              <div className="py-4 w-full  flex flex-col items-center">
+              <div className="pt-4 w-full  flex flex-col items-center">
                 <ChartContainer
                   config={{
                     low: { label: "Low", color: "hsl(var(--chart-1))" },
@@ -100,68 +104,62 @@ export default function StressLevelChartModal({showModal, setShowModal, stressLe
                   }}
                   className="w-[250px] h-[250px]"
                 >
-                  <ResponsiveContainer width="100%" height="100%" aspect={1}>
-                    <PieChart>
-                      <Pie
-                        data={stressData}
-                        cx="50%"
-                        cy="50%"
-                        innerRadius={90}
-                        outerRadius={120}
-                        paddingAngle={2}
-                        dataKey="value"
-                        startAngle={startAngle}
-                        endAngle={endAngle}
-                        // strokeWidth={0}
-                      >
-                        {stressData.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={entry.color} />
-                        ))}
-                        <Label
-                          content={({ viewBox }) => {
-                            const { cx, cy } = viewBox
-                            return (
-                              <g>
-                                <text
-                                  x={cx}
-                                  y={cy}
-                                  textAnchor="middle"
-                                  dominantBaseline="central"
-                                  className="fill-primary text-4xl md:text-5xl font-bold"
-                                >
-                                  {animatedPercentage}%
-                                </text>
-                                <text
-                                  x={cx}
-                                  y={cy + 30}
-                                  textAnchor="middle"
-                                  dominantBaseline="central"
-                                  className="fill-muted-foreground text-base md:text-lg"
-                                >
-                                  Stress Level
-                                </text>
-                              </g>
-                            )
-                          }}
-                        />
-                      </Pie>
-                      <ChartTooltip content={<ChartTooltipContent />} />
-                    </PieChart>
-                  </ResponsiveContainer>
-                </ChartContainer>
-                <div className="flex justify-between w-full mt-6 bg-background/50 p-4 rounded-lg backdrop-blur-sm">
-                  {stressData.map((entry, index) => (
-                    <div key={`legend-${index}`} className="flex items-center">
-                      <div
-                        className="w-4 h-4 rounded-full mr-2"
-                        style={{ backgroundColor: entry.color }}
+
+                  <PieChart>
+                    <Pie
+                      data={stressData}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={90}
+                      outerRadius={120}
+                      paddingAngle={2}
+                      dataKey="value"
+                      startAngle={startAngle}
+                      endAngle={endAngle}
+                    // strokeWidth={0}
+                    >
+                      {stressData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.color} />
+                      ))}
+                      <Label
+                        content={({ viewBox }) => {
+                          const { cx, cy } = viewBox
+                          return (
+                            <g>
+                              <text
+                                x={cx}
+                                y={cy}
+                                textAnchor="middle"
+                                dominantBaseline="central"
+                                className="fill-primary text-4xl md:text-5xl font-bold"
+                              >
+                                {animatedPercentage}%
+                              </text>
+                              <text
+                                x={cx}
+                                y={cy + 30}
+                                textAnchor="middle"
+                                dominantBaseline="central"
+                                className="fill-muted-foreground text-base md:text-lg"
+                              >
+                                Stress Level
+                              </text>
+                            </g>
+                          )
+                        }}
                       />
-                      <span className="text-sm font-medium">{entry.name} Stress</span>
-                      {/* <span className="ml-2 text-sm text-muted-foreground">
-                        {entry.value}%
-                      </span> */}
-                    </div>
-                  ))}
+                    </Pie>
+                    <ChartTooltip content={<ChartTooltipContent />} />
+                  </PieChart>
+
+                </ChartContainer>
+
+                <div className="w-full flex justify-center items-center mt-7">
+                  <Button size="lg" onClick={() => {setShowModal(false);window.scrollTo(0,0); window.location.reload();}} className="flex items-center text-base sm:text-lg cursor-pointer  transition-colors !h-12 !py-7 !px-10 bg-purple-600 text-white rounded-full hover:bg-purple-700">
+                    <ArrowRight className="w-5 h-5 mr-2" />
+                    Next Assignment
+                  </Button>
+
                 </div>
               </div>
             </motion.div>

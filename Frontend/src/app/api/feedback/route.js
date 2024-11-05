@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import UserResponses from '../../../models/userResponse';
+import UserResponses from '../../../models/userAnalytics';
 import connectDB from '../../../lib/connectDB';
 import { getUser } from '@workos-inc/authkit-nextjs';
 
@@ -64,7 +64,7 @@ export async function POST() {
         'stress type': stress_type,
         'color': color,
         'stress level': parseInt(response.analysis_result['Stress Level'].toFixed(0)),
-        'Date': new Date(dateTime.toISOString().split('T')[0]).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' }),
+        'Date': dateTime.toLocaleString('en-IN', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Asia/Kolkata' }),
         'Time': new Date(dateTime.toISOString()).toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
       };
     });

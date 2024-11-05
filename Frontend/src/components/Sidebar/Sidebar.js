@@ -72,10 +72,10 @@ export default function Sidebar(props) {
         <div className="flex items-center justify-between p-4">
           <h2 className={cn("text-2xl font-semibold", !isDesktopExpanded && "md:hidden")}>
             
-            <div className="flex justify-center items-center">
+            <Link href='/' className="flex justify-center items-center">
               <Image src={logo} alt="logo" width={35} height={35} className="cursor-pointer mr-0.5  md:w-[38px] md:h-[38px] sm:mr-2" />
               <div className='text-2xl tracking-wide font-mono text-center text-light-secondary font-bold ml-2'>Men<span className='text-light-heading font-normal'>trix</span></div>
-            </div>
+            </Link>
           </h2>
           <Button
             variant="ghost"

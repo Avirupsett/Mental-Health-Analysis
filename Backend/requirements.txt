@@ -2,3 +2,6 @@ Flask
 Gunicorn
 ydf
 pandas==2.2
+tensorflow
+textblob
+pickle

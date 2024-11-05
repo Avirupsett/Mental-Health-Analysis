@@ -38,22 +38,23 @@ export default function Personal(props) {
                 <div className='sm:text-[44px] text-[28px] font-mono text-light-heading font-semibold'>Personal Information</div>
                 <div className='sm:text-xl text-md text-light-text font-sans mt-1 opacity-80 tracking-wide mb-4'>Enter your personal information</div>
                 <div className="grid w-full max-w-xl items-center gap-1.5 mt-2">
-                    <Label htmlFor="name" className='text-light-heading font-sans font-bold text-sm sm:text-[16px] tracking-wide'>Full Name<span className='text-red-500'>*</span></Label>
-                    <input type="text" id="name" placeholder="Name" value={formContext.user.fullname?formContext.user.fullname:"" } onChange={(e)=>formContext.setUser({...formContext.user,"fullname":e.target.value})} className="w-[98%] rounded-md border-gray-200 shadow-sm text-sm focus:border-gray-300 focus:outline-0 focus:ring-gray-300 md:text-lg" required/>
+                    <Label htmlFor="fullname" className='text-light-heading font-sans font-bold text-sm sm:text-[16px] tracking-wide'>Full Name<span className='text-red-500'>*</span></Label>
+                    <input type="text" id="fullname" placeholder="Name" autoComplete='name' value={formContext.user.fullname?formContext.user.fullname:"" } onChange={(e)=>formContext.setUser({...formContext.user,"fullname":e.target.value})} className="w-[98%] rounded-md border-gray-200 shadow-sm text-sm focus:border-gray-300 focus:outline-0 focus:ring-gray-300 md:text-lg" required/>
                 </div>
 
                 <div className="grid w-full max-w-xl items-center gap-1.5 mt-5">
                     <Label htmlFor="email" className='text-light-heading font-sans font-bold text-sm sm:text-[16px] tracking-wide'>Email<span className='text-red-500'>*</span></Label>
-                    <input type="email" id="email" placeholder="Email" value={props.email} readOnly className="w-[98%] rounded-md border-gray-200 shadow-sm text-sm focus:border-gray-300 focus:outline-0 focus:ring-gray-300 md:text-lg" required/>
+                    <input type="email" id="email" placeholder="Email" autoComplete='email' value={props.email} readOnly className="w-[98%] rounded-md border-gray-200 shadow-sm text-sm focus:border-gray-300 focus:outline-0 focus:ring-gray-300 md:text-lg" required/>
                 </div>
                 <div className="grid grid-cols-2 w-full max-w-xl items-center gap-2.5 mt-5">
                     <div>
-                        <Label htmlFor="dob" className='text-light-heading font-sans font-bold text-sm sm:text-[16px] tracking-wide '>Date of Birth<span className='text-red-500'>*</span></Label>
+                        <Label htmlFor="dateofbirth" className='text-light-heading font-sans font-bold text-sm sm:text-[16px] tracking-wide '>Date of Birth<span className='text-red-500'>*</span></Label>
                         <div className='mt-[0.375rem]'>
                             <input 
                                 type="date" 
-                                id="dob" 
+                                id="dateofbirth" 
                                 placeholder="DD/MM/YYYY" 
+                                autoComplete='bday'
                                 value={formContext.user.dateofbirth ? formContext.user.dateofbirth : ""} 
                                 onChange={(e) => formContext.setUser({...formContext.user, "dateofbirth": e.target.value})} 
                                 max={new Date(new Date().setFullYear(new Date().getFullYear() - 5)).toISOString().split('T')[0]}
@@ -68,7 +69,7 @@ export default function Personal(props) {
                         <Label htmlFor="gender" className='text-light-heading font-sans font-bold text-sm sm:text-[16px] tracking-wide'>Gender<span className='text-red-500'>*</span></Label>
                         <div className='mt-[0.375rem]'>
                             <Select name='gender' defaultValue={formContext.user.gender?formContext.user.gender.toLowerCase():""} onValueChange={(e)=>formContext.setUser({...formContext.user,"gender":e})} className='text-[0.875rem] md:text-lg' required>
-                                <SelectTrigger className="text-[0.875rem] md:text-lg font-sans">
+                                <SelectTrigger id='gender' className="text-[0.875rem] md:text-lg font-sans">
                                     <SelectValue placeholder="Select" />
                                 </SelectTrigger>
                                 <SelectContent>

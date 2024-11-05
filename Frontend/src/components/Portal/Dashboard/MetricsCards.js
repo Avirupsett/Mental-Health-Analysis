@@ -20,8 +20,8 @@ export default function MetricsCards(props) {
             <Clock className="h-6 w-6 xl:h-8 xl:w-8 ml-2 text-yellow-600 flex-shrink-0" />
           </CardHeader>
           <CardContent className="pt-2">
-            <div className="text-2xl sm:text-3xl font-bold text-yellow-800 tracking-wide">5</div>
-            <p className="text-sm text-yellow-700 mt-1">Due this week</p>
+            <div className="text-2xl sm:text-3xl font-bold text-yellow-800 tracking-wide">{props.pendingAssignments}</div>
+            <p className="text-sm text-yellow-700 mt-1">Due Today</p>
           </CardContent>
         </Card>
         <Card className="bg-gradient-to-br from-blue-50 to-blue-200 shadow-md hover:shadow-lg transition-shadow duration-300">

@@ -1,23 +1,24 @@
-import mongoose, { Schema, models, model } from "mongoose";
+import { Schema, models, model } from "mongoose";
 
 const QaAssignmentSchema = new Schema({
 	user_id: {
-        type:  mongoose.Schema.Types.ObjectId,
-        ref: "User",
-    },
-    quesion:[{
-        quesion_id:String
-    }],
-	
-    assignment_date:{
-        type: Date
-    },
-    completion_status:{
         type: String,
+        required: true
+    },
+    question: [{
+        type: Object,
+        required: true
+    }],
+    answer: [{
+        type: Object,
+        required: true
+    }],
+    summary: {
+        type: Object
     },
     created_at: {
         type: Date,
-        default: Date.now
+        default: Date.now()
     },
 });
 

@@ -36,7 +36,7 @@ export default async function DashboardUI() {
   return (
     <div className="container mx-auto p-4 bg-slate-50">
       {/* Dashboard cards */}
-      <MetricsCards totalAssignments={dashboardData.totalAssignments} totalStressLevels={dashboardData.totalStressLevel} assignmentsThisWeek={dashboardData.assignmentsThisWeek} />
+      <MetricsCards totalAssignments={dashboardData.totalAssignments} totalStressLevels={dashboardData.totalStressLevel} assignmentsThisWeek={dashboardData.assignmentsThisWeek} pendingAssignments={dashboardData.pendingAssignments} />
 
       {/* Separator */}
       <div className="mb-2">

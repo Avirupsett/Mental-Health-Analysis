@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
 import { getUser } from '@workos-inc/authkit-nextjs';
 import connectDB from '../../../lib/connectDB';
-import UserResponses from '../../../models/userResponse';
+import UserResponses from '../../../models/userAnalytics';
+import Progress from '../../../models/progress';
 
 export async function POST(req) {
     try {
@@ -18,6 +19,12 @@ export async function POST(req) {
 
         // Count total assignments
         const totalAssignments = userResponses.length;
+
+        const progress = await Progress.findOne({ user_id: userId });
+        let pendingAssignments = process.env.MAX_ASSIGNMENT;
+        if(progress) {
+            pendingAssignments = progress.next_assignment_date > new Date() ? 0 : progress.pending_assignments;
+        }
 
         // Calculate total stress level based on past 5 days
         const oneWeekAgo = new Date();
@@ -51,7 +58,7 @@ export async function POST(req) {
 
         // Create dictionary of stress levels by date
         const stressLevelByDate = userResponses.reduce((acc, response) => {
-            const date = new Date(response.created_at).toISOString().split('T')[0];
+            const date = new Date(response.created_at).toLocaleString('en-IN', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Asia/Kolkata' });
             if (!acc[date]) {
                 acc[date] = { sum: 0, count: 0 };
             }
@@ -85,8 +92,8 @@ export async function POST(req) {
         // Calculate average stress level for each date and format the result
         const formattedStressLevelByDate = Object.entries(stressLevelByDate).map(([date, data], index) => ({
             dayno: index + 1,
-            date: date,
-            formatted_date: new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+            date: new Date(date).toLocaleString('en-IN', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Asia/Kolkata' }),
+            formatted_date: new Date(date).toLocaleDateString('en-IN', { month: 'short', day: 'numeric',timeZone: 'Asia/Kolkata' }),
             stress_level: data.sum / data.count
         }));
 
@@ -96,6 +103,7 @@ export async function POST(req) {
         veryHighStressCount = totalAssignments==0 ? 0 : veryHighStressCount/totalAssignments*100;
 
         return NextResponse.json({
+            pendingAssignments,
             totalAssignments,
             assignmentsThisWeek,
             totalStressLevel,

@@ -25,7 +25,7 @@ export default async function Home() {
 		<section className="min-h-[100vh]">
 			<Navbar />
 			<div className="container h-[calc(100vh-100px)] mx-auto flex px-0 py-20 md:py-0 md:flex-row flex-col items-center justify-center mt-[-30px] md:mt-[-15px]">
-				<div className=" md:w-1/2  flex flex-col md:items-start md:text-left mb-16 md:mb-0 items-center text-center px-4 md:pl-2.5 lg:pl-2">
+				<div className=" md:w-[48%]  flex flex-col md:items-start md:text-left mb-16 md:mb-0 items-center text-center px-4 md:pl-2.5 lg:pl-2">
 					<span className="text-purple-700 bg-purple-100 flex px-5 py-1.5 sm:py-2.5 pr-6 rounded-full font-bold mb-4 tracking-wide text-sm sm:text-[18px] md:text-[16px]"><span className="mr-2 mt-0.5 sm:mt-0"><MdAutoAwesome/></span>AI Powered</span>
 					<h1 className="title-font md:text-4xl lg:text-[42px] xl:text-[56px] text-[42px] mb-5 font-bold font-mono tracking-tight text-light-heading leading-[1.3] sm:!leading-tight">
 						<span className="text-purple-600">Your Personalized</span>
@@ -53,7 +53,7 @@ export default async function Home() {
 						</button>
 					</div>
 				</div>
-				<div className="xl:max-w-2xl xl:w-full lg:max-w-lg md:w-1/2 md:max-w-[30rem] w-5/6 hidden md:flex">
+				<div className="xl:max-w-2xl xl:w-full lg:max-w-lg md:w-[48%] md:max-w-[30rem] w-5/6 hidden md:flex">
 					<Image
 						className="object-cover object-center rounded "
 						width={1000}
