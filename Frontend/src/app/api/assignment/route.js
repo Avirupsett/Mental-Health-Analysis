@@ -25,18 +25,15 @@ export async function POST(req) {
             next_assignment_date = "false"
         }
 
-        const qaAssignmentsCount = await QAAssignment.exists({ user_id: user.id });
-        if (qaAssignmentsCount) {
-            // Get latest incomplete QA Assignment
+       
             latestQAAssignment = await QAAssignment.findOne()
             .where({ user_id: user.id, answer: { $size: 0 } })
             .sort({ created_at: -1 });
-        }
+        
 
         return NextResponse.json({
             next_assignment_date,
-            latestQAAssignment,
-            qaAssignmentsCount
+            latestQAAssignment
         });
 
     } catch (error) {
