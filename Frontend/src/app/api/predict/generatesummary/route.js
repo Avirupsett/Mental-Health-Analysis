@@ -36,60 +36,66 @@ export async function POST(req) {
                     content: `You are a specialized mental health analysis assistant utilizing a comprehensive biopsychosocial approach. Your role is to:
 
                         1. Core Analysis Functions:
-                        - Extract and categorize critical health information
-                        - Assess multiple domains of functioning
-                        - Identify risks and protective factors
-                        - Generate domain-specific insights
+                        - Extract and categorize critical health information based strictly on provided data
+                        - Assess multiple domains of functioning using only the given information
+                        - Identify risks and protective factors without assuming or hallucinating
+                        - Generate domain-specific insights based on the question and answer
                         - Maintain clinical continuity
                         - Ensure confidentiality
 
                         2. Domain-Specific Analysis:
+
+                        A. Physical Health Domain
+                        - Evaluate current physical symptoms and conditions
+                        - Track chronic health conditions if present
+                        - Monitor pain levels and patterns
+                        - Assess physical limitations or disabilities
+                        - Note recent health changes or concerns
                         
-                        A. Biological Domain
-                        - Evaluate physical health patterns
-                        - Assess sleep and dietary habits
-                        - Monitor medication effectiveness
-                        - Track exercise routines
-                        - Note genetic considerations
+                        B. Biological Domain
+                        - Assess sleep and dietary habits as mentioned
+                        - Monitor medication effectiveness if discussed
+                        - Track exercise routines if applicable
+                        - Note genetic considerations if provided
 
-                        B. Psychological Domain
-                        - Analyze mental state changes
-                        - Evaluate cognitive patterns
-                        - Track self-perception shifts
-                        - Monitor coping strategy effectiveness
-                        - Assess addiction risks
+                        C. Psychological Domain
+                        - Analyze mental state changes based on the answer
+                        - Evaluate cognitive patterns as described
+                        - Track self-perception shifts if mentioned
+                        - Monitor coping strategy effectiveness from the data
+                        - Assess addiction risks if indicated
 
-                        C. Social Domain
-                        - Evaluate family dynamics
-                        - Assess work/school functioning
-                        - Monitor financial stability
-                        - Track housing situation
-                        - Evaluate support systems
+                        D. Social Domain
+                        - Evaluate family dynamics from the given context
+                        - Assess work/school functioning as described
+                        - Monitor financial stability if mentioned
+                        - Track housing situation if applicable
+                        - Evaluate support systems based on the answer
 
-                        D. Trauma & Stress
-                        - Identify recent stressors
-                        - Monitor trauma responses
-                        - Track coping resources
-                        - Assess stress management
+                        E. Trauma & Stress
+                        - Identify recent stressors from the provided information
+                        - Monitor trauma responses as described
+                        - Track coping resources if mentioned
+                        - Assess stress management based on the data
 
-                        E. Identity & Culture
-                        - Consider cultural influences
-                        - Note gender/orientation factors
-                        - Track discrimination experiences
-                        - Assess spiritual/religious aspects
+                        F. Identity & Culture
+                        - Consider cultural influences if provided
+                        - Note gender/orientation factors if mentioned
+                        - Track discrimination experiences if applicable
+                        - Assess spiritual/religious aspects if discussed
 
-                        F. Historical Context
-                        - Consider childhood influences
-                        - Track treatment history
-                        - Note family health patterns
-                        - Monitor life event impacts
+                        G. Historical Context
+                        - Consider childhood influences if provided
+                        - Track treatment history as mentioned
+                        - Note family health patterns if applicable
+                        - Monitor life event impacts based on the data
 
                         3. Analysis Guidelines:
-                        - Prioritize explicit symptoms and concerns
-                        - Document safety risks and crisis indicators
-                        - Track intervention effectiveness
-                        - Note progress markers and setbacks
-                        - Consider cultural context in all domains
+                        - Prioritize explicit symptoms and concerns from the provided data
+                        - Document safety risks and crisis indicators if mentioned
+                        - Track intervention effectiveness based on the answer
+                        - Note progress markers and setbacks as described
+                        - Consider cultural context in all domains if provided
                         - Maintain therapeutic alignment
 
 `
@@ -111,41 +117,47 @@ export async function POST(req) {
                     - Protective factors identified
 
                     2. Biopsychosocial Assessment:
+
+                    A. Physical Health Domain
+                    - Current physical symptoms
+                    - Chronic conditions
+                    - Pain assessment
+                    - Physical limitations
+                    - Recent health changes
                     
-                    A. Biological Domain
-                    - Physical health status
+                    B. Biological Domain
                     - Sleep patterns
                     - Diet and exercise
                     - Medication effectiveness
                     - Genetic considerations
 
-                    B. Psychological Domain
+                    C. Psychological Domain
                     - Mental state evaluation
                     - Cognitive functioning
                     - Self-perception
                     - Coping mechanisms
                     - Addiction patterns
 
-                    C. Social Domain
+                    D. Social Domain
                     - Family system dynamics
                     - Occupational functioning
                     - Financial situation
                     - Housing stability
                     - Support network
 
-                    D. Trauma & Stress Factors
+                    E. Trauma & Stress Factors
                     - Current stressors
                     - Trauma impacts
                     - Coping resources
                     - Stress management
 
-                    E. Identity & Cultural Considerations
+                    F. Identity & Cultural Considerations
                     - Cultural influences
                     - Gender/orientation factors
                     - Religious/spiritual aspects
                     - Discrimination experiences
 
-                    F. Historical Context
+                    G. Historical Context
                     - Relevant childhood factors
                     - Family mental health history
                     - Treatment history
@@ -170,6 +182,7 @@ export async function POST(req) {
                             "secondary": [],
                             "risk_level": "low|medium|high",
                             "domain_specific_risks": {
+                                "physical": [],
                                 "biological": [],
                                 "psychological": [],
                                 "social": [],
@@ -180,14 +193,7 @@ export async function POST(req) {
                         },
                         "progress": {
                             "improvements": {
-                                "biological": [],
-                                "psychological": [],
-                                "social": [],
-                                "trauma": [],
-                                "identity": [],
-                                "historical": []
-                            },
-                            "challenges": {
+                                "physical": [],
                                 "biological": [],
                                 "psychological": [],
                                 "social": [],
@@ -199,6 +205,7 @@ export async function POST(req) {
                         },
                         "action_items": {
                             "immediate": {
+                                "physical": [],
                                 "biological": [],
                                 "psychological": [],
                                 "social": [],
@@ -211,6 +218,7 @@ export async function POST(req) {
                             "recommended_timing": "",
                             "focus_areas": [],
                             "goals": {
+                                "physical": [],
                                 "biological": [],
                                 "psychological": [],
                                 "social": [],
@@ -239,8 +247,10 @@ export async function POST(req) {
             return NextResponse.json({ error: "Failed to generate summary" }, { status: 500 });
         }
 
+        
         // Update the latest QA with summary
         await QAAssignment.findByIdAndUpdate(latestQA._id, { summary: summary });
+        
 
         return NextResponse.json(summary);
 

@@ -13,12 +13,11 @@ import {
 } from "../../../components/ui/dialog"
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "../../../components/ui/chart"
 import { motion, AnimatePresence } from "framer-motion"
-import { Activity,ArrowRight } from "lucide-react"
-import { useRouter } from "next/navigation"
+import { Activity,ArrowRight,Loader2 } from "lucide-react"
 
 
-export default function StressLevelChartModal({ showModal, setShowModal, stressLevel }) {
-  const router = useRouter()
+export default function StressLevelChartModal({ showModal, setShowModal, stressLevel, isDisabled }) {
+ 
   let stressData = [
     { name: "High", value: parseFloat(stressLevel), color: "#9333EA" },
     { name: "Low", value: 100 - parseFloat(stressLevel), color: "#F3E8FF" },
@@ -155,10 +154,10 @@ export default function StressLevelChartModal({ showModal, setShowModal, stressL
                 </ChartContainer>
 
                 <div className="w-full flex justify-center items-center mt-7">
-                  <Button size="lg" variant="outline" onClick={() => {setShowModal(false);window.scrollTo(0,0); window.location.reload();}} className="flex items-center text-base sm:text-lg cursor-pointer border-purple-600 text-purple-600 relative overflow-hidden group !h-12 !py-7 !px-10">
+                  <Button disabled={!isDisabled} size="lg" variant="outline" onClick={() => {setShowModal(false);window.scrollTo(0,0); window.location.reload();}} className="flex items-center text-base sm:text-lg cursor-pointer border-purple-600 text-purple-600 relative overflow-hidden group !h-12 !py-7 !px-10">
                     <span className="relative z-10 group-hover:text-white transition-colors duration-300">
-                      <ArrowRight className="w-5 h-5 mr-2 inline-block" />
-                      Next Assignment
+                     {isDisabled ? <ArrowRight className="w-5 h-5 mr-2 inline-block" /> : <Loader2 className="w-5 h-5 mr-2 inline-block animate-spin" />}
+                     {!isDisabled ? "Please wait" : "Next Assignment"}
                     </span>
                     <div className="absolute inset-0 bg-purple-600 transform translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-300 ease-in-out"></div>
                   </Button>

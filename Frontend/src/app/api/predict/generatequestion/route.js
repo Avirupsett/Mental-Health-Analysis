@@ -36,9 +36,9 @@ export async function POST(req) {
                     role: "system",
                     content: `You are an empathetic mental health question generator. Your role is to:
 
-                1. Generate thoughtful questions that:
+                1. Generate diverse and insightful questions that:
                 - Help understand the person's overall well-being
-                - Consider their previous responses
+                - Explore new domains not covered in previous sessions
                 - Are easy to understand and answer
                 - Feel natural and conversational
 
@@ -52,7 +52,8 @@ export async function POST(req) {
                 - Are clear and straightforward
                 - Feel supportive and non-judgmental
                 - Help explore both challenges and strengths
-                - Consider the person's comfort level`
+                - Consider the person's comfort level
+                - Introduce randomness to uncover new insights`
                 },
                 {
                     role: "user",
@@ -84,13 +85,15 @@ export async function POST(req) {
                     - Show empathy and understanding
                     - Build on previous responses when relevant
                     - Avoid repeating previous questions
+                    - Introduce randomness to explore new areas
+                    - Use previous session data to identify insights and ask about unexplored domains
                     
                     Generate questions and format them as a single JSON object containing an array of questions.
                     `
                 }
             ],
             model: "llama3-groq-70b-8192-tool-use-preview",
-            temperature: 1,
+            temperature: 0.5,
             //   max_tokens: 200,
             response_format: { type: "json_object" }
         });

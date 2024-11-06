@@ -51,7 +51,7 @@ const UserInfoSchema = new Schema({
     },
     created_at: {
         type: Date,
-        default: Date.now()
+        default: Date.now
     },
 });
 

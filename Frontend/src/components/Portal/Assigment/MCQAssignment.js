@@ -8,13 +8,14 @@ import StressLevelChartModal from './StressLevelChartModal';
 import { toast } from 'sonner'
 import { NotebookText, ScrollText, SendHorizontal } from 'lucide-react'
 import { motion } from 'framer-motion'
+import GenerateQuestion from './GenerateQuestion'
 
 export default function MCQAssignment() {
   const [answers, setAnswers] = useState({})
   const [showModal, setShowModal] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [stressLevel, setStressLevel] = useState(0)
-
+  const [isDisabled, setIsDisabled] = useState(false)
   const questions = [
     {
       question: "What is your current Occupation?",
@@ -140,28 +141,8 @@ export default function MCQAssignment() {
         setStressLevel(result['Stress Level'])
         setShowModal(true)
 
-        // Generate summary for the new QA
-        const summaryResponse = await fetch(`/api/predict/generatesummary`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          }
-        });
-
-        if (!summaryResponse.ok) {
-          console.error('Error generating summary:', await summaryResponse.text());
-        }
-
-        const generateQuestionResponse = await fetch(`/api/predict/generatequestion`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          }
-        });
-
-        if (!generateQuestionResponse.ok) {
-          console.error('Error generating question:', await generateQuestionResponse.text());
-        }
+        const isGenerated = await GenerateQuestion()
+        setIsDisabled(isGenerated)
         // alert(`Your Stress level is ${JSON.stringify(result)}`)
       }
       if (response.status === 500) {
@@ -208,7 +189,7 @@ export default function MCQAssignment() {
                   // animate={{ opacity: 1, y: 0 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5 }}
-                  viewport={{ once: true, amount: 0.95 }}
+                  viewport={{ once: true, amount: 0.95,margin: '0px 0px 100px 0px'  }}
                   key={index} className="p-4  dark:border-gray-700 rounded-lg shadow-md  hover:shadow-lg transition-shadow">
                   <h3 className="text-lg sm:text-xl font-semibold mb-3">{index + 1}. {q.question}</h3>
                   <RadioGroup
@@ -228,7 +209,7 @@ export default function MCQAssignment() {
               ))}
               <div className="flex justify-center">
                 <Button disabled={isLoading} type="submit" size="lg" className="mt-4 px-8 !h-14 text-lg flex items-center justify-center"><span>Submit Answers</span><SendHorizontal className='ml-4 text-md' /></Button>
-                <StressLevelChartModal showModal={showModal} setShowModal={setShowModal} stressLevel={stressLevel} />
+                <StressLevelChartModal showModal={showModal} setShowModal={setShowModal} stressLevel={stressLevel} isDisabled={isDisabled} />
               </div>
             </form>
           </CardContent>
