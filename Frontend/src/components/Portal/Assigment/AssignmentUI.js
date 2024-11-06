@@ -1,9 +1,9 @@
 "use client"
-import MCQAssignment from '../../../components/Portal/Assigment/MCQAssignment'
 import WaitingTime from '../../../components/Portal/Assigment/WaitingTime'
-import React, { useState, useEffect } from 'react'
-import SAQAssignment from '../../../components/Portal/Assigment/SAQAssignment'
+import React, { useState, useEffect,Suspense } from 'react'
 import Loading from '../../../app/portal/assignment/loading'
+const MCQAssignment=React.lazy(()=>import('../../../components/Portal/Assigment/MCQAssignment'))
+const SAQAssignment=React.lazy(()=>import('../../../components/Portal/Assigment/SAQAssignment'))
 
 export default function Assignment() {
   const [nextAssignmentDate,setNextAssignmentDate] = useState(null);
@@ -23,13 +23,23 @@ export default function Assignment() {
   }
 
   useEffect(() => {
-    GetAssignment();
+    const fetchAssignment = async () => {
+      await GetAssignment();
+    };
+    
+    fetchAssignment();
   }, []);
   
   
 
   return (
-    nextAssignmentDate==null ? <Loading/>: nextAssignmentDate !== "false" ? <WaitingTime nextAssignmentDate={nextAssignmentDate} /> : latestQAAssignment == null ? <MCQAssignment /> : <SAQAssignment questions={latestQAAssignment.question[0]} />
+    nextAssignmentDate==null && latestQAAssignment==null ? <Loading/>: nextAssignmentDate !== "false" ? <WaitingTime nextAssignmentDate={nextAssignmentDate} /> : latestQAAssignment == null ? 
+    <Suspense fallback={<Loading/>}>
+      <MCQAssignment />
+    </Suspense> : 
+    <Suspense fallback={<Loading/>}>
+      <SAQAssignment questions={latestQAAssignment.question[0]} />
+    </Suspense>
 
   )
 }

@@ -34,44 +34,33 @@ export async function POST(req) {
             messages: [
                 {
                     role: "system",
-                    content: `You are a specialized mental health question generator focused on progression and uniqueness. Your role is to:
+                    content: `You are an empathetic mental health question generator. Your role is to:
 
-                        1. Generate unique, non-repetitive assessment questions that:
-                        - Build on previous session data
-                        - Avoid repeating historical questions
-                        - Support treatment progression
-                        - Maintain therapeutic alignment
+                1. Generate thoughtful questions that:
+                - Help understand the person's overall well-being
+                - Consider their previous responses
+                - Are easy to understand and answer
+                - Feel natural and conversational
 
-                        2. Use comprehensive knowledge of:
-                        - Mental health assessment methods
-                        - Treatment progression patterns
-                        - Question evolution techniques
-                        - Context-aware interviewing
-                        - Dynamic assessment strategies
-                        - Trauma-informed practices
-                        - Cultural competency principles
+                2. Focus on:
+                - Understanding the whole person
+                - Building trust and rapport
+                - Being sensitive to personal circumstances
+                - Following up on previous concerns when relevant
 
-                        3. Ensure each question:
-                        - Advances therapeutic goals
-                        - Builds on previous responses
-                        - Maintains clinical relevance
-                        - Considers cultural context
-                        - Follows trauma-informed guidelines
-
-                        4. Actively avoid:
-                        - Repeating previous questions
-                        - Similar thematic inquiries
-                        - Redundant assessment areas
-                        - Non-progressive questioning
-`
+                3. Create questions that:
+                - Are clear and straightforward
+                - Feel supportive and non-judgmental
+                - Help explore both challenges and strengths
+                - Consider the person's comfort level`
                 },
                 {
                     role: "user",
                     content: `
-                   Generate 10 unique mental health assessment questions based on:
+                   Generate 10 supportive mental health questions based on:
 
                     1. Previous Session Summary:
-                    ${JSON.stringify(latestQA.summary)}
+                    ${JSON.stringify(latestQA.summary.core_concerns)}
 
                     2. Previous Questions to Avoid:
                     ${JSON.stringify(latestQA.question[0])}
@@ -81,23 +70,20 @@ export async function POST(req) {
                    {
                         "questions": [
                             {
-                                "category": "[DOMAIN]",
+                                "category": "[AREA_OF_FOCUS]",
                                 "question_type": "open|closed",
                                 "question": "[QUESTION]"
                             }
                         ]
                     }
 
-                    4. Requirements:
-                    - Questions must progress from general to specific
-                    - Include at least one question from each major domain
-                    - Align with previous session concerns
-                    - Consider cultural and trauma sensitivity
-                    - Connect to treatment goals
-                    - Maintain professional and empathetic tone
-                    - Must not repeat questions from previous sessions
-                    - Should build upon previous responses
-
+                    4. Guidelines:
+                    - Mix general well-being questions with specific follow-ups
+                    - Use simple, clear language
+                    - Be naturally conversational
+                    - Show empathy and understanding
+                    - Build on previous responses when relevant
+                    - Avoid repeating previous questions
                     
                     Generate questions and format them as a single JSON object containing an array of questions.
                     `

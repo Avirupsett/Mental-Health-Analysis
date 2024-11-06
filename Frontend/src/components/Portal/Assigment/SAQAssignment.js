@@ -122,9 +122,9 @@ export default function MCQAssignment(props) {
       <main className="container mx-auto px-2 sm:px-4 flex justify-center ">
         <Card className="w-full bg-white bg-opacity-80 text-gray-800 max-w-3xl !mt-4 sm:!mt-8 !mb-8 shadow-xl">
           <CardHeader>
-            <CardTitle className="text-xl sm:text-2xl md:text-3xl font-medium text-center font-mono">
+            <CardTitle className="text-2xl sm:text-2xl md:text-3xl font-medium text-center font-mono">
 
-              <div className="flex items-center justify-center"><NotebookText className='mr-3 sm:mr-4 text-purple-600 h-6 w-6 sm:h-8 sm:w-8 md:h-9 md:w-9' />
+              <div className="flex items-center justify-center"><NotebookText className='mr-3 sm:mr-4 text-purple-600 h-7 w-7 sm:h-8 sm:w-8 md:h-9 md:w-9' />
 
                 Assignment Questions</div></CardTitle>
 
@@ -139,7 +139,7 @@ export default function MCQAssignment(props) {
                   transition={{ duration: 0.5 }}
                   viewport={{ once: true, amount: 0.95 }}
                   key={questionNumber} className="p-4  dark:border-gray-700 rounded-lg shadow-md  hover:shadow-lg transition-shadow">
-                  <h3 className="text-lg sm:text-xl !leading-8 font-semibold mb-3">{questionNumber}. {questionText}</h3>
+                  <h3 className="text-lg sm:text-xl sm:!leading-8 font-semibold mb-3">{questionNumber}. {questionText}</h3>
                   <div className="my-5 sm:mx-2">
                     <Textarea
                       value={answers[questionNumber] || ''}

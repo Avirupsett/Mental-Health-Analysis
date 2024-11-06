@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import Progress from '../../../models/progress';
 import QAAssignment from '../../../models/qaAssignment';
 import { getUser } from "@workos-inc/authkit-nextjs"
+import connectDB from '../../../lib/connectDB';
 
 export async function POST(req) {
     try {
@@ -11,6 +12,8 @@ export async function POST(req) {
         if (!user) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
+
+        await connectDB();
 
         let next_assignment_date;
         let latestQAAssignment;

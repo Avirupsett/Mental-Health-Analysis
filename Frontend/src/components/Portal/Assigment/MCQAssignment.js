@@ -197,7 +197,7 @@ export default function MCQAssignment() {
       <main className="container mx-auto px-2 sm:px-4 flex justify-center ">
         <Card className="w-full bg-white bg-opacity-80 text-gray-800 max-w-3xl !mt-4 sm:!mt-8 !mb-8 shadow-xl">
           <CardHeader>
-            <CardTitle className="text-xl sm:text-2xl md:text-3xl font-medium text-center font-mono"><div className="flex items-center justify-center"><NotebookText className='mr-3 sm:mr-4 text-purple-600 h-6 w-6 sm:h-8 sm:w-8 md:h-9 md:w-9' />Assignment Questions</div></CardTitle>
+            <CardTitle className="text-2xl sm:text-2xl md:text-3xl font-medium text-center font-mono"><div className="flex items-center justify-center"><NotebookText className='mr-3 sm:mr-4 text-purple-600 h-7 w-7 sm:h-8 sm:w-8 md:h-9 md:w-9' />Assignment Questions</div></CardTitle>
 
           </CardHeader>
           <CardContent className="p-4 sm:p-6 pt-0 sm:pt-0">
