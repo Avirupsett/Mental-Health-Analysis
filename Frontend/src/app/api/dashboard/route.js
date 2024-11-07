@@ -58,7 +58,7 @@ export async function POST(req) {
 
         // Create dictionary of stress levels by date
         const stressLevelByDate = userResponses.reduce((acc, response) => {
-            const date = new Date(response.created_at).toLocaleString('en-IN', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Asia/Kolkata' });
+            const date = new Date(response.created_at).toLocaleString('en-US', { day: '2-digit', month: 'short', year: 'numeric' });
             if (!acc[date]) {
                 acc[date] = { sum: 0, count: 0 };
             }
@@ -92,8 +92,8 @@ export async function POST(req) {
         // Calculate average stress level for each date and format the result
         const formattedStressLevelByDate = Object.entries(stressLevelByDate).map(([date, data], index) => ({
             dayno: index + 1,
-            date: new Date(date).toLocaleString('en-IN', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Asia/Kolkata' }),
-            formatted_date: new Date(date).toLocaleDateString('en-IN', { month: 'short', day: 'numeric',timeZone: 'Asia/Kolkata' }),
+            date: new Date(date).toLocaleString('en-US', { day: '2-digit', month: 'short', year: 'numeric' }),
+            formatted_date: new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
             stress_level: data.sum / data.count
         }));
 

@@ -13,6 +13,9 @@ const QaAssignmentSchema = new Schema({
         type: Object,
         required: true
     }],
+    enhanced_answer: [{
+        type: Object
+    }],
     summary: {
         type: Object
     },

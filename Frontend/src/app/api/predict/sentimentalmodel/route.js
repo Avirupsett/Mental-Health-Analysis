@@ -112,7 +112,14 @@ export async function POST(req) {
 
 
             if (existingQaAssignment) {
-                await qaAssignment.findByIdAndUpdate(existingQaAssignment._id, { $set: { answer: [data] } });
+                // Convert enhanced answers array to object format
+                const formattedAnswers = enhancedAnswer.enhancedAnswer.reduce((obj, item) => {
+                    const key = Object.keys(item)[0];
+                    obj[key] = item[key];
+                    return obj;
+                }, {});
+                
+                await qaAssignment.findByIdAndUpdate(existingQaAssignment._id, { $set: { answer: [data], enhanced_answer: [formattedAnswers] } });
             }
 
             // Update progress

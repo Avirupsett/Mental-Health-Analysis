@@ -106,7 +106,7 @@ export async function POST(req) {
                     Analyze the following mental health discussion using a comprehensive biopsychosocial framework:
 
                     Question: ${latestQA.question[0]}
-                    Answer: ${latestQA.answer[0]}
+                    Answer: ${latestQA.enhanced_answer[0] ? latestQA.enhanced_answer[0] : latestQA.answer[0]}
 
                     Provide a structured analysis covering:
 
@@ -236,7 +236,7 @@ export async function POST(req) {
                 }
             ],
             model: "llama3-groq-70b-8192-tool-use-preview",
-            temperature: 0.7,
+            temperature: 0.8,
             //   max_tokens: 200,
             response_format: { type: "json_object" }
         });

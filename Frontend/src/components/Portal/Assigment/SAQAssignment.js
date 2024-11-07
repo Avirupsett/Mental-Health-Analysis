@@ -67,7 +67,13 @@ export default function MCQAssignment(props) {
         setStressLevel(result['Stress Level'])
         setShowModal(true)
         const isGenerated = await GenerateQuestion()
-        setIsDisabled(isGenerated)
+        if (isGenerated==false) {
+          const isGenerated2 = await GenerateQuestion()
+          setIsDisabled(isGenerated2)
+        }
+        else {
+          setIsDisabled(isGenerated)
+        }
         // alert(`Your Stress level is ${JSON.stringify(result)}`)
       }
       if (response.status === 500) {

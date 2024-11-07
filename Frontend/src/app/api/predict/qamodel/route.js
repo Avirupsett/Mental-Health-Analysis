@@ -72,6 +72,7 @@ export async function POST(req) {
                 user_id: user.id,
                 question: questions,
                 answer: answers,
+                enhanced_answer: []
             });
             const savedQaAssignment = await newQaAssignment.save();
 

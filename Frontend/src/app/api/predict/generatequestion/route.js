@@ -53,7 +53,11 @@ export async function POST(req) {
                 - Feel supportive and non-judgmental
                 - Help explore both challenges and strengths
                 - Consider the person's comfort level
-                - Introduce randomness to uncover new insights`
+                - Introduce randomness to uncover new insights
+                - Adapt to the user's responses and session history
+                - Use varied question formats to maintain interest
+                - Leverage previous session data to identify new areas of exploration
+                - Encourage reflection and self-awareness`
                 },
                 {
                     role: "user",
@@ -63,11 +67,8 @@ export async function POST(req) {
                     1. Previous Session Summary:
                     ${JSON.stringify(latestQA.summary.core_concerns)}
 
-                    2. Previous Questions to Avoid:
-                    ${JSON.stringify(latestQA.question[0])}
 
-
-                    3. Response Format as json:
+                    2. Response Format as json:
                    {
                         "questions": [
                             {
@@ -78,7 +79,7 @@ export async function POST(req) {
                         ]
                     }
 
-                    4. Guidelines:
+                    3. Guidelines:
                     - Mix general well-being questions with specific follow-ups
                     - Use simple, clear language
                     - Be naturally conversational
@@ -87,13 +88,16 @@ export async function POST(req) {
                     - Avoid repeating previous questions
                     - Introduce randomness to explore new areas
                     - Use previous session data to identify insights and ask about unexplored domains
+                    - Consider varying the focus on different domains
+                    - Randomly select a domain-specific risk to explore further
+                    - Use different question structures to maintain engagement
                     
                     Generate questions and format them as a single JSON object containing an array of questions.
                     `
                 }
             ],
             model: "llama3-groq-70b-8192-tool-use-preview",
-            temperature: 0.5,
+            temperature: 0.8,
             //   max_tokens: 200,
             response_format: { type: "json_object" }
         });
