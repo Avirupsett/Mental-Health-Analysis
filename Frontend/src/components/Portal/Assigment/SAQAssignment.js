@@ -1,13 +1,20 @@
 'use client'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Button } from "../../ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "../../ui/card"
 import StressLevelChartModal from './StressLevelChartModal';
 import { toast } from 'sonner'
-import { NotebookText, ScrollText, SendHorizontal } from 'lucide-react'
+import { Check, Circle, CircleCheck, CircleCheckBig, Languages, NotebookText, ScrollText, SendHorizontal } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { Textarea } from '../../ui/textarea'
 import GenerateQuestion from './GenerateQuestion'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "../../../components/ui/dropdown-menu"
 
 export default function MCQAssignment(props) {
   const [answers, setAnswers] = useState({})
@@ -15,13 +22,85 @@ export default function MCQAssignment(props) {
   const [isLoading, setIsLoading] = useState(false)
   const [stressLevel, setStressLevel] = useState(0)
   const [isDisabled, setIsDisabled] = useState(false)
+  const [language, setLanguage] = useState('en')
+  const [translatedQuestions, setTranslatedQuestions] = useState(props.questions)
+
+  const getLocale = () => {
+    if (typeof window !== 'undefined') {
+      const storedLocale = localStorage.getItem('locale')
+      return storedLocale || 'en'
+    }
+    return 'en'
+  }
+
+  const translate = async (lang, questions) => {
+
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/translate?target_language=${lang}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(questions)
+      })
+
+      if (!response.ok) {
+        toast.dismiss()
+        toast.error(`An error occurred. Please try again later.`)
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+
+      const text = await response.text()
+      try {
+        toast.dismiss()
+        toast.success('Translated successfully')
+        const data = JSON.parse(text)
+        return data
+      } catch (e) {
+        console.error('Failed to parse JSON:', text)
+        throw new Error('Invalid JSON response from server')
+      }
+    } catch (error) {
+      toast.dismiss()
+      toast.error(`An error occurred. Please try again later.`)
+      console.error('Translation error:', error)
+      return questions // Fallback to original questions on error
+    }
+
+  }
+
+  useEffect(() => {
+    const locale = getLocale()
+    if (locale !== 'en') {
+      setLanguage(locale)
+      toast.loading('Translating questions...')
+      translate(locale, props.questions).then(translatedQuestions => {
+        setTranslatedQuestions(translatedQuestions)
+      })
+    }
+  }, [])
+
+  const setLocale = async (locale) => {
+    if (typeof window !== 'undefined') {
+      if (locale !== 'en') {
+        toast.loading('Translating questions...')
+      }
+      setLanguage(locale)
+      await translate(locale, props.questions).then(translatedQuestions => {
+        setTranslatedQuestions(translatedQuestions)
+      })
+      localStorage.setItem('locale', locale)
+    }
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    
+
     let data = {}
     let allAnswered = true
     setIsLoading(true);
+    let translatedData = {}
+
 
     Object.entries(props.questions).forEach(([questionNumber, questionText]) => {
       if (answers[questionNumber] === undefined) {
@@ -36,7 +115,14 @@ export default function MCQAssignment(props) {
       setIsLoading(false)
       return
     }
-    const loadingToast = toast.loading('Fetching results...');
+
+    if (language !== 'en') {
+      toast.loading('Translating data...')
+      translatedData = await translate('en', data)
+    }
+    else {
+      translatedData = data
+    }
 
     // Create an AbortController
     const controller = new AbortController();
@@ -51,35 +137,40 @@ export default function MCQAssignment(props) {
     }, 20000); // 20 seconds
 
     try {
-      const response = await fetch('/api/predict/sentimentalmodel', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-        signal: signal
-      });
-      clearTimeout(timeoutId);
-      toast.dismiss(loadingToast);
-      if (response.status === 200) {
-        // toast.success('Results fetched successfully')
-        const result = await response.json()
-        setStressLevel(result['Stress Level'])
-        setShowModal(true)
-        const isGenerated = await GenerateQuestion()
-        if (isGenerated==false) {
-          const isGenerated2 = await GenerateQuestion()
-          setIsDisabled(isGenerated2)
+      if (Object.keys(translatedData).length > 0) {
+      
+        const loadingToast = toast.loading('Fetching results...');
+
+        const response = await fetch('/api/predict/sentimentalmodel', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(translatedData),
+          signal: signal
+        });
+        clearTimeout(timeoutId);
+        toast.dismiss(loadingToast);
+        if (response.status === 200) {
+          // toast.success('Results fetched successfully')
+          const result = await response.json()
+          setStressLevel(result['Stress Level'])
+          setShowModal(true)
+          const isGenerated = await GenerateQuestion()
+          if (isGenerated == false) {
+            const isGenerated2 = await GenerateQuestion()
+            setIsDisabled(isGenerated2)
+          }
+          else {
+            setIsDisabled(isGenerated)
+          }
+          // alert(`Your Stress level is ${JSON.stringify(result)}`)
         }
-        else {
-          setIsDisabled(isGenerated)
+        if (response.status === 500) {
+          toast.error('An error occurred. Please try again later.');
+          setIsLoading(false)
+          return;
         }
-        // alert(`Your Stress level is ${JSON.stringify(result)}`)
-      }
-      if (response.status === 500) {
-        toast.error('An error occurred. Please try again later.');
-        setIsLoading(false)
-        return;
       }
     } catch (error) {
       toast.dismiss(loadingToast);
@@ -91,6 +182,7 @@ export default function MCQAssignment(props) {
     } finally {
       setIsLoading(false);
     }
+
   }
 
   return (
@@ -108,17 +200,55 @@ export default function MCQAssignment(props) {
       </header> */}
       <main className="container mx-auto px-2 sm:px-4 flex justify-center ">
         <Card className="w-full bg-white bg-opacity-80 text-gray-800 max-w-3xl !mt-4 sm:!mt-8 !mb-8 shadow-xl">
-          <CardHeader>
-            <CardTitle className="text-2xl sm:text-2xl md:text-3xl font-medium text-center font-mono">
+          <CardHeader className="flex justify-between items-center flex-row">
+            <CardTitle className="text-2xl sm:text-2xl md:text-3xl font-medium text-center font-mono flex-grow mr-[-40px]">
+              <div className="flex items-center justify-center">
+                <NotebookText className='mr-3 sm:mr-4 text-purple-600 h-7 w-7 sm:h-8 sm:w-8 md:h-9 md:w-9' />
+                Assignment Questions
+              </div>
+            </CardTitle>
 
-              <div className="flex items-center justify-center"><NotebookText className='mr-3 sm:mr-4 text-purple-600 h-7 w-7 sm:h-8 sm:w-8 md:h-9 md:w-9' />
-
-                Assignment Questions</div></CardTitle>
-
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon">
+                  <div className='flex items-center justify-center'>
+                    <Languages className="h-6 w-6" />
+                  </div>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" >
+                <DropdownMenuItem onClick={() => setLocale('en')}>
+                  {language === 'en' ? (
+                    <CircleCheckBig className="mr-2 h-4 w-4" />
+                  ) : (
+                    <Circle className="mr-2 h-4 w-4" />
+                  )}
+                  English
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => setLocale('hi')}>
+                  {language === 'hi' ? (
+                    <CircleCheckBig className="mr-2 h-4 w-4" />
+                  ) : (
+                    <Circle className="mr-2 h-4 w-4" />
+                  )}
+                  हिंदी
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => setLocale('bn')}>
+                  {language === 'bn' ? (
+                    <CircleCheckBig className="mr-2 h-4 w-4" />
+                  ) : (
+                    <Circle className="mr-2 h-4 w-4" />
+                  )}
+                  বাংলা
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </CardHeader>
           <CardContent className="p-4 sm:p-6 pt-0 sm:pt-0">
             <form onSubmit={handleSubmit} className="space-y-7 !mb-8">
-              {Object.entries(props.questions).map(([questionNumber, questionText]) => (
+              {Object.entries(translatedQuestions).map(([questionNumber, questionText]) => (
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   // animate={{ opacity: 1, y: 0 }}
@@ -141,7 +271,7 @@ export default function MCQAssignment(props) {
               ))}
               <div className="flex justify-center">
                 <Button disabled={isLoading} type="submit" size="lg" className="mt-4 px-8 !h-14 text-lg flex items-center justify-center"><span>Submit Answers</span><SendHorizontal className='ml-4 text-md' /></Button>
-                <StressLevelChartModal showModal={showModal} setShowModal={setShowModal} stressLevel={stressLevel} isDisabled={isDisabled}/>
+                <StressLevelChartModal showModal={showModal} setShowModal={setShowModal} stressLevel={stressLevel} isDisabled={isDisabled} />
               </div>
             </form>
           </CardContent>

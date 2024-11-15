@@ -5,3 +5,5 @@ pandas==2.2
 tensorflow==2.17.0
 textblob
 keras_preprocessing==1.1.2
+deep-translator
+flask_cors

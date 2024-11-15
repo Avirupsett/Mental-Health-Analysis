@@ -8,8 +8,11 @@ import pickle
 from keras_preprocessing.sequence import pad_sequences
 import re
 from textblob import TextBlob
+from deep_translator import GoogleTranslator
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 # Create a route decorator
 @app.route('/')
@@ -46,6 +49,9 @@ def predict():
             predicted_value = 0
         elif predicted_value > 0:
             predicted_value = (predicted_value/2.2) * 100
+
+        if predicted_value>100:
+            predicted_value=100
 
         return jsonify({'Stress Level': "{:.2f}".format(predicted_value)})
 
@@ -86,8 +92,49 @@ def get_severity():
     
     return jsonify({"Stress Level": "{:.2f}".format(severity)})
 
-# if __name__ == "__main__":
-#     app.run(debug=True)
+@app.route('/translate', methods=['POST'])
+def translate_questions():
+    try:
+        # Get request data
+        request_data = request.get_json()
+        target_language = request.args.get('target_language', 'en')  # Default to English if not specified
+        questions = request_data
+
+        # Initialize translator
+        translator = GoogleTranslator(source='auto', target=target_language)
+
+        # Translate each question while maintaining the same format
+        translated_questions = {}
+        for key, text in questions.items():
+            translated = translator.translate(text)
+            translated_questions[key] = translated
+
+        return jsonify(translated_questions)
+
+    except Exception as e:
+        return jsonify({'error': str(e)})
+    
+# @app.route('/detect_transtlate',methods='POST')
+# def detect_and_translate():
+#      # Initialize translator
+#     try:
+#     # Get request data
+#         request_data = request.get_json()
+#         translator = GoogleTranslator(source='auto', target='en')
+
+#         translated_answers = {}
+#         for key, text in request_data.items():
+#             if(detect(text)!='en'):
+#                 translated = translator.translate(text)
+#                 translated_answers[key] = translated
+
+#         return jsonify(translated_answers)
+
+#     except Exception as e:
+#         return jsonify({'error': str(e)})
+
+if __name__ == "__main__":
+    app.run(debug=True)
 
 
 
