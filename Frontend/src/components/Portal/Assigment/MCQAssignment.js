@@ -1,12 +1,12 @@
 'use client'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { RadioGroup, RadioGroupItem } from "../../../components/ui/radio-group"
 import { Label } from "../../../components/ui/label"
 import { Button } from "../../../components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "../../../components/ui/card"
 import StressLevelChartModal from './StressLevelChartModal';
 import { toast } from 'sonner'
-import { NotebookText, ScrollText, SendHorizontal } from 'lucide-react'
+import { NotebookText, ScrollText, SendHorizontal, Volume2Icon } from 'lucide-react'
 import { motion } from 'framer-motion'
 import GenerateQuestion from './GenerateQuestion'
 
@@ -16,6 +16,9 @@ export default function MCQAssignment() {
   const [isLoading, setIsLoading] = useState(false)
   const [stressLevel, setStressLevel] = useState(0)
   const [isDisabled, setIsDisabled] = useState(false)
+  const [playingQuestion, setPlayingQuestion] = useState(null);
+  const audioRef = useRef(null);
+
   const questions = [
     {
       question: "What is your current Occupation?",
@@ -168,6 +171,46 @@ export default function MCQAssignment() {
     }
   }
 
+  const textToSpeech = async (text, language, questionNumber) => {
+
+    try {
+      // Stop any currently playing audio
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+      }
+
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/tts`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ text, language }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to generate audio');
+      }
+
+      const audioBlob = await response.blob();
+      const audioUrl = URL.createObjectURL(audioBlob);
+
+      // Play the audio
+      const audio = new Audio(audioUrl);
+      audioRef.current = audio
+      setPlayingQuestion(questionNumber);
+      audio.play();
+
+      // Reset the icon color when audio ends
+      audio.onended = () => {
+        setPlayingQuestion(null);
+        audioRef.current = null;
+      };
+    } catch (error) {
+      console.error('Error generating audio:', error);
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -197,7 +240,7 @@ export default function MCQAssignment() {
                   transition={{ duration: 0.5 }}
                   viewport={{ once: true, amount: 0.95,margin: '0px 0px 100px 0px'  }}
                   key={index} className="p-4  dark:border-gray-700 rounded-lg shadow-md  hover:shadow-lg transition-shadow">
-                  <h3 className="text-lg sm:text-xl font-semibold mb-3">{index + 1}. {q.question}</h3>
+                  <h3 className="text-lg sm:text-xl font-semibold mb-3 flex items-center justify-between">{index + 1}. {q.question}<span className="cursor-pointer inline-block pl-2" onClick={() => textToSpeech(q.question, "en", index + 1)}><Volume2Icon className={`h-5 w-5 ${playingQuestion === index + 1 ? 'text-purple-600' : ''}`} /></span></h3>
                   <RadioGroup
                     onValueChange={(value) => setAnswers({ ...answers, [index]: value })}
                     className="grid gap-1"

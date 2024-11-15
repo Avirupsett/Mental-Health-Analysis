@@ -2,7 +2,7 @@ import os
 os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
 import ydf
 import pandas as pd
-from flask import Flask, request,jsonify
+from flask import Flask, request,jsonify,make_response
 import tensorflow as tf
 import pickle
 from keras_preprocessing.sequence import pad_sequences
@@ -10,6 +10,8 @@ import re
 from textblob import TextBlob
 from deep_translator import GoogleTranslator
 from flask_cors import CORS
+from gtts import gTTS
+import io
 
 app = Flask(__name__)
 CORS(app)
@@ -114,24 +116,41 @@ def translate_questions():
     except Exception as e:
         return jsonify({'error': str(e)})
     
-# @app.route('/detect_transtlate',methods='POST')
-# def detect_and_translate():
-#      # Initialize translator
-#     try:
-#     # Get request data
-#         request_data = request.get_json()
-#         translator = GoogleTranslator(source='auto', target='en')
-
-#         translated_answers = {}
-#         for key, text in request_data.items():
-#             if(detect(text)!='en'):
-#                 translated = translator.translate(text)
-#                 translated_answers[key] = translated
-
-#         return jsonify(translated_answers)
-
-#     except Exception as e:
-#         return jsonify({'error': str(e)})
+@app.route('/tts', methods=['POST'])
+def text_to_speech():
+    """
+    API endpoint to convert text to audio in any language.
+    
+    Accepts a JSON payload with the following structure:
+    {
+        "text": "Hello, world!",
+        "language": "en"
+    }
+    
+    Returns: An audio file in MP3 format.
+    """
+    data = request.get_json()
+    text = data['text']
+    language = data['language']
+    
+    try:
+        tts = gTTS(text=text, lang=language)
+        
+        # Save the audio to an in-memory byte buffer
+        audio_file = io.BytesIO()
+        tts.write_to_fp(audio_file)
+        audio_file.seek(0)
+        
+        # Return the audio file as a response
+        response = make_response(audio_file.getvalue())
+        response.headers.set('Content-Type', 'audio/mpeg')
+        response.headers.set('Content-Disposition', 'attachment', filename=f"sample.mp3")
+        
+        return response
+    except Exception as e:
+        print(f"Error generating audio: {e}")
+        return {"error": "Failed to generate audio"},500
+    
 
 if __name__ == "__main__":
     app.run(debug=True)

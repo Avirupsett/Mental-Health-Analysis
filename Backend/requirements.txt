@@ -7,3 +7,4 @@ textblob
 keras_preprocessing==1.1.2
 deep-translator
 flask_cors
+gtts

@@ -1,10 +1,10 @@
 'use client'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Button } from "../../ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "../../ui/card"
 import StressLevelChartModal from './StressLevelChartModal';
 import { toast } from 'sonner'
-import { Check, Circle, CircleCheck, CircleCheckBig, Languages, NotebookText, ScrollText, SendHorizontal } from 'lucide-react'
+import { Check, Circle, CircleCheck, CircleCheckBig, Languages, NotebookText, ScrollText, SendHorizontal, Speaker, Volume, Volume1Icon, Volume2Icon } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { Textarea } from '../../ui/textarea'
 import GenerateQuestion from './GenerateQuestion'
@@ -24,6 +24,8 @@ export default function MCQAssignment(props) {
   const [isDisabled, setIsDisabled] = useState(false)
   const [language, setLanguage] = useState('en')
   const [translatedQuestions, setTranslatedQuestions] = useState(props.questions)
+  const [playingQuestion, setPlayingQuestion] = useState(null);
+  const audioRef = useRef(null);
 
   const getLocale = () => {
     if (typeof window !== 'undefined') {
@@ -82,9 +84,7 @@ export default function MCQAssignment(props) {
 
   const setLocale = async (locale) => {
     if (typeof window !== 'undefined') {
-      if (locale !== 'en') {
-        toast.loading('Translating questions...')
-      }
+      toast.loading('Translating questions...')
       setLanguage(locale)
       await translate(locale, props.questions).then(translatedQuestions => {
         setTranslatedQuestions(translatedQuestions)
@@ -92,6 +92,46 @@ export default function MCQAssignment(props) {
       localStorage.setItem('locale', locale)
     }
   }
+
+  const textToSpeech = async (text, language, questionNumber) => {
+
+    try {
+      // Stop any currently playing audio
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+      }
+
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/tts`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ text, language }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to generate audio');
+      }
+
+      const audioBlob = await response.blob();
+      const audioUrl = URL.createObjectURL(audioBlob);
+
+      // Play the audio
+      const audio = new Audio(audioUrl);
+      audioRef.current = audio
+      setPlayingQuestion(questionNumber);
+      audio.play();
+
+      // Reset the icon color when audio ends
+      audio.onended = () => {
+        setPlayingQuestion(null);
+        audioRef.current = null;
+      };
+    } catch (error) {
+      console.error('Error generating audio:', error);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -138,7 +178,7 @@ export default function MCQAssignment(props) {
 
     try {
       if (Object.keys(translatedData).length > 0) {
-      
+
         const loadingToast = toast.loading('Fetching results...');
 
         const response = await fetch('/api/predict/sentimentalmodel', {
@@ -200,11 +240,11 @@ export default function MCQAssignment(props) {
       </header> */}
       <main className="container mx-auto px-2 sm:px-4 flex justify-center ">
         <Card className="w-full bg-white bg-opacity-80 text-gray-800 max-w-3xl !mt-4 sm:!mt-8 !mb-8 shadow-xl">
-          <CardHeader className="flex justify-between items-center flex-row">
-            <CardTitle className="text-2xl sm:text-2xl md:text-3xl font-medium text-center font-mono flex-grow mr-[-40px]">
+          <CardHeader className="flex justify-between items-center flex-row pb-1 sm:pb-6">
+            <CardTitle className="text-2xl sm:text-2xl md:text-3xl font-medium text-center font-mono flex-grow mr-[-30px]">
               <div className="flex items-center justify-center">
-                <NotebookText className='mr-3 sm:mr-4 text-purple-600 h-7 w-7 sm:h-8 sm:w-8 md:h-9 md:w-9' />
-                Assignment Questions
+                <NotebookText className='mr-2 sm:mr-4 text-purple-600 h-7 w-7 sm:h-8 sm:w-8 md:h-9 md:w-9' />
+                <span className='hidden sm:block'>Assignment</span>&nbsp;Questions
               </div>
             </CardTitle>
 
@@ -256,7 +296,7 @@ export default function MCQAssignment(props) {
                   transition={{ duration: 0.5 }}
                   viewport={{ once: true, amount: 0.95, margin: '0px 0px 100px 0px' }}
                   key={questionNumber} className="p-4  dark:border-gray-700 rounded-lg shadow-md  hover:shadow-lg transition-shadow">
-                  <h3 className="text-lg sm:text-xl sm:!leading-8 font-semibold mb-3">{questionNumber}. {questionText}</h3>
+                  <h3 className="text-lg sm:text-xl sm:!leading-8 font-semibold mb-3 flex items-center justify-between">{questionNumber}. {questionText} <span className={`cursor-pointer inline-block pl-2 ${playingQuestion === questionNumber ? 'pointer-events-none' : ''}`} onClick={() => textToSpeech(questionText, language, questionNumber)}><Volume2Icon className={`h-5 w-5 ${playingQuestion === questionNumber ? 'text-purple-600' : ''}`} /></span></h3>
                   <div className="my-5 sm:mx-2">
                     <Textarea
                       value={answers[questionNumber] || ''}
@@ -264,7 +304,7 @@ export default function MCQAssignment(props) {
                       className="w-full p-3 text-sm sm:text-base border rounded-lg focus:ring-2 focus:ring-slate-200 focus:border-transparent"
                       rows={4}
                       id={`question-${questionNumber}`}
-                      placeholder="Enter your answer here..."
+                      placeholder={language === 'bn' ? `উত্তর দিন...` : language === 'hi' ? `उत्तर दो...` : `Enter your answer here...`}
                     />
                   </div>
                 </motion.div>
