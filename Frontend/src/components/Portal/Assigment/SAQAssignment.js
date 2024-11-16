@@ -243,8 +243,8 @@ export default function MCQAssignment(props) {
           <CardHeader className="flex justify-between items-center flex-row pb-1 sm:pb-6">
             <CardTitle className="text-2xl sm:text-2xl md:text-3xl font-medium text-center font-mono flex-grow mr-[-30px]">
               <div className="flex items-center justify-center">
-                <NotebookText className='mr-2 sm:mr-4 text-purple-600 h-7 w-7 sm:h-8 sm:w-8 md:h-9 md:w-9' />
-                <span className='hidden sm:block'>Assignment</span>&nbsp;Questions
+                <NotebookText className='mr-3 sm:mr-4 text-purple-600 h-7 w-7 sm:h-8 sm:w-8 md:h-9 md:w-9' />
+                <span className='hidden sm:block'>Assignment &nbsp;</span>Questions
               </div>
             </CardTitle>
 
