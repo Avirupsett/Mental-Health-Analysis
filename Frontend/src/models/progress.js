@@ -12,6 +12,10 @@ const ProgressSchema = new Schema({
     next_assignment_date: {
         type: Date,
     },
+    warning_type: {
+        type: Number,
+        default: 0
+    },
 
     created_at: {
         type: Date,

@@ -102,6 +102,10 @@ export async function POST(req) {
 
         const result = await response.json();
 
+        // Update progress
+        let progress = await Progress.findOne({ user_id: user.id });
+
+        let warning_type = 0;
         if (result) {
             const userResponse = new UserResponses({
                 user_id: user.id,
@@ -109,6 +113,9 @@ export async function POST(req) {
                     { "Stress Level": parseFloat(result["Stress Level"]) },
             });
             await userResponse.save();
+            if (parseFloat(result["Stress Level"]) >= process.env.STRESS_LEVEL_THRESHOLD) {
+                warning_type = 1;
+            }
 
 
             if (existingQaAssignment) {
@@ -118,17 +125,17 @@ export async function POST(req) {
                     obj[key] = item[key];
                     return obj;
                 }, {});
-                
+
                 await qaAssignment.findByIdAndUpdate(existingQaAssignment._id, { $set: { answer: [data], enhanced_answer: [formattedAnswers] } });
             }
 
-            // Update progress
-            let progress = await Progress.findOne({ user_id: user.id });
+
             if (!progress) {
                 const newProgress = new Progress({
                     user_id: user.id,
                     pending_assignments: process.env.MAX_ASSIGNMENT - 1,
-                    next_assignment_date: new Date(Date.now())
+                    next_assignment_date: new Date(Date.now()),
+                    warning_type: warning_type
                 });
                 await newProgress.save();
             }
@@ -137,7 +144,7 @@ export async function POST(req) {
                 if (progress.pending_assignments - 1 > 0) {
                     const updatedProgress = await Progress.findOneAndUpdate(
                         { user_id: user.id },
-                        { $set: { pending_assignments: progress.pending_assignments - 1 } },
+                        { $set: { pending_assignments: progress.pending_assignments - 1, warning_type:(progress.warning_type==1 && warning_type==0) ? 0 : (progress.warning_type + warning_type) > 1 ? 0 : progress.warning_type + warning_type } },
                         { new: true }
                     );
                     await updatedProgress.save();
@@ -148,7 +155,8 @@ export async function POST(req) {
                         {
                             $set: {
                                 next_assignment_date: new Date(Date.now() + process.env.ASSIGNMENT_INTERVAL * 1000) > new Date(new Date().setHours(0, 0, 0, 0) + 86400 * 1000) ? new Date(new Date().setHours(0, 0, 0, 0) + process.env.ASSIGNMENT_INTERVAL * 1000) : new Date(Date.now() + process.env.ASSIGNMENT_INTERVAL * 1000),
-                                pending_assignments: process.env.MAX_ASSIGNMENT
+                                pending_assignments: process.env.MAX_ASSIGNMENT,
+                                warning_type: (progress.warning_type==1 && warning_type==0) ? 0 : (progress.warning_type + warning_type) > 1 ? 0 : progress.warning_type + warning_type
                             }
                         },
                         { new: true }
@@ -158,7 +166,7 @@ export async function POST(req) {
             }
 
         }
-        return NextResponse.json(result, { status: 200 });
+        return NextResponse.json({ ...result, warning_type: !progress ? warning_type : progress.warning_type + warning_type }, { status: 200 });
 
     } catch (error) {
         console.error('Error:', error);

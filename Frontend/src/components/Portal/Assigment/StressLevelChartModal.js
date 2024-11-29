@@ -14,9 +14,9 @@ import {
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "../../../components/ui/chart"
 import { motion, AnimatePresence } from "framer-motion"
 import { Activity,ArrowRight,Loader2 } from "lucide-react"
+import { useTransitionRouter } from 'next-view-transitions'
 
-
-export default function StressLevelChartModal({ showModal, setShowModal, stressLevel, isDisabled }) {
+export default function StressLevelChartModal({ showModal, setShowModal, stressLevel, isDisabled, warningType }) {
  
   let stressData = [
     { name: "High", value: parseFloat(stressLevel), color: "#9333EA" },
@@ -68,6 +68,18 @@ export default function StressLevelChartModal({ showModal, setShowModal, stressL
       }
     }
   }, [showModal, weightedStressLevel])
+
+  const router = useTransitionRouter()
+  const handleNextAssignment = () => {
+    setShowModal(false);
+    if(warningType == 1){
+      router.replace('/portal/recommendation')
+    }else if(warningType == 2){
+      router.replace('/portal/councelor')
+    }else{
+      window.scrollTo(0,0); window.location.reload();
+    }
+  }
 
   return (
     <Dialog open={showModal} onOpenChange={setShowModal}>
@@ -154,7 +166,7 @@ export default function StressLevelChartModal({ showModal, setShowModal, stressL
                 </ChartContainer>
 
                 <div className="w-full flex justify-center items-center mt-7">
-                  <Button disabled={!isDisabled} size="lg" variant="outline" onClick={() => {setShowModal(false);window.scrollTo(0,0); window.location.reload();}} className="flex items-center text-base sm:text-lg cursor-pointer border-purple-600 text-purple-600 relative overflow-hidden group !h-12 !py-7 !px-10">
+                  <Button disabled={!isDisabled} size="lg" variant="outline" onClick={() => {handleNextAssignment()}} className="flex items-center text-base sm:text-lg cursor-pointer border-purple-600 text-purple-600 relative overflow-hidden group !h-12 !py-7 !px-10">
                     <span className="relative z-10 group-hover:text-white transition-colors duration-300">
                      {isDisabled ? <ArrowRight className="w-5 h-5 mr-2 inline-block" /> : <Loader2 className="w-5 h-5 mr-2 inline-block animate-spin" />}
                      {!isDisabled ? "Please wait" : "Next Assignment"}

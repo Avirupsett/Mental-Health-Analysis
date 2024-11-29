@@ -25,6 +25,7 @@ export default function MCQAssignment(props) {
   const [language, setLanguage] = useState('en')
   const [translatedQuestions, setTranslatedQuestions] = useState(props.questions)
   const [playingQuestion, setPlayingQuestion] = useState(null);
+  const [warningType, setWarningType] = useState(0)
   const audioRef = useRef(null);
 
   const getLocale = () => {
@@ -187,6 +188,7 @@ export default function MCQAssignment(props) {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(translatedData),
+          cache: 'no-store',
           signal: signal
         });
         clearTimeout(timeoutId);
@@ -195,6 +197,7 @@ export default function MCQAssignment(props) {
           // toast.success('Results fetched successfully')
           const result = await response.json()
           setStressLevel(result['Stress Level'])
+          setWarningType(result['warning_type'])
           setShowModal(true)
           const isGenerated = await GenerateQuestion()
           if (isGenerated == false) {
@@ -311,7 +314,7 @@ export default function MCQAssignment(props) {
               ))}
               <div className="flex justify-center">
                 <Button disabled={isLoading} type="submit" size="lg" className="mt-4 px-8 !h-14 text-lg flex items-center justify-center"><span>Submit Answers</span><SendHorizontal className='ml-4 text-md' /></Button>
-                <StressLevelChartModal showModal={showModal} setShowModal={setShowModal} stressLevel={stressLevel} isDisabled={isDisabled} />
+                <StressLevelChartModal showModal={showModal} setShowModal={setShowModal} stressLevel={stressLevel} isDisabled={isDisabled} warningType={warningType}/>
               </div>
             </form>
           </CardContent>
