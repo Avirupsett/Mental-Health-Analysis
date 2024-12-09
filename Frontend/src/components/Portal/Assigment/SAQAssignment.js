@@ -176,7 +176,7 @@ export default function MCQAssignment(props) {
       toast.dismiss();
       toast.error('Request is taking too long. Please try again.');
       setIsLoading(false);
-    }, 30000); // 30 seconds
+    }, 60000); // 60 seconds
 
     try {
       if (Object.keys(translatedData).length > 0) {
@@ -184,6 +184,12 @@ export default function MCQAssignment(props) {
         toast.loading('Fetching results...');
         const enhancingAnswer = await EnhancingAnswer(translatedData)
 
+        if(enhancingAnswer==false){
+          toast.error('Failed! Please try again later.')
+          setIsLoading(false)
+          return
+        }
+        
         const sentimentalResponse = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/sentimentmodel`, {
           method: 'POST',
           headers: {
@@ -196,6 +202,7 @@ export default function MCQAssignment(props) {
         if (!sentimentalResponse.ok) {
           throw new Error(`HTTP error! status: ${sentimentalResponse.status}`);
         }
+
 
         const sentimentResult = await sentimentalResponse.json();
 
