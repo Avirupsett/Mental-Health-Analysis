@@ -147,11 +147,11 @@ export default function Sidebar(props) {
                     <span className="text-sm text-gray-500">{props.user.email}</span>
                   </div>
                 </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem className="cursor-pointer">
+                {/* <DropdownMenuSeparator /> */}
+                {/* <DropdownMenuItem className="cursor-pointer">
                   <SettingsIcon className="mr-2 h-4 w-4" />
                   <span>Settings</span>
-                </DropdownMenuItem>
+                </DropdownMenuItem> */}
                 <DropdownMenuSeparator />
                 <DropdownMenuItem className="cursor-pointer" onClick={handleLogout}>
                   <LogOutIcon className="mr-2 h-4 w-4" />

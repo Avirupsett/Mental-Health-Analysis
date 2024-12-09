@@ -12,7 +12,7 @@ export default function Tracking() {
   })
 
   useEffect(() => {
-    const launchDate = new Date("2024-12-31T00:00:00").getTime()
+    const launchDate = new Date("2025-02-28T00:00:00").getTime()
 
     const timer = setInterval(() => {
       const now = new Date().getTime()

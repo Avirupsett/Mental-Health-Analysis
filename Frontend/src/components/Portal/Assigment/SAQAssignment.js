@@ -15,6 +15,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../../../components/ui/dropdown-menu"
+import EnhancingAnswer from './EnhancingAnswer'
 
 export default function MCQAssignment(props) {
   const [answers, setAnswers] = useState({})
@@ -181,13 +182,29 @@ export default function MCQAssignment(props) {
       if (Object.keys(translatedData).length > 0) {
 
         const loadingToast = toast.loading('Fetching results...');
+        const enhancingAnswer = await EnhancingAnswer(translatedData)
+
+        const sentimentalResponse = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/sentimentmodel`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(enhancingAnswer.enhancedAnswer),
+          cache: 'no-store'
+        });
+
+        if (!sentimentalResponse.ok) {
+          throw new Error(`HTTP error! status: ${sentimentalResponse.status}`);
+        }
+
+        const sentimentResult = await sentimentalResponse.json();
 
         const response = await fetch('/api/predict/sentimentalmodel', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(translatedData),
+          body: JSON.stringify({result: sentimentResult, enhancedAnswer: enhancingAnswer}),
           cache: 'no-store',
           signal: signal
         });
@@ -314,7 +331,7 @@ export default function MCQAssignment(props) {
               ))}
               <div className="flex justify-center">
                 <Button disabled={isLoading} type="submit" size="lg" className="mt-4 px-8 !h-14 text-lg flex items-center justify-center"><span>Submit Answers</span><SendHorizontal className='ml-4 text-md' /></Button>
-                <StressLevelChartModal showModal={showModal} setShowModal={setShowModal} stressLevel={stressLevel} isDisabled={isDisabled} warningType={warningType}/>
+                <StressLevelChartModal showModal={showModal} setShowModal={setShowModal} stressLevel={stressLevel} isDisabled={isDisabled} warningType={warningType} />
               </div>
             </form>
           </CardContent>

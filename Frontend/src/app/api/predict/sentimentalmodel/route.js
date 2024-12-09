@@ -24,83 +24,11 @@ export async function POST(req) {
 
     let data = await req.json()
 
-
-    const enhancedData = await groq.chat.completions.create({
-        messages: [
-            {
-                role: "system",
-                content: `You are an expert answer completion assistant specializing in mental health responses. Your role is to:
-
-                1. Core Functions:
-                - Analyze question-answer alignment
-                - Maintain original context and meaning
-
-                2. Completion Process:
-                - Map question components
-                - Keep it short in one line and simple
-
-                3. Quality Standards:
-                - Answer completeness`
-            },
-            {
-                role: "user",
-                content: `Analyze and complete the following mental health Q&A:
-
-                Original Questions:  ${JSON.stringify(existingQaAssignment.question)}
-
-                Original Answers: ${JSON.stringify(data)}
-
-                Complete the answer by:
-
-                1. Question Analysis:
-                - Identify main question components
-
-                2. Answer Evaluation:
-                - Check completeness
-                - Verify relevance
-
-                3. Completion Requirements:
-                - Keep original meaning
-                - Use consistent language
-
-
-                Format response in json as:
-                {
-                    "enhancedAnswer": [
-                         {"1": "enhanced response for question 1"},
-                        {"2": "enhanced response for question 2"},
-                        // ... continue for all questions
-                    ]
-                }
-
-                Ensure the enhanced answer:
-                1. Preserves original meaning
-                2. Keep it short in one line and simple.
-                3. Don't add extra text or assume anything which is not there in original answer`
-            }
-        ],
-        model: "llama3-groq-70b-8192-tool-use-preview",
-        temperature: 0,
-        response_format: { type: "json_object" }
-    });
-
-    const enhancedAnswer = JSON.parse(enhancedData.choices[0]?.message?.content);
-
     try {
 
-        const response = await fetch(`${BACKEND_URL}/sentimentmodel`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(enhancedAnswer.enhancedAnswer),
-        });
+        const result = data["result"];
+        const enhancedAnswer = data["enhancedAnswer"];
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const result = await response.json();
 
         // Update progress
         let progress = await Progress.findOne({ user_id: user.id });
@@ -144,7 +72,7 @@ export async function POST(req) {
                 if (progress.pending_assignments - 1 > 0) {
                     const updatedProgress = await Progress.findOneAndUpdate(
                         { user_id: user.id },
-                        { $set: { pending_assignments: progress.pending_assignments - 1, warning_type:(progress.warning_type==1 && warning_type==0) ? 0 : (progress.warning_type + warning_type) > 1 ? 0 : progress.warning_type + warning_type } },
+                        { $set: { pending_assignments: progress.pending_assignments - 1, warning_type: (progress.warning_type == 1 && warning_type == 0) ? 0 : (progress.warning_type + warning_type) > 1 ? 0 : progress.warning_type + warning_type } },
                         { new: true }
                     );
                     await updatedProgress.save();
@@ -156,7 +84,7 @@ export async function POST(req) {
                             $set: {
                                 next_assignment_date: new Date(Date.now() + process.env.ASSIGNMENT_INTERVAL * 1000) > new Date(new Date().setHours(0, 0, 0, 0) + 86400 * 1000) ? new Date(new Date().setHours(0, 0, 0, 0) + process.env.ASSIGNMENT_INTERVAL * 1000) : new Date(Date.now() + process.env.ASSIGNMENT_INTERVAL * 1000),
                                 pending_assignments: process.env.MAX_ASSIGNMENT,
-                                warning_type: (progress.warning_type==1 && warning_type==0) ? 0 : (progress.warning_type + warning_type) > 1 ? 0 : progress.warning_type + warning_type
+                                warning_type: (progress.warning_type == 1 && warning_type == 0) ? 0 : (progress.warning_type + warning_type) > 1 ? 0 : progress.warning_type + warning_type
                             }
                         },
                         { new: true }
