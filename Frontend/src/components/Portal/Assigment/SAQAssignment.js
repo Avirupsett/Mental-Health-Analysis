@@ -173,15 +173,15 @@ export default function MCQAssignment(props) {
     // Set up a timeout
     const timeoutId = setTimeout(() => {
       controller.abort(); // Abort the fetch request
-      toast.dismiss(loadingToast);
+      toast.dismiss();
       toast.error('Request is taking too long. Please try again.');
       setIsLoading(false);
-    }, 20000); // 20 seconds
+    }, 30000); // 30 seconds
 
     try {
       if (Object.keys(translatedData).length > 0) {
 
-        const loadingToast = toast.loading('Fetching results...');
+        toast.loading('Fetching results...');
         const enhancingAnswer = await EnhancingAnswer(translatedData)
 
         const sentimentalResponse = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/sentimentmodel`, {
@@ -209,7 +209,7 @@ export default function MCQAssignment(props) {
           signal: signal
         });
         clearTimeout(timeoutId);
-        toast.dismiss(loadingToast);
+        toast.dismiss();
         if (response.status === 200) {
           // toast.success('Results fetched successfully')
           const result = await response.json()
@@ -233,7 +233,7 @@ export default function MCQAssignment(props) {
         }
       }
     } catch (error) {
-      toast.dismiss(loadingToast);
+      toast.dismiss();
       if (error.name === 'AbortError') {
         // Request was aborted
       } else {
