@@ -94,7 +94,7 @@ export async function POST(req) {
             }
 
         }
-        return NextResponse.json({ ...result, warning_type: !progress ? warning_type : progress.warning_type + warning_type }, { status: 200 });
+        return NextResponse.json({ ...result, warning_type: !progress ? warning_type :(progress.warning_type == 1 && warning_type == 0) ? 0 : progress.warning_type + warning_type }, { status: 200 });
 
     } catch (error) {
         console.error('Error:', error);
