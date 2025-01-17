@@ -91,13 +91,22 @@ export async function POST(req) {
                     - Consider varying the focus on different domains
                     - Randomly select a domain-specific risk to explore further
                     - Use different question structures to maintain engagement
+                    - Don't ask questions about how you rate your own mental health
+                    - Don't ask MCQ questions
                     
                     Generate questions and format them as a single JSON object containing an array of questions.
                     `
                 }
             ],
-            model: "llama3-groq-70b-8192-tool-use-preview",
-            temperature: 0.8,
+            model: "llama-3.1-8b-instant",
+            // model: [
+                // "llama-3.3-70b-versatile",
+                // "llama3-70b-8192",
+                // "llama3-8b-8192",
+                // 'mixtral-8x7b-32768',
+                // "gemma2-9b-it"
+            // ][Math.floor(Math.random() * )],
+            temperature: 1.2,
             //   max_tokens: 200,
             response_format: { type: "json_object" }
         });

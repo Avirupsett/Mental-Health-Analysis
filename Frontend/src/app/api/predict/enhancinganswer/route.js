@@ -81,8 +81,8 @@ export async function POST(req) {
                         `
                 }
             ],
-            model: "llama3-groq-70b-8192-tool-use-preview",
-            temperature: 0,
+            model: "llama-3.1-8b-instant",
+            temperature: 1,
             response_format: { type: "json_object" }
         });
     
