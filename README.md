@@ -3,6 +3,9 @@
 
 ![alt text](https://github.com/Avirupsett/Mental-Health-Analysis/blob/master/Data%20flow%20diagram_%20Level%202.png)
 
+<h1 align="center"> WorkFlow Of MENTRIX </h1>
+
+![alt text](https://github.com/Avirupsett/Mental-Health-Analysis/blob/9d01b8dd8758dd72b60e14da21186ed4e19749fb/Neutral%20Flowchart%20Template.png)
 ## Overview
 This system is designed to analyze and monitor users' mental health through a combination of questionnaires, social media tracking, and personalized feedback. The data flow diagram illustrates the process from user registration to ongoing monitoring and personalized reporting.
 
