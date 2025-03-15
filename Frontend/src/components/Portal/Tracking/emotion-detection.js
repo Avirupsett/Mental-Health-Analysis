@@ -27,7 +27,7 @@ const sampleResults = {
   }
 };
 
-export default function EmotionDetection() {
+export default function EmotionDetection( {todayDuration, setTodayDuration} ) {
   const [isTracking, setIsTracking] = useState(false)
   const [trackingDuration, setTrackingDuration] = useState(0)
   const [cameraError, setCameraError] = useState(false)
@@ -183,7 +183,7 @@ export default function EmotionDetection() {
       setIsAnalyzing(true);
       
       // Simulate analysis delay
-      setTimeout(() => {
+      setTimeout(async () => {
         const totalEmotions = emotionLogs.reduce((acc, log) => {
           Object.entries(log.emotions).forEach(([emotion, value]) => {
             acc[emotion] = (acc[emotion] || 0) + value;
@@ -204,18 +204,28 @@ export default function EmotionDetection() {
         const results = {
           dominant,
           confidence: averageEmotions[dominant],
-          emotions: averageEmotions
+          emotions: averageEmotions,
+          duration: trackingDuration
         };
+
+        setTodayDuration(prev => prev + trackingDuration)
+        
+        if (results.dominant !== null) {
+          const res = await fetch('/api/predict/addemotionresult', {
+            method: 'POST',
+            body: JSON.stringify(results),
+          });
+        }
 
         setAnalysisResults(results);
         setIsAnalyzing(false);
       }, 1500); // 1.5 second delay for analysis simulation
     }
 
-    console.log('Tracking Session Results:', {
-      duration: trackingDuration,
-      emotionLogs
-    });
+    // console.log('Tracking Session Results:', {
+    //   duration: trackingDuration,
+    //   emotionLogs
+    // });
   }, [intervalId, timerIntervalId, trackingDuration, emotionLogs]);
 
   // Make sure cleanup effect handles both intervals

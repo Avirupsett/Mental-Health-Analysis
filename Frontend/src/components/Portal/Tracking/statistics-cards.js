@@ -17,19 +17,28 @@ const getMockStatistics = () => {
   }
 }
 
-export default function StatisticsCards() {
+// Get statistics from API
+const getStatistics = async () => {
+  const res = await fetch('/api/predict/getemotionresult')
+  const data = await res.json()
+  return data
+}
+
+export default function StatisticsCards( {todayDuration, setTodayDuration} ) {
   const [stats, setStats] = useState(null)
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    // Simulate fetching statistics
     const fetchStats = async () => {
-      // In a real app, this would be an API call
-      const data = getMockStatistics()
+      const data = await getStatistics()
       setStats(data)
+      setTodayDuration(data.todayTotalDuration)
+      // console.log(data.todayTotalDuration)
+      setIsLoading(false)
     }
-
     fetchStats()
   }, [])
+
 
   const formatDuration = (seconds) => {
     const hours = Math.floor(seconds / 3600)
@@ -57,7 +66,7 @@ export default function StatisticsCards() {
           <Clock className="h-6 w-6 text-indigo-950" />
         </CardHeader>
         <CardContent className="relative z-10">
-          <div className="text-3xl text-indigo-900 font-bold mt-2">{stats ? formatDuration(stats.todayDuration) : "Loading..."}</div>
+          <div className="text-3xl text-indigo-900 font-bold mt-2">{stats ? formatDuration(todayDuration) : "..."}</div>
           <p className="text-xs sm:text-sm text-indigo-950 text-muted-foreground mt-1">Total video duration recorded today</p>
         </CardContent>
       </Card>
@@ -65,12 +74,12 @@ export default function StatisticsCards() {
       <Card className="overflow-hidden relative">
       <div className="absolute inset-0 bg-gradient-to-br from-purple-50 to-pink-200"></div>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 relative z-10">
-          <CardTitle className="text-sm sm:text-xl text-pink-950 font-medium">Yesterday's Time</CardTitle>
+          <CardTitle className="text-sm sm:text-xl text-pink-950 font-medium">Previous Time</CardTitle>
           <Calendar className="h-6 w-6 text-pink-950" />
         </CardHeader>
         <CardContent className="relative z-10">
-          <div className="text-3xl font-bold text-pink-900 mt-2">{stats ? formatDuration(stats.yesterdayDuration) : "Loading..."}</div>
-          <p className="text-xs sm:text-sm text-pink-950 text-muted-foreground mt-1">Total video duration recorded yesterday</p>
+          <div className="text-3xl font-bold text-pink-900 mt-2">{stats ? formatDuration(stats.previousTotalDuration) : "..."}</div>
+          <p className="text-xs sm:text-sm text-pink-950 text-muted-foreground mt-1">Total video duration recorded previous day</p>
         </CardContent>
       </Card>
 
@@ -81,12 +90,12 @@ export default function StatisticsCards() {
           <BarChart3 className="h-6 w-6 text-green-950" />
         </CardHeader>
         <CardContent className="relative z-10">
-          {stats?.previousResult ? (
+          {stats?.previousTotalDuration ? (
             <>
-              <div className="text-3xl text-green-900 font-bold mt-2">{stats.previousResult.dominant}</div>
+              <div className="text-3xl text-green-900 font-bold mt-2 capitalize">{stats.yesterdayDominantEmotion}</div>
               <p className="text-xs sm:text-sm text-green-950 text-muted-foreground mt-1">
-                {Math.round(stats.previousResult.confidence * 100)}% confidence at{" "}
-                {formatDate(stats.previousResult.timestamp)}
+                {Math.round(stats.yesterdayConfidence * 100)}% confidence at{" "}
+                {formatDate(stats.yesterdayTimestamp)}
               </p>
             </>
           ) : (

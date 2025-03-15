@@ -3,6 +3,7 @@ import { getUser } from '@workos-inc/authkit-nextjs';
 import connectDB from '../../../lib/connectDB';
 import UserResponses from '../../../models/userAnalytics';
 import Progress from '../../../models/progress';
+import EmotionResults from '../../../models/emotionResults';
 
 export async function POST(req) {
     try {
@@ -101,6 +102,39 @@ export async function POST(req) {
         moderateStressCount = totalAssignments==0 ? 0 : moderateStressCount/totalAssignments*100;
         highStressCount = totalAssignments==0 ? 0 : highStressCount/totalAssignments*100;
         veryHighStressCount = totalAssignments==0 ? 0 : veryHighStressCount/totalAssignments*100;
+
+        const emotionResults = await EmotionResults.find({ user_id: userId });
+        
+        if(emotionResults.length > 0) {
+        // Create dictionary of emotion results by date
+        const emotionResultsByDate = emotionResults.reduce((acc, result) => {
+            const date = new Date(result.created_at).toLocaleString('en-US', { day: '2-digit', month: 'short', year: 'numeric' });
+            if (!acc[date]) {
+                acc[date] = { duration: 0, count: 0, dominant: null };
+            }
+            acc[date].duration += result.duration;
+            acc[date].count += 1;
+            if(result.dominant) {
+                acc[date].dominant = result.dominant;
+            }
+            return acc;
+        }, {});
+
+        // Count types of emotions emotion results without date
+        const emotionCounts = emotionResults.reduce((acc, result) => {
+            if (!result.emotions) return acc;
+            
+            Object.entries(result.emotions).forEach(([emotion, value]) => {
+                if (!acc[emotion]) {
+                    acc[emotion] = 0;
+                }
+                acc[emotion] += value;
+            });
+            return acc;
+        }, {});
+
+        }
+        
 
         return NextResponse.json({
             pendingAssignments,
