@@ -50,7 +50,7 @@ export default async function DashboardUI() {
       </div>
 
       {/* Charts */}
-      <Charts formattedStressLevelByDate={dashboardData.formattedStressLevelByDate} lowStressCount={dashboardData.lowStressCount} moderateStressCount={dashboardData.moderateStressCount} highStressCount={dashboardData.highStressCount} veryHighStressCount={dashboardData.veryHighStressCount} />
+      <Charts formattedStressLevelByDate={dashboardData.formattedStressLevelByDate} lowStressCount={dashboardData.lowStressCount} moderateStressCount={dashboardData.moderateStressCount} highStressCount={dashboardData.highStressCount} veryHighStressCount={dashboardData.veryHighStressCount} emotionResultsByDate={dashboardData.emotionResultsByDate} emotionCounts={dashboardData.emotionCounts} />
 
     </div>
   )

@@ -105,10 +105,12 @@ export async function POST(req) {
 
         const emotionResults = await EmotionResults.find({ user_id: userId });
         
+        let emotionResultsByDate = {};
+        let emotionCounts = {};
         if(emotionResults.length > 0) {
         // Create dictionary of emotion results by date
-        const emotionResultsByDate = emotionResults.reduce((acc, result) => {
-            const date = new Date(result.created_at).toLocaleString('en-US', { day: '2-digit', month: 'short', year: 'numeric' });
+        emotionResultsByDate = emotionResults.reduce((acc, result) => {
+            const date = new Date(result.created_at);
             if (!acc[date]) {
                 acc[date] = { duration: 0, count: 0, dominant: null };
             }
@@ -121,7 +123,7 @@ export async function POST(req) {
         }, {});
 
         // Count types of emotions emotion results without date
-        const emotionCounts = emotionResults.reduce((acc, result) => {
+        emotionCounts = emotionResults.reduce((acc, result) => {
             if (!result.emotions) return acc;
             
             Object.entries(result.emotions).forEach(([emotion, value]) => {
@@ -132,6 +134,12 @@ export async function POST(req) {
             });
             return acc;
         }, {});
+
+        // Convert emotion counts to percentages and round to 2 decimal places
+        const totalEmotions = Object.values(emotionCounts).reduce((sum, count) => sum + count, 0);
+        Object.keys(emotionCounts).forEach(emotion => {
+            emotionCounts[emotion] = ((emotionCounts[emotion] / totalEmotions) * 100).toFixed(2);
+        });
 
         }
         
@@ -145,7 +153,9 @@ export async function POST(req) {
             moderateStressCount,
             highStressCount,
             veryHighStressCount,
-            formattedStressLevelByDate
+            formattedStressLevelByDate,
+            emotionResultsByDate,
+            emotionCounts
         });
 
     } catch (error) {
