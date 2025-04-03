@@ -6,23 +6,19 @@ import {
 	getSignInUrl,
 	getSignUpUrl,
 	getUser,
-	signOut,
 } from "@workos-inc/authkit-nextjs";
 import { MdAutoAwesome } from "react-icons/md";
 import { IoRocketOutline } from "react-icons/io5";
+import VoiceAssistant from "../components/VoiceAssistant";
 
 export default async function Home() {
-	// Retrieves the user from the session or returns `null` if no user is signed in
 	const { user } = await getUser();
-
-	// Get the URL to redirect the user to AuthKit to sign in
 	const signInUrl = await getSignInUrl();
-
-	// Get the URL to redirect the user to AuthKit to sign up
 	const signUpUrl = await getSignUpUrl();
 
 	return (
 		<section className="min-h-[100vh]">
+			<VoiceAssistant />
 			<Navbar />
 			<div className="container h-[calc(100vh-100px)] mx-auto flex px-0 py-20 md:py-0 md:flex-row flex-col items-center justify-center mt-[-30px] md:mt-[-15px]">
 				<div className=" md:w-[48%]  flex flex-col md:items-start md:text-left mb-16 md:mb-0 items-center text-center px-4 md:pl-2.5 lg:pl-2">

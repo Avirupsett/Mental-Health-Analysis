@@ -2,6 +2,7 @@ import { Roboto_Slab, Mulish } from "next/font/google";
 import "./globals.css";
 import { Toaster } from 'sonner'
 import { ViewTransitions } from 'next-view-transitions'
+import VoiceAssistantWrapper from '../components/VoiceAssistantWrapper';
 
 const roboto_Slab = Roboto_Slab({
   subsets: ["latin"],
@@ -84,7 +85,7 @@ export default async function RootLayout({ children }) {
         
           <Toaster position="top-center" richColors duration={3000} className="font-mono" toastOptions={{className: "text-sm sm:text-base"}}/>
         {children}
-        
+        <VoiceAssistantWrapper />
       </body>
     </html>
     </ViewTransitions>
