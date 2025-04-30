@@ -92,9 +92,15 @@ export default function StatisticsCards( {todayDuration, setTodayDuration} ) {
         <CardContent className="relative z-10">
           {stats?.previousTotalDuration ? (
             <>
-              <div className="text-3xl text-green-900 font-bold mt-2 capitalize">{stats.yesterdayDominantEmotion}</div>
+              <div className="text-3xl flex items-center gap-2 text-green-900 font-bold mt-2 capitalize">{stats.yesterdayDominantEmotion } <span className="text-lg">({stats.yesterdayStressLevel > 90
+                      ? "Very High Stress"
+                      : stats.yesterdayStressLevel > 70
+                      ? "High Stress"
+                      : stats.yesterdayStressLevel > 30
+                      ? "Moderate Stress"
+                      : "Low Stress"})</span> </div>
               <p className="text-xs sm:text-sm text-green-950 text-muted-foreground mt-1">
-                {Math.round(stats.yesterdayConfidence * 100)}% confidence at{" "}
+                {Math.round(stats.yesterdayStressLevel)}% stress level at{" "}
                 {formatDate(stats.yesterdayTimestamp)}
               </p>
             </>

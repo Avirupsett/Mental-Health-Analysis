@@ -1,9 +1,7 @@
 import React from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from "../../ui/card"
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, LabelList } from 'recharts'
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, LabelList, defs, linearGradient, stop } from 'recharts'
 import { Calendar } from 'lucide-react'
-
-
 
 export default function EmotionBarChart(props) {
   const barChartData = [
@@ -25,6 +23,14 @@ export default function EmotionBarChart(props) {
             <div className="h-[280px] sm:h-[330px]">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={barChartData} margin={{ top: 0, right: 10, left: -11, bottom: 30 }}>
+                  <defs>
+                    {barChartData.map((entry, index) => (
+                      <linearGradient id={`gradient-${index}`} key={index} x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor={entry.fill} stopOpacity={0.8} />
+                        <stop offset="100%" stopColor={entry.fill} stopOpacity={0.4} />
+                      </linearGradient>
+                    ))}
+                  </defs>
                   <CartesianGrid strokeDasharray="3 3" stroke="#818cf880" vertical={false}/>
                   <XAxis dataKey="name" stroke="#4f46e5" angle={-45} textAnchor="end" fontSize={14} />
                   <YAxis stroke="#4f46e5" domain={[0, 100]} />
@@ -43,7 +49,7 @@ export default function EmotionBarChart(props) {
                     />
                     {
                       barChartData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.fill} />
+                        <Cell key={`cell-${index}`} fill={`url(#gradient-${index})`} />
                       ))
                     }
                   </Bar>

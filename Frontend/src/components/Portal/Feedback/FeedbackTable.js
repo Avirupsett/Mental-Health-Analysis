@@ -7,7 +7,7 @@ import { Input } from "../../../components/ui/input"
 import { PieChart, Pie, Cell, Label } from "recharts"
 import { motion } from "framer-motion"
 import FeedbackLoading from "../../../app/portal/feedback/loading"
-import { Search } from "lucide-react"
+import { MessageCircleQuestion, Search, Video } from "lucide-react"
 
 
 const DonutChart = ({ value, color }) => {
@@ -132,6 +132,7 @@ export default function FeedbackTable({ stressReport }) {
                             <TableRow className="bg-gray-100">
                                 <TableHead className="w-[100px] font-semibold text-gray-700 text-base whitespace-nowrap">Sl No.</TableHead>
                                 <TableHead className="w-[250px] text-center font-semibold text-gray-700 text-base whitespace-nowrap">Submitted Date</TableHead>
+                                <TableHead className="w-[250px] text-center font-semibold text-gray-700 text-base whitespace-nowrap">Analysis Type</TableHead>
                                 <TableHead className="w-[250px] text-center font-semibold text-gray-700 text-base whitespace-nowrap">Stress</TableHead>
                                 <TableHead className="w-[150px] text-center font-semibold text-gray-700 text-base whitespace-nowrap">Stress Level</TableHead>
                             </TableRow>
@@ -150,6 +151,9 @@ export default function FeedbackTable({ stressReport }) {
                                     <TableCell className="text-center text-gray-600 text-sm sm:text-base whitespace-nowrap">
                                         {item.Date} {item.Time}
                                     </TableCell>
+                                    {item['analysis_type']=='emotion'?<TableCell className="flex justify-center"><div className={`flex  justify-evenly text-center font-semibold text-blue-700 border-blue-200 bg-blue-50 text-sm sm:text-base border-2 w-[230px] rounded-full p-2 px-4`}><Video/>Emotion Analysis</div></TableCell>:
+                                    <TableCell className="flex justify-center"><div  className={`flex justify-evenly text-center font-semibold text-fuchsia-700 border-fuchsia-200 bg-fuchsia-50 text-sm sm:text-base border-2 w-[200px] rounded-full p-2 px-4`}><MessageCircleQuestion/>Q&A Analysis</div></TableCell>
+                                    }
                                     <TableCell className="text-center"><div style={{ color: item['color'].text_color, borderColor: item['color'].border_color, backgroundColor: item['color'].bg_color }} className={`inline-block text-center font-semibold text-sm sm:text-base border-2 w-[110px] rounded-full p-2 px-4`}>{item['stress type']}</div></TableCell>
                                     <TableCell className="text-center whitespace-nowrap">
 

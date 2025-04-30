@@ -1,6 +1,6 @@
 import React from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from "../../ui/card"
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 import { Calendar } from 'lucide-react'
 
 export default function EmotionLineChart({ emotionResultsByDate }) {
@@ -81,10 +81,16 @@ export default function EmotionLineChart({ emotionResultsByDate }) {
       <CardContent>
         <div className="h-[280px] sm:h-[330px]">
           <ResponsiveContainer width="100%" height="100%">
-            <LineChart
+            <AreaChart
               data={lineChartData}
               margin={{ top: 5, right: 30, left: 0, bottom: 30 }}
             >
+              <defs>
+                <linearGradient id="colorDuration" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#6366f1" stopOpacity={0.8} />
+                  <stop offset="95%" stopColor="#6366f1" stopOpacity={0} />
+                </linearGradient>
+              </defs>
               <CartesianGrid strokeDasharray="3 3" stroke="#818cf880" vertical={false} />
               <XAxis 
                 dataKey="date" 
@@ -108,21 +114,21 @@ export default function EmotionLineChart({ emotionResultsByDate }) {
                         <b>Duration:</b> {value} seconds<br/>
                         <b>Dominant:</b> {props.payload.dominant.charAt(0).toUpperCase() + props.payload.dominant.slice(1)}
                       </span>,
-                      
                     ];
                   }
                   return [value, name];
                 }}
               />
-              <Line
+              <Area
                 type="monotone"
                 dataKey="duration"
                 stroke="#6366f1"
+                fill="url(#colorDuration)"
                 strokeWidth={2}
                 dot={(props) => <CustomDot {...props} dominant={props.payload.dominant} />}
                 activeDot={{ r: 6 }}
               />
-            </LineChart>
+            </AreaChart>
           </ResponsiveContainer>
         </div>
       </CardContent>

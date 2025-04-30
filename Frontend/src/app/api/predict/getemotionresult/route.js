@@ -16,6 +16,7 @@ export async function GET(req) {
 
     // Find today's total duration if exists
     let todayTotalDuration = 0;
+    let yesterdayStressLevel = 0;
     if (emotionResults.length > 0) {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
@@ -37,7 +38,7 @@ export async function GET(req) {
 
         // Keep looking back days until we find results
         let daysBack = 1;
-        while (previousEmotionResults.length === 0 && daysBack <= 30) { // Limit to 30 days back
+        while (previousEmotionResults.length === 0 && daysBack <= 180) { // Limit to 30 days back
             const previousDay = new Date(mostRecentDate);
             previousDay.setDate(previousDay.getDate() - daysBack);
             
@@ -50,17 +51,28 @@ export async function GET(req) {
         }
 
         previousTotalDuration = previousEmotionResults.reduce((total, result) => total + result.duration, 0);
+
+        // Check if the stressLevel property exists in the previousEmotionResults then average it
+       
+        yesterdayStressLevel = previousEmotionResults.reduce((total, result) => {
+            if (result.stressLevel) {
+                return total + result.stressLevel;
+            }
+            return total;
+        }, 0) / previousEmotionResults.length || 0;
     }
 
     // Find yesterday's dominant emotion, confidence and timestamp most recent
     let yesterdayDominantEmotion = null;
     let yesterdayConfidence = 0;
     let yesterdayTimestamp = null;
+    
     if (previousEmotionResults.length > 0) {
         yesterdayDominantEmotion = previousEmotionResults[0].dominant;
         yesterdayConfidence = previousEmotionResults[0].confidence;
         yesterdayTimestamp = previousEmotionResults[0].created_at;
+        // yesterdayStressLevel = previousEmotionResults[0].stressLevel || 0;
     }
 
-    return NextResponse.json({ todayTotalDuration, previousTotalDuration, yesterdayDominantEmotion, yesterdayConfidence, yesterdayTimestamp });
+    return NextResponse.json({ todayTotalDuration, previousTotalDuration, yesterdayDominantEmotion, yesterdayConfidence, yesterdayTimestamp, yesterdayStressLevel });
 }

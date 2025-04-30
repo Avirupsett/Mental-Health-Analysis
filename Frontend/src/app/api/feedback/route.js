@@ -65,7 +65,8 @@ export async function POST() {
         'color': color,
         'stress level': parseInt(response.analysis_result['Stress Level'].toFixed(0)),
         'Date': dateTime.toLocaleString('en-US', { day: '2-digit', month: 'short', year: 'numeric' }),
-        'Time': new Date(dateTime.toISOString()).toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
+        'Time': new Date(dateTime.toISOString()).toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }),
+        'analysis_type': response.analysis_result['analysis_type']
       };
     });
 
