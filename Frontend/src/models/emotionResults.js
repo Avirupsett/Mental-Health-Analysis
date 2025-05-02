@@ -18,6 +18,9 @@ const EmotionResultsSchema = new Schema({
     duration:{
         type: Number,
     },
+    stressLevel:{
+        type: Number,
+    },
     created_at: {
         type: Date,
         default: Date.now

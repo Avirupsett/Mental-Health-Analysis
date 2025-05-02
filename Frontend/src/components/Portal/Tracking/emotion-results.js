@@ -7,9 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../..
 import { Progress } from "../../../components/ui/progress"
 import { Skeleton } from "../../../components/ui/skeleton"
 import { Badge } from "../../../components/ui/badge"
-import { SmilePlus, Frown, Meh, AlertTriangle, SmileIcon, Video } from "lucide-react"
-
-
+import { SmilePlus, Frown, Meh, AlertTriangle, SmileIcon, Video, Activity } from "lucide-react"
 
 const emotionIcons = {
   Happy: <SmileIcon className="h-5 w-5" />,
@@ -19,7 +17,7 @@ const emotionIcons = {
   Angry: <Frown className="h-5 w-5" />,
 }
 
-export default function EmotionResults({ results, isLoading, videoData }) {
+export default function EmotionResults({ results, isLoading, videoData,stressLevel }) {
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
@@ -28,7 +26,9 @@ export default function EmotionResults({ results, isLoading, videoData }) {
 
   if (!mounted) return null
 
-    const getEmotionColor = (emotion) => {
+  
+
+  const getEmotionColor = (emotion) => {
     switch (emotion) {
       case "happy":
         return "bg-green-100 text-green-800"
@@ -50,6 +50,7 @@ export default function EmotionResults({ results, isLoading, videoData }) {
   }
 
   const getEmotionColorProgress = (emotion) => {
+
     switch (emotion) {
       case "happy":
         return "bg-green-500"
@@ -115,8 +116,31 @@ export default function EmotionResults({ results, isLoading, videoData }) {
                   <p className="text-2xl font-bold capitalize">{results.dominant}</p>
                 </div>
               </div>
-              <Badge variant="outline" className="text-lg px-3 py-1">
-                {Math.round(results.confidence * 100)}% Confidence
+              <Badge
+                variant="outline"
+                className={`text-lg px-4 py-2 flex items-center gap-3 rounded-lg shadow-sm ${
+                  stressLevel > 90
+                    ? "bg-red-100 text-red-800 border-red-300"
+                    : stressLevel > 70
+                    ? "bg-yellow-100 text-yellow-800 border-yellow-300"
+                    : stressLevel > 30
+                    ? "bg-green-100 text-green-800 border-green-300"
+                    : "bg-blue-100 text-blue-800 border-blue-300"
+                }`}
+              >
+                <Activity className="h-6 w-6 xl:h-8 xl:w-8 text-current flex-shrink-0" />
+                <div className="flex flex-col">
+                  <span className="font-bold">{stressLevel}% Stress</span>
+                  <span className="text-sm">
+                    {stressLevel > 90
+                      ? "Very High Stress"
+                      : stressLevel > 70
+                      ? "High Stress"
+                      : stressLevel > 30
+                      ? "Moderate Stress"
+                      : "Low Stress"}
+                  </span>
+                </div>
               </Badge>
             </div>
 

@@ -9,6 +9,7 @@ import { toast } from 'sonner';
 import { Badge } from "../../../components/ui/badge"
 import * as faceapi from 'face-api.js';
 import EmotionResults from "./emotion-results";
+import { set } from "mongoose"
 
 // Add these constants at the top of your component
 const videoWidth = 640;
@@ -37,6 +38,7 @@ export default function EmotionDetection( {todayDuration, setTodayDuration} ) {
   const [timerIntervalId, setTimerIntervalId] = useState(null)
   const [analysisResults, setAnalysisResults] = useState(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [stressLevel, setStressLevel] = useState(0);
   
   const webcamRef = useRef(null)
   const canvasRef = useRef(null)
@@ -201,11 +203,29 @@ export default function EmotionDetection( {todayDuration, setTodayDuration} ) {
         const dominant = Object.entries(averageEmotions)
           .reduce((a, b) => (a[1] > b[1] ? a : b))[0];
 
+          const findStressLevel =
+          averageEmotions.sad +
+          averageEmotions.angry +
+          averageEmotions.disgusted -
+          averageEmotions.happy -
+          averageEmotions.neutral +
+          averageEmotions.surprised +
+          averageEmotions.fearful
+       let stressLevel2 = Math.round(findStressLevel * 100)
+        if (stressLevel2 < 0) {
+          stressLevel2 = stressLevel2 + 100
+          setStressLevel(stressLevel2)
+        }
+        else{
+          setStressLevel(stressLevel2)
+        }
+
         const results = {
           dominant,
           confidence: averageEmotions[dominant],
           emotions: averageEmotions,
-          duration: trackingDuration
+          duration: trackingDuration,
+          stressLevel: stressLevel,
         };
 
         setTodayDuration(prev => prev + trackingDuration)
@@ -214,6 +234,16 @@ export default function EmotionDetection( {todayDuration, setTodayDuration} ) {
           const res = await fetch('/api/predict/addemotionresult', {
             method: 'POST',
             body: JSON.stringify(results),
+          });
+
+          const res2 = await fetch('/api/predict/adduserresponse', {
+            method: 'POST',
+            body: JSON.stringify({
+              result: {
+                "Stress Level": stressLevel2,
+              },
+
+            }),
           });
         }
 
@@ -320,6 +350,7 @@ export default function EmotionDetection( {todayDuration, setTodayDuration} ) {
       </Card>
 
       <EmotionResults 
+        stressLevel={stressLevel}
         results={analysisResults}
         isLoading={isAnalyzing}
         videoData={isTracking || emotionLogs.length > 0}

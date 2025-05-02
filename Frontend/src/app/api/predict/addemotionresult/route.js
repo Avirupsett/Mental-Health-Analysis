@@ -14,7 +14,8 @@ export async function POST(req) {
         dominant: data.dominant,
         confidence: data.confidence,
         emotions: data.emotions,
-        duration: data.duration
+        duration: data.duration,
+        stressLevel: data.stressLevel
     })
 
     await emotionResults.save();
