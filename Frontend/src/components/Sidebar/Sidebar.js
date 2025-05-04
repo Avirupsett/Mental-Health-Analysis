@@ -10,7 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../../components/ui/dropdown-menu"
-import { MenuIcon, XIcon, HomeIcon, InboxIcon, UsersIcon, SettingsIcon, ChevronLeftIcon, ChevronRightIcon, UserIcon, LogOutIcon, BotIcon } from 'lucide-react'
+import { MenuIcon, XIcon, HomeIcon, InboxIcon, UsersIcon, SettingsIcon, ChevronLeftIcon, ChevronRightIcon, UserIcon, LogOutIcon, BotIcon, FileChartColumnIncreasingIcon } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 import Image from 'next/image'
 import { toast } from 'sonner';
@@ -46,6 +46,7 @@ export default function Sidebar(props) {
     { icon: <InboxIcon className="h-5 w-5 sm:w-7 sm:h-9" />, label: 'Assigments', href: '/portal/assignment' },
     { icon: <UsersIcon className="h-5 w-5 sm:w-7 sm:h-9" />, label: 'Feedback', href: '/portal/feedback' },
     { icon: <BotIcon className="h-5 w-5 sm:w-7 sm:h-9" />, label: 'Tracking', href: '/portal/tracking' },
+    { icon: <FileChartColumnIncreasingIcon className="h-5 w-5 sm:w-7 sm:h-9" />, label: 'Report', href: '/portal/report' },
     { icon: <SettingsIcon className="h-5 w-5 sm:w-7 sm:h-9" />, label: 'Profile', href: '/portal/profile' },
   ]
 

@@ -18,8 +18,9 @@ export async function POST(req) {
         let highStressCount = 0;
         let veryHighStressCount = 0;
 
-        // Count total assignments
-        const totalAssignments = userResponses.length;
+        // Count total assignments based on analysis type
+        const totalAssignments = userResponses.filter(response => response.analysis_result['analysis_type'] != "emotion").length;
+       
 
         const progress = await Progress.findOne({ user_id: userId });
         let pendingAssignments = process.env.MAX_ASSIGNMENT;
@@ -86,7 +87,7 @@ export async function POST(req) {
         const startOfWeek = new Date(today.setDate(today.getDate() - today.getDay() + (today.getDay() === 0 ? -6 : 1)));
         startOfWeek.setHours(0, 0, 0, 0);
         const assignmentsThisWeek = userResponses.filter(response => 
-            new Date(response.created_at) >= startOfWeek
+            new Date(response.created_at) >= startOfWeek && response.analysis_result['analysis_type'] != "emotion"
         ).length;
         
 

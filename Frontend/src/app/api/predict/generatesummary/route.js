@@ -192,15 +192,8 @@ export async function POST(req) {
                             }
                         },
                         "progress": {
-                            "improvements": {
-                                "physical": [],
-                                "biological": [],
-                                "psychological": [],
-                                "social": [],
-                                "trauma": [],
-                                "identity": [],
-                                "historical": []
-                            },
+                            "strengths": [],
+                            "challenges": [],
                             "strategy_effectiveness": {}
                         },
                         "action_items": {
