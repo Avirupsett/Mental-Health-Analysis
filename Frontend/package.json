@@ -28,6 +28,7 @@
     "framer-motion": "^11.11.9",
     "groq-sdk": "^0.7.0",
     "jsonwebtoken": "^9.0.2",
+    "jspdf": "^3.0.1",
     "lucide-react": "^0.436.0",
     "mongodb": "^6.8.0",
     "mongoose": "^8.6.0",

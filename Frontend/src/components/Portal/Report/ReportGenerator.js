@@ -4,10 +4,10 @@ import { DateRangePicker } from './DateRangePicker';
 import { motion } from 'framer-motion';
 import { PatientInfo } from './PatientInfo'; 
 import { MentalStatusExam } from './MentalStatusExam';
-// import { CaseHistory } from './CaseHistory';
+import { CaseHistory } from './CaseHistory';
 import { SummaryView } from './SummaryView';
 // import { useAppContext } from '../context/AppContext';
-// import { generatePDF } from '../utils/pdfGenerator';
+import { generatePDF } from './pdfGenerator';
 import { 
   ChevronRight, 
   ChevronLeft, 
@@ -61,7 +61,7 @@ export const ReportGenerator = (props) => {
   const handleGenerateReport = async () => {
     try {
       setGenerating(true);
-    //   await generatePDF(patientData, dateRange);
+      await generatePDF(props.patientInfo.user, startDate, endDate, mentalStressReport);
     } catch (err) {
       console.error('Error generating PDF:', err);
     } finally {
@@ -147,7 +147,7 @@ export const ReportGenerator = (props) => {
             {currentStep === 3 && (
               <div>
                 <MentalStatusExam patientData={mentalStressReport} />
-                {/* <CaseHistory /> */}
+                <CaseHistory caseHistory={mentalStressReport} />
               </div>
             )}
             {currentStep === 4 && <SummaryView startDate={startDate} endDate={endDate} patientData={props.patientInfo.user} occupation={mentalStressReport.occupation} mentalStressReport={mentalStressReport}/>}
