@@ -7,7 +7,7 @@ export async function POST(req) {
   const res = await fetch('https://send.api.mailtrap.io/api/send', {
     method: 'POST',
     headers: {
-      'Authorization': 'Bearer dd42b69a88057446d14c32b60d8d80dd',
+      'Authorization': `Bearer ${process.env.MAIL_API_KEY}`,
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
