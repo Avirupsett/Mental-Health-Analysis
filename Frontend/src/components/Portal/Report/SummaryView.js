@@ -31,9 +31,9 @@ export const SummaryView = ({patientData, startDate, endDate, occupation, mental
             Period: {startDate.toLocaleDateString('en-GB')} to {endDate.toLocaleDateString('en-GB')}
           </span>
         </div>
-        <div className="flex items-center text-purple-700">
+        <div className="flex items-center text-purple-700 ">
           <User className="h-4 w-4 mr-2" />
-          <span>Patient: {patientData.fullname} (ID: {patientData.user_id})</span>
+          <span style={{overflowWrap: "anywhere"}}>Patient: {patientData.fullname} (ID: {patientData.user_id.substring(5,)})</span>
         </div>
       </div>
 
@@ -69,7 +69,7 @@ export const SummaryView = ({patientData, startDate, endDate, occupation, mental
             <h4 className="font-medium text-purple-800">Mental Status Summary</h4>
           </div>
           <div className="space-y-2">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between flex-wrap">
               <p className="text-slate-700">Stress Level base on Q&A</p>
               <div className="flex items-center">
                 <div className="w-32 bg-slate-200 rounded-full h-2 mr-2">
@@ -87,7 +87,7 @@ export const SummaryView = ({patientData, startDate, endDate, occupation, mental
                 <span className="text-sm">{mentalStressReport.averageStressBasedOnQA.toFixed(2).padStart(5, '0')}%</span>
               </div>
             </div>
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between flex-wrap">
               <p className="text-slate-700">Stress Level base on Emotions</p>
               <div className="flex items-center">
                 <div className="w-32 bg-slate-200 rounded-full h-2 mr-2">
@@ -107,7 +107,7 @@ export const SummaryView = ({patientData, startDate, endDate, occupation, mental
                 </span>
               </div>
             </div>
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between flex-wrap">
               <p className="text-slate-700">Overall Stress Level</p>
               <div className="flex items-center">
                 <div className="w-32 bg-slate-200 rounded-full h-2 mr-2">

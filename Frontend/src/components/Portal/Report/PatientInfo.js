@@ -77,7 +77,7 @@ export const PatientInfo = ({ patientData,occupation, lastDate}) => {
       
 
       <div className="bg-purple-50 border border-purple-100 rounded p-4">
-        <h4 className="text-purple-800 font-medium mb-2">Patient ID: {patientData.user_id.substring(5,)}</h4>
+        <h4 className="text-purple-800 font-medium mb-2 break-words">Patient ID: {patientData.user_id.substring(5,)}</h4>
         <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
           <div>
             <span className="text-slate-500">First Visit:</span> 
@@ -85,7 +85,7 @@ export const PatientInfo = ({ patientData,occupation, lastDate}) => {
           </div>
           <div>
             <span className="text-slate-500">Last Visit:</span> 
-            <span className="ml-1 text-slate-700">{new Date(lastDate).toLocaleDateString()}</span>
+            <span className="ml-1 text-slate-700">{lastDate==''?'N/A':new Date(lastDate).toLocaleDateString()}</span>
           </div>
          
         </div>

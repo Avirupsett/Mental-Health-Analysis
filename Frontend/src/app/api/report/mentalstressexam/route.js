@@ -19,6 +19,7 @@ export async function POST(req) {
         const endDate = new Date(body.endDate);
 
         const LatestUserResponses = await UserResponses.find({ user_id: userId }).sort({ created_at: -1 }).limit(1);
+        const qaAssignments = await qaAssignment.find({ user_id: userId }).sort({ created_at: -1 }).limit(3);
         const FirstqaAssignment = await qaAssignment.find({ user_id: userId }).sort({ created_at: 1 }).limit(1);
         const occupation = FirstqaAssignment[0].answer[0]['1'] || "N/A";
         const familyHistory = FirstqaAssignment[0].answer[0]['2'] || "N/A";
@@ -31,54 +32,54 @@ export async function POST(req) {
         const userResponsesBasedOnDate = await UserResponses.find({ user_id: userId, created_at: { $gte: startDate, $lte: endDate } });
         const qaAssignmentBasedOnDate = await qaAssignment.find({ user_id: userId, created_at: { $gte: startDate, $lte: endDate } }).sort({ created_at: -1 }).limit(2);
 
-        const randomdata = await qaAssignment.aggregate([
-            {
-                $match: {
-                    created_at: {
-                        $gte: startDate,
-                        $lte: endDate
-                    },
-                    user_id: userId
-                }
-            },
-            {
-                $addFields: {
-                    week: { $isoWeek: '$created_at' },
-                    year: { $isoWeekYear: '$created_at' }
-                }
-            },
-            {
-                $group: {
-                    _id: { year: '$year', week: '$week' },
-                    docs: { $push: '$$ROOT' },
-                    count: { $sum: 1 }
-                }
-            },
-            {
-                $match: { count: { $gte: 1 } }
-            },
-            {
-                $addFields: { rand: { $rand: {} } }
-            },
-            {
-                $sort: { rand: 1 }
-            },
-            {
-                $limit: 1
-            },
-            {
-                $project: { docs: { $slice: ['$docs', 10] } }
-            },
-            {
-                $unwind: '$docs'
-            },
-            {
-                $replaceRoot: { newRoot: '$docs' }
-            },
-            {
-                $project: { summary: 1, created_at: 1 }
-            }
-        ]);
+        // const randomdata = await qaAssignment.aggregate([
+        //     {
+        //         $match: {
+        //             created_at: {
+        //                 $gte: startDate,
+        //                 $lte: endDate
+        //             },
+        //             user_id: userId
+        //         }
+        //     },
+        //     {
+        //         $addFields: {
+        //             week: { $isoWeek: '$created_at' },
+        //             year: { $isoWeekYear: '$created_at' }
+        //         }
+        //     },
+        //     {
+        //         $group: {
+        //             _id: { year: '$year', week: '$week' },
+        //             docs: { $push: '$$ROOT' },
+        //             count: { $sum: 1 }
+        //         }
+        //     },
+        //     {
+        //         $match: { count: { $gte: 1 } }
+        //     },
+        //     {
+        //         $addFields: { rand: { $rand: {} } }
+        //     },
+        //     {
+        //         $sort: { rand: 1 }
+        //     },
+        //     {
+        //         $limit: 1
+        //     },
+        //     {
+        //         $project: { docs: { $slice: ['$docs', 10] } }
+        //     },
+        //     {
+        //         $unwind: '$docs'
+        //     },
+        //     {
+        //         $replaceRoot: { newRoot: '$docs' }
+        //     },
+        //     {
+        //         $project: { summary: 1, created_at: 1 }
+        //     }
+        // ]);
 
 
 
@@ -200,7 +201,7 @@ export async function POST(req) {
     
 
 
-        return NextResponse.json({ moodState, affect, averageStressBasedOnEmotions, averageStressBasedOnQA, totalStress, strengths, challenges, LatestUserResponses, occupation, familyHistory, medicalHistory, personalHistory }, { status: 200 });
+        return NextResponse.json({ moodState, affect, averageStressBasedOnEmotions, averageStressBasedOnQA, totalStress, strengths, challenges, LatestUserResponses, occupation, familyHistory, medicalHistory, personalHistory,qaAssignments }, { status: 200 });
 
 
 

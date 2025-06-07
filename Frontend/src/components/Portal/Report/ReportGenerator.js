@@ -8,12 +8,14 @@ import { CaseHistory } from './CaseHistory';
 import { SummaryView } from './SummaryView';
 // import { useAppContext } from '../context/AppContext';
 import { generatePDF } from './pdfGenerator';
+import DoctorList from './DoctorList';
 import { 
   ChevronRight, 
   ChevronLeft, 
   FileDown,
   AlertCircle
 } from 'lucide-react';
+import { toast } from 'sonner';
 
 export const ReportGenerator = (props) => {
 
@@ -41,6 +43,7 @@ export const ReportGenerator = (props) => {
 }
 
   const handleNext = async() => {
+   
     if (currentStep === 1) {
         const stressReport = await getStressReport();
         setMentalStressReport(stressReport);
@@ -96,7 +99,7 @@ export const ReportGenerator = (props) => {
             transition={{ duration: 0.3 }}
             className="container min-h-[calc(100vh-70px)] mx-auto p-4 bg-gradient-to-br from-slate-50 to-slate-100 rounded-lg"
     >
-    <div className="container max-w-4xl mx-auto">
+    <div className="container max-w-4xl mx-auto px-0 md:px-8">
       <div className="mb-8 fade-in">
         <h2 className="text-purple-800 mb-4 mt-2 text-2xl md:text-3xl font-bold text-center">Stress Analysis Report</h2>
         <p className="text-slate-600 mb-6">
@@ -143,7 +146,7 @@ export const ReportGenerator = (props) => {
         <div className="card slide-up">
           <div className="card-body">
             {currentStep === 1 && <DateRangePicker startDate={startDate} endDate={endDate} setStartDate={setStartDate} setEndDate={setEndDate}/>}
-            {currentStep === 2 && <PatientInfo patientData={props.patientInfo.user} occupation={mentalStressReport.occupation} lastDate={mentalStressReport.LatestUserResponses[0].created_at}/>}
+            {currentStep === 2 && <PatientInfo patientData={props.patientInfo.user} occupation={mentalStressReport.occupation} lastDate={mentalStressReport && mentalStressReport.LatestUserResponses? mentalStressReport.LatestUserResponses[0].created_at: ''}/>}
             {currentStep === 3 && (
               <div>
                 <MentalStatusExam patientData={mentalStressReport} />
@@ -169,12 +172,21 @@ export const ReportGenerator = (props) => {
             {currentStep < totalSteps ? (
               <button
                 onClick={handleNext}
-                className="btn-primary"
+                className={currentStep >1 && mentalStressReport && mentalStressReport.LatestUserResponses == undefined ?'btn-secondary bg-slate-100 text-slate-400 cursor-not-allowed':'btn-primary'}
+                disabled = {currentStep >1 && mentalStressReport && mentalStressReport.LatestUserResponses == undefined ?true:false}
               >
                 Next
                 <ChevronRight className="h-4 w-4 ml-1 inline" />
               </button>
             ) : (
+              <div className="flex items-center flex-wrap space-2">
+              {/* <button
+              className='btn-primary mr-2 bg-slate-100 text-purple-600 outline outline-purple-600 outline-1 hover:bg-purple-600 hover:text-white'
+              >
+                <AlertCircle className="h-4 w-4 mr-1 inline" />
+                <span className='hidden md:inline'>Validate</span>
+              </button> */}
+              <DoctorList name={props.patientInfo.user.fullname} email={props.patientInfo.user.email} qaAssignments={mentalStressReport.qaAssignments}/>
               <button
                 onClick={handleGenerateReport}
                 disabled={generating}
@@ -188,10 +200,11 @@ export const ReportGenerator = (props) => {
                 ) : (
                   <>
                     <FileDown className="h-4 w-4 mr-1 inline" />
-                    Generate Report
+                    <span className='hidden md:inline'>Generate Report</span>
                   </>
                 )}
               </button>
+              </div>
             )}
           </div>
         </div>
