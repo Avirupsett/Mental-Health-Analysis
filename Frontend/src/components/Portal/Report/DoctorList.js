@@ -267,7 +267,7 @@ export default function DoctorList(props) {
 
             <div className="space-y-2">
               <Label htmlFor="body">Message:</Label>
-              <Textarea id="body" value={emailBody} onChange={(e) => setEmailBody(e.target.value)} rows={8} />
+              <Textarea readOnly id="body" value={emailBody} onChange={(e) => setEmailBody(e.target.value)} rows={8} />
             </div>
 
             <div className="flex justify-end gap-2 pt-2">

@@ -178,21 +178,21 @@ export const generatePDF = async ( patientData, startDate, endDate, mentalStress
     yPos += 15;
 
     // Stress level indicator
-    doc.setFontSize(11);
-    doc.setFont(bodyFont, 'bold');
-    doc.text('Overall Stress Level', margin, yPos);
-    yPos += 8;
-    doc.setFillColor(240, 240, 240);
-    doc.rect(margin, yPos, barWidth, barHeight, 'F');
+    // doc.setFontSize(11);
+    // doc.setFont(bodyFont, 'bold');
+    // doc.text('Overall Stress Level', margin, yPos);
+    // yPos += 8;
+    // doc.setFillColor(240, 240, 240);
+    // doc.rect(margin, yPos, barWidth, barHeight, 'F');
 
-    const totalStress =  mentalStressReport.totalStress >= 80 ? '#e53e3e' : 
-                        mentalStressReport.totalStress >= 50 ? '#ed8936' : '#48bb78';
+    // const totalStress =  mentalStressReport.totalStress >= 80 ? '#e53e3e' : 
+    //                     mentalStressReport.totalStress >= 50 ? '#ed8936' : '#48bb78';
 
-    doc.setFillColor(totalStress);
-    doc.rect(margin, yPos, mentalStressReport.totalStress, barHeight, 'F');
-    doc.setFontSize(10);
-    doc.text(`${mentalStressReport.totalStress.toFixed(2)}%`, margin + barWidth + 5, yPos + 4);
-    yPos += 20;
+    // doc.setFillColor(totalStress);
+    // doc.rect(margin, yPos, mentalStressReport.totalStress, barHeight, 'F');
+    // doc.setFontSize(10);
+    // doc.text(`${mentalStressReport.totalStress.toFixed(2)}%`, margin + barWidth + 5, yPos + 4);
+    yPos += 10;
     
     // Status items
     const items = [

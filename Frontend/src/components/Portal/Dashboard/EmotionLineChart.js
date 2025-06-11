@@ -99,6 +99,7 @@ export default function EmotionLineChart({ emotionResultsByDate }) {
                 textAnchor="end" 
                 fontSize={12}
                 interval={0}
+                ticks={lineChartData.length > 10 ? lineChartData.map((_, i) => i % Math.ceil(lineChartData.length / 10) === 0 ? lineChartData[i].date : null).filter(Boolean) : lineChartData.map(item => item.date)}
               />
               <YAxis
                 stroke="#4f46e5" 

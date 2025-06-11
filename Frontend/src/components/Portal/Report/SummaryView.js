@@ -107,7 +107,7 @@ export const SummaryView = ({patientData, startDate, endDate, occupation, mental
                 </span>
               </div>
             </div>
-            <div className="flex items-center justify-between flex-wrap">
+            {/* <div className="flex items-center justify-between flex-wrap">
               <p className="text-slate-700">Overall Stress Level</p>
               <div className="flex items-center">
                 <div className="w-32 bg-slate-200 rounded-full h-2 mr-2">
@@ -124,7 +124,7 @@ export const SummaryView = ({patientData, startDate, endDate, occupation, mental
                 </div>
                 <span className="text-sm">{mentalStressReport.totalStress.toFixed(2).padStart(5, '0')}%</span>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
 

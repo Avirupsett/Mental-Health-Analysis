@@ -62,10 +62,21 @@ export async function POST(req) {
         const stressLevelByDate = userResponses.reduce((acc, response) => {
             const date = new Date(response.created_at).toLocaleString('en-US', { day: '2-digit', month: 'short', year: 'numeric' });
             if (!acc[date]) {
+                if(response.analysis_result['analysis_type'] !== "emotion") {
                 acc[date] = { sum: 0, count: 0 };
+                }
+                else {
+                    acc[date] = {emotion:0, emotioncount: 0 };
+                }
             }
+            if(response.analysis_result['analysis_type'] !== "emotion") {
             acc[date].sum += response.analysis_result['Stress Level'];
             acc[date].count += 1;
+            }
+            else {
+                acc[date].emotion += response.analysis_result['Stress Level'];
+                acc[date].emotioncount += 1;
+            }
 
             if(response.analysis_result['Stress Level'] < 30) {
                 lowStressCount += 1;
@@ -96,8 +107,17 @@ export async function POST(req) {
             dayno: index + 1,
             date: new Date(date).toLocaleString('en-US', { day: '2-digit', month: 'short', year: 'numeric' }),
             formatted_date: new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-            stress_level: data.sum / data.count
+            stress_level: data.sum / data.count || 0
         }));
+
+        // Calculate average emotion level for each date and format the result
+        const formattedEmotionLevelByDate = Object.entries(stressLevelByDate).map(([date, data], index) => ({
+            dayno: index + 1,
+            date: new Date(date).toLocaleString('en-US', { day: '2-digit', month: 'short', year: 'numeric' }),
+            formatted_date: new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+            emotion_level: data.emotion/data.emotioncount|| 0,
+        }));
+
 
         lowStressCount = totalAssignments==0 ? 0 : lowStressCount/totalAssignments*100;
         moderateStressCount = totalAssignments==0 ? 0 : moderateStressCount/totalAssignments*100;
@@ -155,6 +175,7 @@ export async function POST(req) {
             highStressCount,
             veryHighStressCount,
             formattedStressLevelByDate,
+            formattedEmotionLevelByDate,
             emotionResultsByDate,
             emotionCounts
         });

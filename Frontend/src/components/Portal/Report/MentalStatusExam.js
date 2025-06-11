@@ -75,7 +75,7 @@ export const MentalStatusExam = ({ patientData}) => {
                 <span className="ml-2 text-sm text-slate-600">{patientData.averageStressBasedOnEmotions.toFixed(2)}/100</span>
               </div>
             </div>
-            <div>
+            {/* <div>
               <p className="font-medium text-slate-700 text-sm">Overall Stress Level</p>
               <div className="flex items-center mt-1">
                 <div className="w-full bg-slate-200 rounded-full h-2.5">
@@ -92,7 +92,7 @@ export const MentalStatusExam = ({ patientData}) => {
                 </div>
                 <span className="ml-2 text-sm text-slate-600">{patientData.totalStress.toFixed(2)}/100</span>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
