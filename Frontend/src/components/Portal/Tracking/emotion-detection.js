@@ -206,9 +206,7 @@ export default function EmotionDetection( {todayDuration, setTodayDuration} ) {
           const findStressLevel =
           averageEmotions.sad +
           averageEmotions.angry +
-          averageEmotions.disgusted -
-          averageEmotions.happy -
-          averageEmotions.neutral +
+          averageEmotions.disgusted +
           averageEmotions.surprised +
           averageEmotions.fearful
        let stressLevel2 = Math.round(findStressLevel * 100)
