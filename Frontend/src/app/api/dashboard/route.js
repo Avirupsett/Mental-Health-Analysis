@@ -17,6 +17,7 @@ export async function POST(req) {
         let moderateStressCount = 0;
         let highStressCount = 0;
         let veryHighStressCount = 0;
+        const totalAssignmentsByEmotion = userResponses.filter(response => response.analysis_result['analysis_type'] == "emotion").length;
 
         // Count total assignments based on analysis type
         const totalAssignments = userResponses.filter(response => response.analysis_result['analysis_type'] != "emotion").length;
@@ -63,17 +64,17 @@ export async function POST(req) {
             const date = new Date(response.created_at).toLocaleString('en-US', { day: '2-digit', month: 'short', year: 'numeric' });
             if (!acc[date]) {
                 if(response.analysis_result['analysis_type'] !== "emotion") {
-                acc[date] = { sum: 0, count: 0 };
+                acc[date] = { sum: 0, count: 0,emotion:0, emotioncount: 0 };
                 }
                 else {
-                    acc[date] = {emotion:0, emotioncount: 0 };
+                    acc[date] = {sum: 0, count: 0,emotion:0, emotioncount: 0 };
                 }
             }
             if(response.analysis_result['analysis_type'] !== "emotion") {
             acc[date].sum += response.analysis_result['Stress Level'];
             acc[date].count += 1;
             }
-            else {
+            if(response.analysis_result['analysis_type'] === "emotion") {
                 acc[date].emotion += response.analysis_result['Stress Level'];
                 acc[date].emotioncount += 1;
             }
@@ -119,10 +120,10 @@ export async function POST(req) {
         }));
 
 
-        lowStressCount = totalAssignments==0 ? 0 : lowStressCount/totalAssignments*100;
-        moderateStressCount = totalAssignments==0 ? 0 : moderateStressCount/totalAssignments*100;
-        highStressCount = totalAssignments==0 ? 0 : highStressCount/totalAssignments*100;
-        veryHighStressCount = totalAssignments==0 ? 0 : veryHighStressCount/totalAssignments*100;
+        lowStressCount = totalAssignments+totalAssignmentsByEmotion==0 ? 0 : lowStressCount/(totalAssignments+totalAssignmentsByEmotion)*100;
+        moderateStressCount = totalAssignments+totalAssignmentsByEmotion==0 ? 0 : moderateStressCount/(totalAssignments+totalAssignmentsByEmotion)*100;
+        highStressCount = totalAssignments+totalAssignmentsByEmotion==0 ? 0 : highStressCount/(totalAssignments+totalAssignmentsByEmotion)*100;
+        veryHighStressCount = totalAssignments+totalAssignmentsByEmotion==0 ? 0 : veryHighStressCount/(totalAssignments+totalAssignmentsByEmotion)*100;
 
         const emotionResults = await EmotionResults.find({ user_id: userId });
         
